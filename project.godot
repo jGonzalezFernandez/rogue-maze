@@ -1,0 +1,321 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "NonPlayer",
+"class": "Ally",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/allies/ally.gd"
+}, {
+"base": "Item",
+"class": "Amulet",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/amulet/amulet.gd"
+}, {
+"base": "NormalEnemy",
+"class": "Bat",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/normal_enemies/bat/bat.gd"
+}, {
+"base": "NormalEnemy",
+"class": "Bear",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/normal_enemies/bear/bear.gd"
+}, {
+"base": "Reference",
+"class": "BinaryTree",
+"language": "GDScript",
+"path": "res://maze/algorithms/binary_tree.gd"
+}, {
+"base": "Item",
+"class": "BluntWeapon",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/blunt_weapon/blunt_weapon.gd"
+}, {
+"base": "Item",
+"class": "Boots",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/boots/boots.gd"
+}, {
+"base": "Reference",
+"class": "Cell",
+"language": "GDScript",
+"path": "res://maze/cell.gd"
+}, {
+"base": "GridElement",
+"class": "Character",
+"language": "GDScript",
+"path": "res://grid_elements/characters/character.gd"
+}, {
+"base": "Item",
+"class": "Cloak",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/cloak/cloak.gd"
+}, {
+"base": "Spectre",
+"class": "Clone",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/spectres/shadow/clone.gd"
+}, {
+"base": "NormalEnemy",
+"class": "Crocodile",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/normal_enemies/crocodile/crocodile.gd"
+}, {
+"base": "Item",
+"class": "Edgedweapon",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/edged_weapon/edged_weapon.gd"
+}, {
+"base": "NonPlayer",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/enemy.gd"
+}, {
+"base": "StaticElement",
+"class": "Event",
+"language": "GDScript",
+"path": "res://grid_elements/static_elements/event/event.gd"
+}, {
+"base": "Spectre",
+"class": "EvilTwin",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/spectres/evil_twin/evil_twin.gd"
+}, {
+"base": "Ally",
+"class": "Fairy",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/allies/fairy/fairy.gd"
+}, {
+"base": "Node",
+"class": "GenerationAlgorithm",
+"language": "GDScript",
+"path": "res://maze/algorithms/generation_algorithm.gd"
+}, {
+"base": "Area2D",
+"class": "GridElement",
+"language": "GDScript",
+"path": "res://grid_elements/grid_element.gd"
+}, {
+"base": "CanvasLayer",
+"class": "GuiElement",
+"language": "GDScript",
+"path": "res://gui_elements/gui_element.gd"
+}, {
+"base": "Item",
+"class": "Heart",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/heart/heart.gd"
+}, {
+"base": "Spectre",
+"class": "HumanGhost",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/spectres/human_ghost/human_ghost.gd"
+}, {
+"base": "TextureRect",
+"class": "Item",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/item.gd"
+}, {
+"base": "Node2D",
+"class": "Maze",
+"language": "GDScript",
+"path": "res://maze/maze.gd"
+}, {
+"base": "GuiElement",
+"class": "MessageScreen",
+"language": "GDScript",
+"path": "res://gui_elements/message_screen.gd"
+}, {
+"base": "Spectre",
+"class": "MonsterGhost",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/spectres/monster_ghost/monster_ghost.gd"
+}, {
+"base": "Character",
+"class": "NonPlayer",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/non_player.gd"
+}, {
+"base": "Enemy",
+"class": "NormalEnemy",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/normal_enemies/normal_enemy.gd"
+}, {
+"base": "Character",
+"class": "Player",
+"language": "GDScript",
+"path": "res://grid_elements/characters/player/player.gd"
+}, {
+"base": "Reference",
+"class": "RecursiveBacktracker",
+"language": "GDScript",
+"path": "res://maze/algorithms/recursive_backtracker.gd"
+}, {
+"base": "Reference",
+"class": "RecursiveDivision",
+"language": "GDScript",
+"path": "res://maze/algorithms/recursive_division.gd"
+}, {
+"base": "Reference",
+"class": "ResourcePath",
+"language": "GDScript",
+"path": "res://resource_path.gd"
+}, {
+"base": "Item",
+"class": "Ring",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/ring/ring.gd"
+}, {
+"base": "NormalEnemy",
+"class": "Scorpion",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/normal_enemies/scorpion/scorpion.gd"
+}, {
+"base": "Spectre",
+"class": "Shadow",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/spectres/shadow/shadow.gd"
+}, {
+"base": "Item",
+"class": "Shield",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/shield/shield.gd"
+}, {
+"base": "Reference",
+"class": "Sidewinder",
+"language": "GDScript",
+"path": "res://maze/algorithms/sidewinder.gd"
+}, {
+"base": "NormalEnemy",
+"class": "SkeletonKnight",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/normal_enemies/skeleton_knight/skeleton_knight.gd"
+}, {
+"base": "NormalEnemy",
+"class": "SkeletonWizard",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/normal_enemies/skeleton_wizard/skeleton_wizard.gd"
+}, {
+"base": "Enemy",
+"class": "Spectre",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/spectres/spectre.gd"
+}, {
+"base": "NormalEnemy",
+"class": "Spider",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/normal_enemies/spider/spider.gd"
+}, {
+"base": "StaticElement",
+"class": "Stairs",
+"language": "GDScript",
+"path": "res://grid_elements/static_elements/stairs/stairs.gd"
+}, {
+"base": "GridElement",
+"class": "StaticElement",
+"language": "GDScript",
+"path": "res://grid_elements/static_elements/static_element.gd"
+}, {
+"base": "GuiElement",
+"class": "StatusBar",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/status_bar.gd"
+}, {
+"base": "StaticElement",
+"class": "Treasure",
+"language": "GDScript",
+"path": "res://grid_elements/static_elements/treasure/treasure.gd"
+}, {
+"base": "Ally",
+"class": "Unicorn",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/allies/unicorn/unicorn.gd"
+}, {
+"base": "Reference",
+"class": "Utils",
+"language": "GDScript",
+"path": "res://utils.gd"
+} ]
+_global_script_class_icons={
+"Ally": "",
+"Amulet": "",
+"Bat": "",
+"Bear": "",
+"BinaryTree": "",
+"BluntWeapon": "",
+"Boots": "",
+"Cell": "",
+"Character": "",
+"Cloak": "",
+"Clone": "",
+"Crocodile": "",
+"Edgedweapon": "",
+"Enemy": "",
+"Event": "",
+"EvilTwin": "",
+"Fairy": "",
+"GenerationAlgorithm": "",
+"GridElement": "",
+"GuiElement": "",
+"Heart": "",
+"HumanGhost": "",
+"Item": "",
+"Maze": "",
+"MessageScreen": "",
+"MonsterGhost": "",
+"NonPlayer": "",
+"NormalEnemy": "",
+"Player": "",
+"RecursiveBacktracker": "",
+"RecursiveDivision": "",
+"ResourcePath": "",
+"Ring": "",
+"Scorpion": "",
+"Shadow": "",
+"Shield": "",
+"Sidewinder": "",
+"SkeletonKnight": "",
+"SkeletonWizard": "",
+"Spectre": "",
+"Spider": "",
+"Stairs": "",
+"StaticElement": "",
+"StatusBar": "",
+"Treasure": "",
+"Unicorn": "",
+"Utils": ""
+}
+
+[application]
+
+config/name="Rogue-Maze"
+run/main_scene="res://main/main.tscn"
+
+[debug]
+
+gdscript/warnings/shadowed_variable=false
+gdscript/warnings/unused_class_variable=true
+gdscript/warnings/return_value_discarded=false
+gdscript/warnings/unsafe_cast=true
+gdscript/warnings/unsafe_call_argument=true
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
+[memory]
+
+limits/message_queue/max_size_kb=4096
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

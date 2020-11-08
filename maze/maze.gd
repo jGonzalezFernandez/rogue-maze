@@ -1,0 +1,178 @@
+class_name Maze
+extends Node2D
+
+# This enum must be consistent with the order of the tiles in the tile_map scene
+enum Walls {NONE, W, S, SW, E, EW, ES, ESW, N, NW, NS, NSW, NE, NEW, NES, ALL}
+
+const TILE_SIZE = 20
+const ROWS = 28
+const COLUMNS = 51
+const X_OFFSET = 0
+const Y_OFFSET = 1
+const MIN_X = X_OFFSET * TILE_SIZE
+const MAX_X = (COLUMNS - 1) * TILE_SIZE
+const MIN_Y = Y_OFFSET * TILE_SIZE
+const MAX_Y = (ROWS + Y_OFFSET - 1) * TILE_SIZE
+
+var generation_algorithm: int
+var add_loops: bool
+var indexed_cells: Array
+
+var astar: AStar2D
+var tile_map: TileMap
+
+func _init(generation_algorithm: int, add_loops: bool = false) -> void:
+	self.generation_algorithm = generation_algorithm
+	self.add_loops = add_loops
+
+func set_cells() -> void:
+	for row in ROWS:
+		indexed_cells.append([])
+		indexed_cells[row].resize(COLUMNS)
+		for column in COLUMNS:
+			var cell_id = astar.get_available_point_id()
+			indexed_cells[row][column] = Cell.new(cell_id, row, column)
+			astar.add_point(cell_id, Vector2(column * TILE_SIZE, (row + Y_OFFSET) * TILE_SIZE))
+
+func sort_cells_by_link_count_asc(cell1: Cell, cell2: Cell) -> bool:
+	return cell1.link_count < cell2.link_count
+
+func _ready() -> void:
+	astar = AStar2D.new()
+	set_cells()
+	match generation_algorithm:
+		GenerationAlgorithm.BINARY_TREE:
+			BinaryTree.apply_algorithm(self)
+		GenerationAlgorithm.SIDEWINDER:
+			Sidewinder.apply_algorithm(self)
+		GenerationAlgorithm.RECURSIVE_BACKTRACKER:
+			RecursiveBacktracker.apply_algorithm(self)
+		GenerationAlgorithm.RECURSIVE_DIVISION:
+			RecursiveDivision.apply_algorithm(self, false)
+		_:
+			RecursiveDivision.apply_algorithm(self, true)
+	
+	if add_loops: # braid maze
+		for row in ROWS:
+			for column in COLUMNS:
+				var current_cell = indexed_cells[row][column]
+				if current_cell.link_count <= 1:
+					var neighbours = get_neighbours_of(current_cell)
+					neighbours.sort_custom(self, "sort_cells_by_link_count_asc")
+					link_cells(current_cell, neighbours.front())
+	
+	# It is better to have the TileMap in the editor (instead of doing everything by code),
+	# so it is also possible to design levels by hand
+	tile_map = preload("res://maze/tile_map/tile_map.tscn").instance()
+	add_child(tile_map)
+	draw_walls()
+
+func north_exists(cell: Cell) -> bool:
+	return cell.row > 0
+
+func south_exists(cell: Cell) -> bool:
+	return cell.row < ROWS - 1
+
+func east_exists(cell: Cell) -> bool:
+	return cell.column < COLUMNS - 1
+
+func west_exists(cell: Cell) -> bool:
+	return cell.column > 0
+
+func get_north_cell_of(cell: Cell) -> Cell:
+	return indexed_cells[cell.row - 1][cell.column]
+
+func get_south_cell_of(cell: Cell) -> Cell:
+	return indexed_cells[cell.row + 1][cell.column]
+
+func get_east_cell_of(cell: Cell) -> Cell:
+	return indexed_cells[cell.row][cell.column + 1]
+
+func get_west_cell_of(cell: Cell) -> Cell:
+	return indexed_cells[cell.row][cell.column - 1]
+
+func get_neighbours_of(cell: Cell) -> Array:
+	var neighbours = []
+	if north_exists(cell):
+		neighbours.append(get_north_cell_of(cell))
+	if south_exists(cell):
+		neighbours.append(get_south_cell_of(cell))
+	if east_exists(cell):
+		neighbours.append(get_east_cell_of(cell))
+	if west_exists(cell):
+		neighbours.append(get_west_cell_of(cell))
+	return neighbours
+
+func get_random_cell() -> Cell:
+	return indexed_cells[Utils.random_int(ROWS)][Utils.random_int(COLUMNS)]
+
+func set_walls(cell1: Cell, cell2: Cell, is_unlink: bool) -> void:
+	if cell1.row == cell2.row - 1: # cell1 is north of cell2
+		cell1.walls.S = is_unlink
+		cell2.walls.N = is_unlink
+	elif cell1.row == cell2.row + 1:
+		cell1.walls.N = is_unlink
+		cell2.walls.S = is_unlink
+	elif cell1.column == cell2.column + 1:
+		cell1.walls.W = is_unlink
+		cell2.walls.E = is_unlink
+	else:
+		cell1.walls.E = is_unlink
+		cell2.walls.W = is_unlink
+
+func link_cells(cell1: Cell, cell2: Cell) -> void:
+	astar.connect_points(cell1.id, cell2.id, true)
+	set_walls(cell1, cell2, false)
+	cell1.link_count += 1
+	cell2.link_count += 1
+
+func unlink_cells(cell1: Cell, cell2: Cell) -> void:
+	astar.disconnect_points(cell1.id, cell2.id)
+	set_walls(cell1, cell2, true)
+	cell1.link_count -= 1
+	cell2.link_count -= 1
+
+func draw_walls() -> void:
+	for row in ROWS:
+		for column in COLUMNS:
+			var current_cell = indexed_cells[row][column]
+			# TODO: Use the really necessary tiles and rotate them according to the match?
+			match current_cell.walls:
+				{"N": false, "E": false, "S": false, "W": false}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NONE)
+				{"N": false, "E": false, "S": false, "W": true}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.W)
+				{"N": false, "E": false, "S": true, "W": false}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.S)
+				{"N": false, "E": false, "S": true, "W": true}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.SW)
+				{"N": false, "E": true, "S": false, "W": false}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.E)
+				{"N": false, "E": true, "S": false, "W": true}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.EW)
+				{"N": false, "E": true, "S": true, "W": false}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ES)
+				{"N": false, "E": true, "S": true, "W": true}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ESW)
+				{"N": true, "E": false, "S": false, "W": false}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.N)
+				{"N": true, "E": false, "S": false, "W": true}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NW)
+				{"N": true, "E": false, "S": true, "W": false}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NS)
+				{"N": true, "E": false, "S": true, "W": true}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NSW)
+				{"N": true, "E": true, "S": false, "W": false}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NE)
+				{"N": true, "E": true, "S": false, "W": true}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NEW)
+				{"N": true, "E": true, "S": true, "W": false}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NES)
+				{"N": true, "E": true, "S": true, "W": true}:
+					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ALL)
+
+func random_position() -> Vector2:
+	return Vector2(Utils.random_int(COLUMNS, 1) * TILE_SIZE, Utils.random_int(ROWS + Y_OFFSET, 1) * TILE_SIZE)
+
+func target_is_outside_boundaries(target: Vector2) -> bool:
+	return target.x < MIN_X or target.x > MAX_X or target.y < MIN_Y or target.y > MAX_Y
