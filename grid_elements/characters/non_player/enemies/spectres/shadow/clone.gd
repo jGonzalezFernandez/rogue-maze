@@ -19,6 +19,6 @@ func special_movement() -> void:
 	walk_through_walls(Utils.get_random_elem(DIAGONALS), half_walk_length)
 
 func player_found(finder: String) -> void:
-	# The shadow and its clones are supposed to have a shared vision (but only the clones attack mindlessly when called)
+	# The Shadow and its clones are supposed to have a shared vision (but only the clones attack mindlessly when called)
 	if !tween.is_active() and (finder == SHADOW_NAME or finder == CLONE_NAME):
 		hunt(get_point_path_to(player.position))

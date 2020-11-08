@@ -244,17 +244,3 @@ func on_died(character: Character) -> void:
 		message_screen.show_game_over()
 	else:
 		remove(character)
-
-# Code order:
-
-# class_name
-# extends
-# signals
-# enums
-# constants
-# exported variables
-# variables
-# onready variables
-# _init method
-# _ready method
-# other methods
