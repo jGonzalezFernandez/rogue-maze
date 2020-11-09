@@ -1,7 +1,9 @@
 class_name EvilTwin
 extends Spectre
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/spectres/evil_twin/evil_twin.png")
+const TEXTURE_PATH = ResourcePath.SPECTRES + "/evil_twin/evil_twin.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const VISION = 15
 const HEARING = 14
 const MIN_TIME_BETWEEN_WALKS = 1.0

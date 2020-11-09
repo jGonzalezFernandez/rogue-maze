@@ -1,8 +1,11 @@
 class_name Shield
 extends Item
 
-const WOODEN_SHIELD = preload("res://gui_elements/status_bar/items/shield/wooden_shield.png")
-const SHIELD = preload("res://gui_elements/status_bar/items/shield/shield.png")
+const WOODEN_SHIELD_TEXTURE_PATH = ResourcePath.ITEMS + "/shield/wooden_shield.png"
+const WOODEN_SHIELD_TEXTURE = preload(WOODEN_SHIELD_TEXTURE_PATH)
 
-func _init().(WOODEN_SHIELD) -> void:
+const SHIELD_TEXTURE_PATH = ResourcePath.ITEMS + "/shield/shield.png"
+const SHIELD = preload(SHIELD_TEXTURE_PATH)
+
+func _init().(WOODEN_SHIELD_TEXTURE) -> void:
 	pass

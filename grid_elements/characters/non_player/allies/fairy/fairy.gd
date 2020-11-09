@@ -1,7 +1,9 @@
 class_name Fairy
 extends Ally
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/allies/fairy/fairy.png")
+const TEXTURE_PATH = ResourcePath.ALLIES + "/fairy/fairy.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const NAME = "Fairy"
 const VISION = 1
 const HEARING = 1

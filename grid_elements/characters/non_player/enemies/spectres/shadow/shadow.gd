@@ -1,7 +1,9 @@
 class_name Shadow
 extends Spectre
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/spectres/shadow/shadow.png")
+const TEXTURE_PATH = ResourcePath.SPECTRES + "/shadow/shadow.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const VISION = 5
 const HEARING = 4
 const MIN_TIME_BETWEEN_WALKS = 1.0

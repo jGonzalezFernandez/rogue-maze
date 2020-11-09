@@ -1,7 +1,9 @@
 class_name Spider
 extends NormalEnemy
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/normal_enemies/spider/spider.png")
+const TEXTURE_PATH = ResourcePath.NORMAL_ENEMIES + "/spider/spider.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const NAME = "Spider"
 const VISION = 4
 const HEARING = 3

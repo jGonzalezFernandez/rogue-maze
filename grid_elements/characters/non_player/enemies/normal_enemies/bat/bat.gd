@@ -1,7 +1,9 @@
 class_name Bat
 extends NormalEnemy
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/normal_enemies/bat/bat.png")
+const TEXTURE_PATH = ResourcePath.NORMAL_ENEMIES + "/bat/bat.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const NAME = "Bat"
 const VISION = 4
 const HEARING = 3

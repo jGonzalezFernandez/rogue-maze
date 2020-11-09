@@ -1,7 +1,9 @@
 class_name Crocodile
 extends NormalEnemy
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/normal_enemies/crocodile/crocodile.png")
+const TEXTURE_PATH = ResourcePath.NORMAL_ENEMIES + "/crocodile/crocodile.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const NAME = "Crocodile"
 const VISION = 4
 const HEARING = 3

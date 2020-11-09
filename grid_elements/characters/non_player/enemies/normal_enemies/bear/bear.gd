@@ -1,7 +1,9 @@
 class_name Bear
 extends NormalEnemy
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/normal_enemies/bear/bear.png")
+const TEXTURE_PATH = ResourcePath.NORMAL_ENEMIES + "/bear/bear.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const NAME = "Bear"
 const VISION = 5
 const HEARING = 4

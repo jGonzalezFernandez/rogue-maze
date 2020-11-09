@@ -1,9 +1,14 @@
 class_name Heart
 extends Item
 
-const FULL = preload("res://gui_elements/status_bar/items/heart/heart_full.png")
-const HALF = preload("res://gui_elements/status_bar/items/heart/heart_half.png")
-const EMPTY = preload("res://gui_elements/status_bar/items/heart/heart_empty.png")
+const FULL_TEXTURE_PATH = ResourcePath.ITEMS + "/heart/heart_full.png"
+const FULL_TEXTURE = preload(FULL_TEXTURE_PATH)
 
-func _init().(EMPTY) -> void:
+const HALF_TEXTURE_PATH = ResourcePath.ITEMS + "/heart/heart_half.png"
+const HALF_TEXTURE = preload(HALF_TEXTURE_PATH)
+
+const EMPTY_TEXTURE_PATH = ResourcePath.ITEMS + "/heart/heart_empty.png"
+const EMPTY_TEXTURE = preload(EMPTY_TEXTURE_PATH)
+
+func _init().(EMPTY_TEXTURE) -> void:
 	pass

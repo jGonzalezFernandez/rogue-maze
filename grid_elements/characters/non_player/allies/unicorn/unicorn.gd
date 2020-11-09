@@ -1,7 +1,9 @@
 class_name Unicorn
 extends Ally
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/allies/unicorn/unicorn.png")
+const TEXTURE_PATH = ResourcePath.ALLIES + "/unicorn/unicorn.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const VISION = 3
 const HEARING = 3
 const SPEED = 4.0

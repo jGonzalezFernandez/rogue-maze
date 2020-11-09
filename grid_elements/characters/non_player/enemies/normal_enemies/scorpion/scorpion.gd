@@ -1,7 +1,9 @@
 class_name Scorpion
 extends NormalEnemy
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/normal_enemies/scorpion/scorpion.png")
+const TEXTURE_PATH = ResourcePath.NORMAL_ENEMIES + "/scorpion/scorpion.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const NAME = "Scorpion"
 const VISION = 4
 const HEARING = 3

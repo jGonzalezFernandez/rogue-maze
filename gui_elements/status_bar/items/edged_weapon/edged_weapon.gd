@@ -1,8 +1,11 @@
 class_name Edgedweapon
 extends Item
 
-const SWORD = preload("res://gui_elements/status_bar/items/edged_weapon/sword.png")
-const CHAOS_SWORD = preload("res://gui_elements/status_bar/items/edged_weapon/chaos_sword.png")
+const SWORD_TEXTURE_PATH = ResourcePath.ITEMS + "/edged_weapon/sword.png"
+const SWORD_TEXTURE = preload(SWORD_TEXTURE_PATH)
 
-func _init().(SWORD) -> void:
+const CHAOS_SWORD_TEXTURE_PATH = ResourcePath.ITEMS + "/edged_weapon/chaos_sword.png"
+const CHAOS_SWORD_TEXTURE = preload(CHAOS_SWORD_TEXTURE_PATH)
+
+func _init().(SWORD_TEXTURE) -> void:
 	pass

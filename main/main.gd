@@ -207,13 +207,13 @@ func treasure_reached(_area, treasure: Treasure) -> void:
 	elif !second_items.empty():
 		match Utils.pop_random_elem(second_items):
 			StatusBar.Item.CHAOS_SWORD:
-				edged_weapon.texture = Edgedweapon.CHAOS_SWORD
+				edged_weapon.texture = Edgedweapon.CHAOS_SWORD_TEXTURE
 				player.slashing_atk += 2
 			StatusBar.Item.HAMMER:
-				blunt_weapon.texture = BluntWeapon.HAMMER
+				blunt_weapon.texture = BluntWeapon.HAMMER_TEXTURE
 				player.blunt_atk += 2
 			StatusBar.Item.SHIELD:
-				shield.texture = Shield.SHIELD
+				shield.texture = Shield.SHIELD_TEXTURE
 				player.def += 2
 			StatusBar.Item.RING:
 				ring = Ring.new()

@@ -1,7 +1,8 @@
 class_name Event
 extends StaticElement
 
-const TEXTURE = preload("res://grid_elements/static_elements/event/event.png")
+const TEXTURE_PATH = ResourcePath.STATIC_ELEMENTS + "/event/event.png"
+const TEXTURE = preload(TEXTURE_PATH)
 
 func _init(position: Vector2).(TEXTURE, position) -> void:
 	pass

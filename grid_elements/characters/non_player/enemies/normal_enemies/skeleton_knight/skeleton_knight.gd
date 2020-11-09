@@ -1,7 +1,9 @@
 class_name SkeletonKnight
 extends NormalEnemy
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/normal_enemies/skeleton_knight/skeleton_knight.png")
+const TEXTURE_PATH = ResourcePath.NORMAL_ENEMIES + "/skeleton_knight/skeleton_knight.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const NAME = "Skeleton Knight"
 const VISION = 5
 const HEARING = 4

@@ -1,8 +1,11 @@
 class_name Player
 extends Character
 
-const TEXTURE = preload("res://grid_elements/characters/player/player.png")
-const INPUTS = {"ui_up": Vector2.UP, "ui_down": Vector2.DOWN, "ui_right": Vector2.RIGHT, "ui_left": Vector2.LEFT}
+const TEXTURE_PATH = ResourcePath.CHARACTERS + "/player/player.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
+const MOTION_INPUTS = {"ui_up": Vector2.UP, "ui_down": Vector2.DOWN, "ui_right": Vector2.RIGHT, "ui_left": Vector2.LEFT}
+const ACTION_INPUT = "ui_accept"
 
 const INITIAL_SPEED = 3.5
 const INITIAL_HEALTH = 6
@@ -24,17 +27,17 @@ func _ready() -> void:
 	connect("area_entered", self, "on_area_entered")
 
 func _process(_delta) -> void:
-	for dir in INPUTS.keys():
+	for dir in MOTION_INPUTS.keys():
 		if Input.is_action_pressed(dir) and !tween.is_active():
-			if dash_ability and Input.is_action_pressed("ui_accept"):
+			if dash_ability and Input.is_action_pressed(ACTION_INPUT):
 				phasing = true
 				for i in range(MAX_DASH_LENGTH, 0, -1):
-					if move_tween_if_possible_to(INPUTS[dir] * Maze.TILE_SIZE * i, MovementType.RUN, true):
+					if move_tween_if_possible_to(MOTION_INPUTS[dir] * Maze.TILE_SIZE * i, MovementType.RUN, true):
 						break
 				yield(tween, "tween_all_completed")
 				phasing = false
 			else:
-				move_tween_if_possible_to(INPUTS[dir] * Maze.TILE_SIZE, MovementType.RUN)
+				move_tween_if_possible_to(MOTION_INPUTS[dir] * Maze.TILE_SIZE, MovementType.RUN)
 
 func get_stats() -> String:
 	# We halve the stats displayed in the interface because it's easier to think in terms of whole hearts and half hearts

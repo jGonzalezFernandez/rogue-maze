@@ -1,7 +1,9 @@
 class_name MonsterGhost
 extends Spectre
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/spectres/monster_ghost/monster_ghost.png")
+const TEXTURE_PATH = ResourcePath.SPECTRES + "/monster_ghost/monster_ghost.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const NAME = "Monster Ghost"
 const VISION = 5
 const HEARING = 4

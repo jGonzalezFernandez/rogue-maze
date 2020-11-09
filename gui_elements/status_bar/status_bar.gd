@@ -43,8 +43,8 @@ func _ready() -> void:
 func set_hearts(health) -> void:
 	for i in heart_bar.get_child_count():
 		if health > i * 2 + 1:
-			heart_bar.get_child(i).texture = Heart.FULL
+			heart_bar.get_child(i).texture = Heart.FULL_TEXTURE
 		elif health > i * 2:
-			heart_bar.get_child(i).texture = Heart.HALF
+			heart_bar.get_child(i).texture = Heart.HALF_TEXTURE
 		else:
-			heart_bar.get_child(i).texture = Heart.EMPTY
+			heart_bar.get_child(i).texture = Heart.EMPTY_TEXTURE

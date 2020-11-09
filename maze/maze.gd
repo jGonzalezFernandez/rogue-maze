@@ -2,7 +2,11 @@ class_name Maze
 extends Node2D
 
 # This enum must be consistent with the order of the tiles in the tile_map scene
+# (and, by the way, it is better to use a scene, instead of doing everything by
+# code, so it is also possible to design levels by hand in the editor)
 enum Walls {NONE, W, S, SW, E, EW, ES, ESW, N, NW, NS, NSW, NE, NEW, NES, ALL}
+const TILE_MAP_SCENE_PATH = ResourcePath.MAZE + "tile_map/tile_map.tscn"
+const TILE_MAP_SCENE = preload(TILE_MAP_SCENE_PATH)
 
 const TILE_SIZE = 20
 const ROWS = 28
@@ -61,9 +65,7 @@ func _ready() -> void:
 					neighbours.sort_custom(self, "sort_cells_by_link_count_asc")
 					link_cells(current_cell, neighbours.front())
 	
-	# It is better to have the TileMap in the editor (instead of doing everything by code),
-	# so it is also possible to design levels by hand
-	tile_map = preload("res://maze/tile_map/tile_map.tscn").instance()
+	tile_map = TILE_MAP_SCENE.instance()
 	add_child(tile_map)
 	draw_walls()
 

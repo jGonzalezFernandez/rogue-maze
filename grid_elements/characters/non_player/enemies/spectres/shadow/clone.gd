@@ -1,7 +1,9 @@
 class_name Clone
 extends Spectre
 
-const TEXTURE = preload("res://grid_elements/characters/non_player/enemies/spectres/shadow/clone.png")
+const TEXTURE_PATH = ResourcePath.SPECTRES + "/shadow/clone.png"
+const TEXTURE = preload(TEXTURE_PATH)
+
 const VISION = 5
 const HEARING = 4
 const MIN_TIME_BETWEEN_WALKS = 2.0
