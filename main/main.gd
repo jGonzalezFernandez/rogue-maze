@@ -73,6 +73,7 @@ func add_event(event: Event) -> void:
 
 func set_char_position(character: Character, position: Vector2) -> void:
 	character.tween.remove_all()
+	character.modulate.a = character.max_alpha
 	character.position = position
 
 func new_level() -> void:
@@ -80,31 +81,31 @@ func new_level() -> void:
 	match level_number:
 		1:
 			maze = Maze.new(GenerationAlgorithm.BINARY_TREE, true)
-			add_enemy(Bear.new(maze.random_position(), player, maze))
+			add_enemy(Bear.new(maze.random_center_position(), player, maze))
 		2:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
-			add_enemy(Crocodile.new(maze.random_position(), player, maze))
-			add_enemy(Bat.new(maze.random_position(), player, maze))
+			add_enemy(Crocodile.new(maze.random_center_position(), player, maze))
+			add_enemy(Bat.new(maze.random_top_right_position(), player, maze))
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
-			add_enemy(Scorpion.new(maze.random_position(), player, maze))
-			add_enemy(Spider.new(maze.random_position(), player, maze))
-			add_ally(Unicorn.new(maze.random_position(), player, maze))
+			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
+			add_enemy(Spider.new(maze.random_top_right_position(), player, maze))
+			add_ally(Unicorn.new(maze.random_top_center_position(), player, maze))
 		4:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
-			add_enemy(SkeletonKnight.new(maze.random_position(), player, maze))
-			add_enemy(HumanGhost.new(maze.random_position(), player, maze))
+			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze))
+			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
-			add_enemy(SkeletonWizard.new(maze.random_position(), player, maze))
-			add_enemy(MonsterGhost.new(maze.random_position(), player, maze))
-			add_ally(Fairy.new(maze.random_position(), player, maze))
+			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze))
+			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze))
+			add_ally(Fairy.new(maze.random_bottom_center_position(), player, maze))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
-			add_enemy(Shadow.new(maze.random_position(), player, maze))
+			add_enemy(Shadow.new(maze.random_center_position(), player, maze))
 		_:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
-			add_enemy(EvilTwin.new(maze.random_position(), player, maze))
+			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze))
 	add_child(maze)
 	
 	for i in TREASURES_PER_LEVEL:
@@ -112,7 +113,7 @@ func new_level() -> void:
 	
 #	add_event(Event.new(maze.random_position()))
 	
-	stairs = Stairs.new(maze.random_position())
+	stairs = Stairs.new(maze.random_bottom_right_position())
 	add_child(stairs)
 
 func set_enemy_status_bars():

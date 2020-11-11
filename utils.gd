@@ -9,6 +9,9 @@ static func twenty_five_percent_chance() -> bool:
 static func fifty_percent_chance() -> bool:
 	return random_int(2) == 0
 
+static func seventy_five_percent_chance() -> bool:
+	return !twenty_five_percent_chance()
+
 static func get_random_elem(array: Array):
 	return array[random_int(array.size())]
 

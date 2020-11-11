@@ -17,7 +17,9 @@ func _process(_delta):
 		knows_player = true
 	if !tween.is_active() and knows_player:
 		var path = get_point_path_to(player.position)
-		if !player_is_perceptible(path):
+		if path.size() > Utils.rounded_half(maze.COLUMNS): # this could happen when changing levels if something fails...
+			position = player.position
+		elif !player_is_perceptible(path):
 			follow_path(path, MovementType.RUN, path.size(), false)
 
 func on_area_entered(area) -> void:

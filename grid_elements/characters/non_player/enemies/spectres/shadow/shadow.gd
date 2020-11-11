@@ -19,7 +19,7 @@ func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, SHADOW_NAME,
 
 func special_movement() -> void:
 	if Utils.twenty_five_percent_chance():
-		teleport_while_healing_to(maze.random_position())
+		teleport_to(maze.random_position())
 	else:
 		get_parent().add_enemy(Clone.new(position, player, maze))
 		walk_through_walls(Utils.get_random_elem(DIAGONALS), half_walk_length)

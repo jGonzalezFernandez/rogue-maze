@@ -19,6 +19,6 @@ func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, EVIL_TWIN_NA
 
 func special_movement() -> void:
 	if Utils.twenty_five_percent_chance():
-		teleport_while_healing_to(maze.random_position())
+		teleport_to(maze.random_position())
 	else:
 		walk_through_walls(Utils.get_random_elem(DIAGONALS), half_walk_length)

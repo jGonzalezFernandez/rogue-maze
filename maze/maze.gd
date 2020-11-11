@@ -17,6 +17,10 @@ const MIN_X = X_OFFSET * TILE_SIZE
 const MAX_X = (COLUMNS - 1) * TILE_SIZE
 const MIN_Y = Y_OFFSET * TILE_SIZE
 const MAX_Y = (ROWS + Y_OFFSET - 1) * TILE_SIZE
+# We will divide the maze into 9 areas to balance a little the random distribution
+# of the grid elements during level generation
+var area_width = Utils.rounded_division(COLUMNS, 3.0)
+var area_height = Utils.rounded_division(ROWS, 3.0)
 
 var generation_algorithm: int
 var add_loops: bool
@@ -36,7 +40,7 @@ func set_cells() -> void:
 		for column in COLUMNS:
 			var cell_id = astar.get_available_point_id()
 			indexed_cells[row][column] = Cell.new(cell_id, row, column)
-			astar.add_point(cell_id, Vector2(column * TILE_SIZE, (row + Y_OFFSET) * TILE_SIZE))
+			astar.add_point(cell_id, Vector2((column + X_OFFSET) * TILE_SIZE, (row + Y_OFFSET) * TILE_SIZE))
 
 func sort_cells_by_link_count_asc(cell1: Cell, cell2: Cell) -> bool:
 	return cell1.link_count < cell2.link_count
@@ -56,11 +60,12 @@ func _ready() -> void:
 		_:
 			RecursiveDivision.apply_algorithm(self, true)
 	
-	if add_loops: # braid maze
+	if add_loops:
 		for row in ROWS:
 			for column in COLUMNS:
 				var current_cell = indexed_cells[row][column]
-				if current_cell.link_count <= 1:
+				# TODO: Add an enum to select the braiding level (instead of using a hard-coded probability)?
+				if current_cell.link_count <= 1 and Utils.seventy_five_percent_chance():
 					var neighbours = get_neighbours_of(current_cell)
 					neighbours.sort_custom(self, "sort_cells_by_link_count_asc")
 					link_cells(current_cell, neighbours.front())
@@ -174,7 +179,31 @@ func draw_walls() -> void:
 					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ALL)
 
 func random_position() -> Vector2:
-	return Vector2(Utils.random_int(COLUMNS, 1) * TILE_SIZE, Utils.random_int(ROWS + Y_OFFSET, 1) * TILE_SIZE)
+	return Vector2(Utils.random_int(COLUMNS + X_OFFSET, X_OFFSET) * TILE_SIZE, Utils.random_int(ROWS + Y_OFFSET, Y_OFFSET) * TILE_SIZE)
+
+func random_top_left_position() -> Vector2:
+	return Vector2(Utils.random_int(area_width + X_OFFSET, X_OFFSET) * TILE_SIZE, Utils.random_int(area_height + Y_OFFSET, Y_OFFSET) * TILE_SIZE)
+
+func random_top_center_position() -> Vector2:
+	return Vector2(Utils.random_int(2 * area_width + X_OFFSET, area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(area_height + Y_OFFSET, Y_OFFSET) * TILE_SIZE)
+
+func random_top_right_position() -> Vector2:
+	return Vector2(Utils.random_int(3 * area_width + X_OFFSET, 2 * area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(area_height + Y_OFFSET, Y_OFFSET) * TILE_SIZE)
+
+func random_center_left_position() -> Vector2:
+	return Vector2(Utils.random_int(area_width + X_OFFSET, X_OFFSET) * TILE_SIZE, Utils.random_int(2 * area_height + Y_OFFSET, area_height + Y_OFFSET) * TILE_SIZE)
+
+func random_center_position() -> Vector2:
+	return Vector2(Utils.random_int(2 * area_width + X_OFFSET, area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(2 * area_height + Y_OFFSET, area_height + Y_OFFSET) * TILE_SIZE)
+
+func random_center_right_position() -> Vector2:
+	return Vector2(Utils.random_int(3 * area_width + X_OFFSET, 2 * area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(2 * area_height + Y_OFFSET, area_height + Y_OFFSET) * TILE_SIZE)
+
+func random_bottom_center_position() -> Vector2:
+	return Vector2(Utils.random_int(2 * area_width + X_OFFSET, area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(3 * area_height + Y_OFFSET, 2 * area_height + Y_OFFSET) * TILE_SIZE)
+
+func random_bottom_right_position() -> Vector2:
+	return Vector2(Utils.random_int(3 * area_width + X_OFFSET, 2 * area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(3 * area_height + Y_OFFSET, 2 * area_height + Y_OFFSET) * TILE_SIZE)
 
 func target_is_outside_boundaries(target: Vector2) -> bool:
 	return target.x < MIN_X or target.x > MAX_X or target.y < MIN_Y or target.y > MAX_Y
