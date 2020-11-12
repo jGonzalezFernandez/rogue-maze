@@ -14,7 +14,7 @@ const COLUMNS = 51
 const X_OFFSET = 0
 const Y_OFFSET = 1
 const MIN_X = X_OFFSET * TILE_SIZE
-const MAX_X = (COLUMNS - 1) * TILE_SIZE
+const MAX_X = (COLUMNS + X_OFFSET - 1) * TILE_SIZE
 const MIN_Y = Y_OFFSET * TILE_SIZE
 const MAX_Y = (ROWS + Y_OFFSET - 1) * TILE_SIZE
 # We will divide the maze into 9 areas to balance a little the random distribution
