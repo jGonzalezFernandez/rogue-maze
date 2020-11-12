@@ -1,6 +1,5 @@
 extends ColorRect
 
-const TREASURES_PER_LEVEL = 2
 const BACKGROUND_COLOR = Color.black
 const STARTING_POSITION = Vector2(Maze.MIN_X, Maze.MAX_Y)
 const STATUS_BAR_X_OFFSET = 4
@@ -90,7 +89,7 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
 			add_enemy(Spider.new(maze.random_top_right_position(), player, maze))
-			add_ally(Unicorn.new(maze.random_top_center_position(), player, maze))
+			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze))
 		4:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze))
@@ -99,7 +98,7 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze))
 			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze))
-			add_ally(Fairy.new(maze.random_bottom_center_position(), player, maze))
+			add_ally(Fairy.new(maze.random_center_left_position(), player, maze))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			add_enemy(Shadow.new(maze.random_center_position(), player, maze))
@@ -108,8 +107,8 @@ func new_level() -> void:
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze))
 	add_child(maze)
 	
-	for i in TREASURES_PER_LEVEL:
-		add_treasure(Treasure.new(maze.random_position()))
+	add_treasure(Treasure.new(maze.random_top_center_position()))
+	add_treasure(Treasure.new(maze.random_bottom_center_position()))
 	
 #	add_event(Event.new(maze.random_position()))
 	

@@ -178,32 +178,35 @@ func draw_walls() -> void:
 				{"N": true, "E": true, "S": true, "W": true}:
 					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ALL)
 
+func _random_point(factor: int, length: int, offset: int):
+	return Utils.random_int(factor * length + offset, (factor - 1) * length + offset) * TILE_SIZE
+
 func random_position() -> Vector2:
-	return Vector2(Utils.random_int(COLUMNS + X_OFFSET, X_OFFSET) * TILE_SIZE, Utils.random_int(ROWS + Y_OFFSET, Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(1, COLUMNS, X_OFFSET), _random_point(1, ROWS, Y_OFFSET))
 
 func random_top_left_position() -> Vector2:
-	return Vector2(Utils.random_int(area_width + X_OFFSET, X_OFFSET) * TILE_SIZE, Utils.random_int(area_height + Y_OFFSET, Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(1, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET))
 
 func random_top_center_position() -> Vector2:
-	return Vector2(Utils.random_int(2 * area_width + X_OFFSET, area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(area_height + Y_OFFSET, Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(2, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET))
 
 func random_top_right_position() -> Vector2:
-	return Vector2(Utils.random_int(3 * area_width + X_OFFSET, 2 * area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(area_height + Y_OFFSET, Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(3, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET))
 
 func random_center_left_position() -> Vector2:
-	return Vector2(Utils.random_int(area_width + X_OFFSET, X_OFFSET) * TILE_SIZE, Utils.random_int(2 * area_height + Y_OFFSET, area_height + Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(1, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET))
 
 func random_center_position() -> Vector2:
-	return Vector2(Utils.random_int(2 * area_width + X_OFFSET, area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(2 * area_height + Y_OFFSET, area_height + Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(2, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET))
 
 func random_center_right_position() -> Vector2:
-	return Vector2(Utils.random_int(3 * area_width + X_OFFSET, 2 * area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(2 * area_height + Y_OFFSET, area_height + Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(3, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET))
 
 func random_bottom_center_position() -> Vector2:
-	return Vector2(Utils.random_int(2 * area_width + X_OFFSET, area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(3 * area_height + Y_OFFSET, 2 * area_height + Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(2, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET))
 
 func random_bottom_right_position() -> Vector2:
-	return Vector2(Utils.random_int(3 * area_width + X_OFFSET, 2 * area_width + X_OFFSET) * TILE_SIZE, Utils.random_int(3 * area_height + Y_OFFSET, 2 * area_height + Y_OFFSET) * TILE_SIZE)
+	return Vector2(_random_point(3, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET))
 
 func target_is_outside_boundaries(target: Vector2) -> bool:
 	return target.x < MIN_X or target.x > MAX_X or target.y < MIN_Y or target.y > MAX_Y
