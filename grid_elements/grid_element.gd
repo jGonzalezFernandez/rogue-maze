@@ -5,16 +5,21 @@ extends Area2D
 # is also used by the Player, the walls, and any other node unless otherwise specified
 enum Layer {DEFAULT, NORMAL_ENEMIES, SPECTRES, ALLIES}
 
-var texture: Texture
+const ALPHA_BEHIND_PLAYER = 0.25
+
+var max_alpha: float
 var half_tile = Utils.rounded_half(Maze.TILE_SIZE)
 
+var texture: Texture
 var sprite: Sprite
 var collision_shape: CollisionShape2D
 var tween: Tween
 
-func _init(texture: Texture, position: Vector2) -> void:
+func _init(texture: Texture, position: Vector2, max_alpha: float) -> void:
 	self.texture = texture
 	self.position = position
+	self.max_alpha = max_alpha
+	modulate.a = max_alpha
 
 func _ready() -> void:
 	sprite = Sprite.new()

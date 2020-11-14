@@ -8,4 +8,4 @@ func _init(position: Vector2).(TEXTURE, position) -> void:
 	pass
 
 func _ready() -> void:
-	connect("area_entered", get_parent(), "treasure_reached", [self])
+	connect("area_entered", get_parent(), "on_treasure_area_entered", [self])

@@ -24,7 +24,7 @@ func _process(_delta):
 
 func on_area_entered(area) -> void:
 	if area.name == PLAYER_NAME:
-		modulate.a = 0.25
+		modulate.a = ALPHA_BEHIND_PLAYER
 
 func on_area_exited(_area) -> void:
 	modulate.a = max_alpha

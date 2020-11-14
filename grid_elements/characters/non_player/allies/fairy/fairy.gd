@@ -19,10 +19,10 @@ func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, NAME, initia
 func _ready() -> void:
 	timer = Timer.new()
 	add_child(timer)
-	timer.connect("timeout", self, "on_timeout")
+	timer.connect("timeout", self, "on_timer_timeout")
 	timer.start(TIME_BETWEEN_HEALINGS)
 
-func on_timeout() -> void:
+func on_timer_timeout() -> void:
 	if knows_player and player.health < player.max_health:
 		player.health += 1
 		emit_signal("health_changed", player, player.health)

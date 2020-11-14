@@ -13,7 +13,7 @@ func _ready() -> void:
 	reverse_transparency()
 
 func reverse_transparency() -> void:
-	tween.interpolate_property(self, "modulate:a", modulate.a, 1 - modulate.a, 1.0)
+	tween.interpolate_property(self, "modulate:a", modulate.a, max_alpha - modulate.a, 1.0)
 	tween.start()
 
 func on_tween_all_completed() -> void:

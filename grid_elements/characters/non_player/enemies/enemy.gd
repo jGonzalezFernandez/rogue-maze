@@ -23,7 +23,7 @@ func _ready() -> void:
 	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.NORMAL_ENEMIES, Layer.SPECTRES, Layer.ALLIES])
 	timer = Timer.new()
 	add_child(timer)
-	timer.connect("timeout", self, "on_timeout")
+	timer.connect("timeout", self, "on_timer_timeout")
 	timer.start(min_time_between_walks)
 	connect("area_entered", self, "on_area_entered")
 
@@ -54,7 +54,7 @@ func choose_walk_length() -> int:
 	else:
 		return max_walk_length
 
-func on_timeout() -> void:
+func on_timer_timeout() -> void:
 	if !tween.is_active():
 		if Utils.fifty_percent_chance(): # to make the mob more unpredictable, we don't want it to move with every timeout
 			follow_path(get_point_path_to(maze.random_position()), MovementType.WALK, choose_walk_length()) # random walk

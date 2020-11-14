@@ -21,7 +21,6 @@ var bounce_duration: float
 var ongoing_collision = false
 var health: int
 var max_health: int
-var max_alpha: float
 var phasing = false
 
 var ray: RayCast2D
@@ -32,17 +31,15 @@ func set_durations(speed: float) -> void:
 	collision_duration = 1.5 * walking_duration
 	bounce_duration = collision_duration / 2.0
 
-func _init(texture: Texture, name: String, initial_position: Vector2, speed: float, initial_health: int, max_alpha: float).(texture, initial_position) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, speed: float, initial_health: int, max_alpha: float).(texture, initial_position, max_alpha) -> void:
 	self.name = name
 	set_durations(speed)
 	health = initial_health
 	max_health = health
-	self.max_alpha = max_alpha
-	modulate.a = max_alpha
 
 func _ready() -> void:
-	connect("health_changed", get_parent(), "on_health_changed")
-	connect("died", get_parent(), "on_died")
+	connect("health_changed", get_parent(), "on_character_health_changed")
+	connect("died", get_parent(), "on_character_died")
 	
 	ray = RayCast2D.new()
 	ray.position = Vector2(10, 10)

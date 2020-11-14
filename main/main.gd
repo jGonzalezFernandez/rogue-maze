@@ -177,15 +177,20 @@ func next_level() -> void:
 	set_enemy_status_bars()
 	update_allies()
 
-func key_reached(_area) -> void:
+func on_key_area_entered(_area) -> void:
 	stairs.unlock()
 	remove(key)
 
-func stairs_reached(_area) -> void:
+func on_stairs_area_entered(_area) -> void:
 	if stairs.unlocked:
 		call_deferred("next_level")
+	else:
+		stairs.modulate.a = stairs.ALPHA_BEHIND_PLAYER
 
-func treasure_reached(_area, treasure: Treasure) -> void:
+func on_stairs_area_exited(_area) -> void:
+	stairs.modulate.a = stairs.max_alpha
+
+func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 	if !first_items.empty():
 		match Utils.pop_random_elem(first_items):
 			StatusBar.Item.SWORD:
@@ -240,7 +245,7 @@ func treasure_reached(_area, treasure: Treasure) -> void:
 	player_status_bar.stats_label.text = player.get_stats()
 	remove(treasure)
 
-func on_health_changed(character: Character, new_health: int) -> void:
+func on_character_health_changed(character: Character, new_health: int) -> void:
 	if character.name == Character.PLAYER_NAME:
 		player_status_bar.set_hearts(new_health)
 	else:
@@ -248,7 +253,7 @@ func on_health_changed(character: Character, new_health: int) -> void:
 			if character == status_bar.character:
 				status_bar.set_hearts(new_health)
 
-func on_died(character: Character) -> void:
+func on_character_died(character: Character) -> void:
 	if character.name == Character.PLAYER_NAME:
 		clean(true)
 		message_screen.show_game_over()

@@ -13,7 +13,8 @@ func _init(position: Vector2).(PADLOCK_TEXTURE, position) -> void:
 	pass
 
 func _ready() -> void:
-	connect("area_entered", get_parent(), "stairs_reached")
+	connect("area_entered", get_parent(), "on_stairs_area_entered")
+	connect("area_exited", get_parent(), "on_stairs_area_exited")
 
 func unlock() -> void:
 	unlocked = true
