@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/key.png-2fbec8173e16816774ec2a915e8b3541.stex"
+path="res://.import/padlock.png-824176e3eccc5307b08925f563f5df60.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://grid_elements/static_elements/key.png"
-dest_files=[ "res://.import/key.png-2fbec8173e16816774ec2a915e8b3541.stex" ]
+source_file="res://grid_elements/static_elements/stairs/padlock.png"
+dest_files=[ "res://.import/padlock.png-824176e3eccc5307b08925f563f5df60.stex" ]
 
 [params]
 

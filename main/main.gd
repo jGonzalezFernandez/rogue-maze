@@ -11,6 +11,7 @@ var message_screen: MessageScreen
 var player: Player
 var player_status_bar: StatusBar
 var maze: Maze
+var key: Key
 var stairs: Stairs
 var level_number: int
 var enemies: Array
@@ -112,6 +113,9 @@ func new_level() -> void:
 	
 #	add_event(Event.new(maze.random_position()))
 	
+	key = Key.new(maze.random_top_left_position())
+	add_child(key)
+	
 	stairs = Stairs.new(maze.random_bottom_right_position())
 	add_child(stairs)
 
@@ -144,6 +148,7 @@ func clean(everything: bool = false) -> void:
 		level_number = 0
 		first_items.clear()
 		second_items.clear()
+		remove(key)
 	else:
 		# We want the allies to follow the Player to the next level, so we don't delete
 		# them to continue their treatment later (in the update_allies() function).
@@ -172,8 +177,13 @@ func next_level() -> void:
 	set_enemy_status_bars()
 	update_allies()
 
+func key_reached(_area) -> void:
+	stairs.unlock()
+	remove(key)
+
 func stairs_reached(_area) -> void:
-	call_deferred("next_level")
+	if stairs.unlocked:
+		call_deferred("next_level")
 
 func treasure_reached(_area, treasure: Treasure) -> void:
 	if !first_items.empty():

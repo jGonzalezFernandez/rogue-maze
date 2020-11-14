@@ -124,6 +124,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://gui_elements/status_bar/items/item.gd"
 }, {
+"base": "StaticElement",
+"class": "Key",
+"language": "GDScript",
+"path": "res://grid_elements/static_elements/key/key.gd"
+}, {
 "base": "Node2D",
 "class": "Maze",
 "language": "GDScript",
@@ -268,6 +273,7 @@ _global_script_class_icons={
 "Heart": "",
 "HumanGhost": "",
 "Item": "",
+"Key": "",
 "Maze": "",
 "MessageScreen": "",
 "MonsterGhost": "",

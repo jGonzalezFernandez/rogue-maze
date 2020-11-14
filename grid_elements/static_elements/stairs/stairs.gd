@@ -1,11 +1,20 @@
 class_name Stairs
 extends StaticElement
 
-const TEXTURE_PATH = ResourcePath.STATIC_ELEMENTS + "/stairs/stairs.png"
-const TEXTURE = preload(TEXTURE_PATH)
+const PADLOCK_TEXTURE_PATH = ResourcePath.STATIC_ELEMENTS + "/stairs/padlock.png"
+const PADLOCK_TEXTURE = preload(PADLOCK_TEXTURE_PATH)
 
-func _init(position: Vector2).(TEXTURE, position) -> void:
+const STAIRS_TEXTURE_PATH = ResourcePath.STATIC_ELEMENTS + "/stairs/stairs.png"
+const STAIRS_TEXTURE = preload(STAIRS_TEXTURE_PATH)
+
+var unlocked = false
+
+func _init(position: Vector2).(PADLOCK_TEXTURE, position) -> void:
 	pass
 
 func _ready() -> void:
 	connect("area_entered", get_parent(), "stairs_reached")
+
+func unlock() -> void:
+	unlocked = true
+	sprite.texture = STAIRS_TEXTURE
