@@ -85,6 +85,18 @@ func move_tween_if_possible_to(target_cell: Vector2, movement_type: int, invisib
 	else:
 		return false
 
+func teleport_to(target_position: Vector2) -> void:
+	phasing = true
+	move_tween_to(target_position, MovementType.RUN, true)
+	yield(tween, "tween_all_completed")
+	phasing = false
+
+func teleport_while_healing_to(target_position: Vector2) -> void:
+	teleport_to(target_position)
+	if health < max_health:
+		health += 1
+		emit_signal("health_changed", self, health)
+
 func bounce_tween(dir: Vector2) -> void: # two pixels
 	tween.interpolate_property(self, "position", position + 2 * dir, snap(position), bounce_duration, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 	tween.start()

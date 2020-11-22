@@ -20,12 +20,14 @@ var allies: Array
 var treasures: Array
 var first_items: Array
 var second_items: Array
+var third_items: Array
 var events: Array
 var edged_weapon: Edgedweapon
 var blunt_weapon: BluntWeapon
 var shield: Shield
-var amulet: Amulet
+var armor: Armor
 var boots: Boots
+var amulet: Amulet
 var ring: Ring
 var cloak: Cloak
 
@@ -52,8 +54,9 @@ func on_new_game_button_pressed() -> void:
 	new_level()
 	set_enemy_status_bars()
 	
-	first_items = [StatusBar.Item.SWORD, StatusBar.Item.MACE, StatusBar.Item.WOODEN_SHIELD, StatusBar.Item.AMULET, StatusBar.Item.BOOTS, StatusBar.Item.HEART_CONTAINER]
-	second_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.CLOAK]
+	first_items = [StatusBar.Item.SWORD, StatusBar.Item.MACE, StatusBar.Item.WOODEN_SHIELD]
+	second_items = [StatusBar.Item.CHAINMAIL, StatusBar.Item.BOOTS, StatusBar.Item.AMULET, StatusBar.Item.HEART_CONTAINER]
+	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.CLOAK]
 
 func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
@@ -148,6 +151,7 @@ func clean(everything: bool = false) -> void:
 		level_number = 0
 		first_items.clear()
 		second_items.clear()
+		third_items.clear()
 		remove(key)
 	else:
 		# We want the allies to follow the Player to the next level, so we don't delete
@@ -185,10 +189,10 @@ func on_stairs_area_entered(_area) -> void:
 	if stairs.unlocked:
 		call_deferred("next_level")
 	else:
-		stairs.modulate.a = stairs.ALPHA_BEHIND_PLAYER
+		stairs.stand_behind()
 
 func on_stairs_area_exited(_area) -> void:
-	stairs.modulate.a = stairs.max_alpha
+	stairs.stand_forward()
 
 func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 	if !first_items.empty():
@@ -205,22 +209,28 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				shield = Shield.new()
 				player_status_bar.inventory.add_child(shield)
 				player.def += 1
-			StatusBar.Item.AMULET:
-				amulet = Amulet.new()
-				player_status_bar.inventory.add_child(amulet)
+	elif !second_items.empty():
+		match Utils.pop_random_elem(second_items):
+			StatusBar.Item.CHAINMAIL:
+				armor = Armor.new()
+				player_status_bar.inventory.add_child(armor)
 				player.def += 1
 			StatusBar.Item.BOOTS:
 				boots = Boots.new()
 				player_status_bar.inventory.add_child(boots)
 				player.set_durations(Player.INITIAL_SPEED + 0.5)
 				player.dash_ability = true
+			StatusBar.Item.AMULET:
+				amulet = Amulet.new()
+				player_status_bar.inventory.add_child(amulet)
+				player.teleport_ability = true
 			StatusBar.Item.HEART_CONTAINER:
 				player.max_health += 2
 				player_status_bar.heart_bar.add_child(Heart.new())
 				player.health += 2
 				player_status_bar.set_hearts(player.health)
-	elif !second_items.empty():
-		match Utils.pop_random_elem(second_items):
+	elif !third_items.empty():
+		match Utils.pop_random_elem(third_items):
 			StatusBar.Item.CHAOS_SWORD:
 				edged_weapon.texture = Edgedweapon.CHAOS_SWORD_TEXTURE
 				player.slashing_atk += 2
@@ -244,6 +254,15 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 		print("money")
 	player_status_bar.stats_label.text = player.get_stats()
 	remove(treasure)
+
+func on_player_teleport_requested() -> void:
+	if player.position != STARTING_POSITION:
+		player.teleport_to(STARTING_POSITION)
+		for ally in allies:
+			if ally.knows_player:
+				ally.teleport_to(STARTING_POSITION)
+				yield(ally.tween, "tween_all_completed")
+				ally.stand_behind()
 
 func on_character_health_changed(character: Character, new_health: int) -> void:
 	if character.name == Character.PLAYER_NAME:

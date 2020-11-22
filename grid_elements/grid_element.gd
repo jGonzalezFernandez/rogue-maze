@@ -5,7 +5,7 @@ extends Area2D
 # is also used by the Player, the walls, and any other node unless otherwise specified
 enum Layer {DEFAULT, NORMAL_ENEMIES, SPECTRES, ALLIES}
 
-const ALPHA_BEHIND_PLAYER = 0.25
+const ALPHA_BEHIND = 0.25
 
 var max_alpha: float
 var half_tile = Utils.rounded_half(Maze.TILE_SIZE)
@@ -43,3 +43,9 @@ func compute_layers(layers: Array) -> int:
 	for layer in layers:
 		result += pow(2, layer)
 	return result
+
+func stand_behind() -> void:
+	modulate.a = ALPHA_BEHIND
+
+func stand_forward() -> void:
+	modulate.a = max_alpha

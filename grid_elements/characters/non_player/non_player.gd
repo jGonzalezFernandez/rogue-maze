@@ -53,15 +53,3 @@ func follow_path(path: PoolVector2Array, movement_type: int, maximum_path_length
 		yield(tween, "tween_all_completed")
 		if advance_while_searching_player and player_is_visible():
 			break # we exit the loop to allow the method consumer to decide what to do (e.g. update the path)
-
-func teleport_to(target_position: Vector2) -> void:
-	phasing = true
-	move_tween_to(target_position, MovementType.RUN, true)
-	yield(tween, "tween_all_completed")
-	phasing = false
-
-func teleport_while_healing_to(target_position: Vector2) -> void:
-	teleport_to(target_position)
-	if health < max_health:
-		health += 1
-		emit_signal("health_changed", self, health)
