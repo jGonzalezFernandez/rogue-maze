@@ -11,8 +11,9 @@ const PLAYER_NAME = "Solène"
 const EVIL_TWIN_NAME = "Evil " + PLAYER_NAME
 const UNICORN_NAME = "Unicorn"
 const ENEMY_GROUP = "enemies"
+const SPIDER_WEB_NAME = "Spider web"
 const SHADOW_NAME = "Shadow"
-const CLONE_NAME = "Clone"
+const SHADOW_CLONE_NAME = "Shadow clone"
 
 var running_duration: float
 var walking_duration: float
@@ -21,6 +22,7 @@ var bounce_duration: float
 var ongoing_collision = false
 var health: int
 var max_health: int
+var friendly_fire: int
 var phasing = false
 
 var ray: RayCast2D
@@ -31,11 +33,12 @@ func set_durations(speed: float) -> void:
 	collision_duration = 1.5 * walking_duration
 	bounce_duration = collision_duration / 2.0
 
-func _init(texture: Texture, name: String, initial_position: Vector2, speed: float, initial_health: int, max_alpha: float).(texture, initial_position, max_alpha) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, speed: float, initial_health: int, friendly_fire: int, max_alpha: float).(texture, initial_position, max_alpha) -> void:
 	self.name = name
 	set_durations(speed)
 	health = initial_health
 	max_health = health
+	self.friendly_fire = friendly_fire
 
 func _ready() -> void:
 	connect("health_changed", get_parent(), "on_character_health_changed")
@@ -101,26 +104,27 @@ func bounce_tween(dir: Vector2) -> void: # two pixels
 	tween.interpolate_property(self, "position", position + 2 * dir, snap(position), bounce_duration, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 	tween.start()
 
-func collide(dir: Vector2) -> void:
+func collide(dir: Vector2, slight_recoil: bool) -> void:
 	ongoing_collision = true
-	if !move_tween_if_possible_to(dir * Maze.TILE_SIZE, MovementType.COLLISION):
+	if slight_recoil or !move_tween_if_possible_to(dir * Maze.TILE_SIZE, MovementType.COLLISION):
 		bounce_tween(dir)
 	yield(tween, "tween_all_completed")
 	ongoing_collision = false
 
-func manage_collision(character: Area2D, damage: int) -> void:
+func manage_collision(character: Area2D, damage: int, slight_recoil: bool) -> void:
 	if phasing:
 		health -= Utils.rounded_half(damage)
 	else:
 		health -= damage
 		if character.position.x < position.x:
-			collide(Vector2.RIGHT)
+			collide(Vector2.RIGHT, slight_recoil)
 		elif character.position.x > position.x:
-			collide(Vector2.LEFT)
+			collide(Vector2.LEFT, slight_recoil)
 		elif character.position.y > position.y:
-			collide(Vector2.UP)
+			collide(Vector2.UP, slight_recoil)
 		else:
-			collide(Vector2.DOWN)
-	emit_signal("health_changed", self, health)
+			collide(Vector2.DOWN, slight_recoil)
+	if damage != 0:
+		emit_signal("health_changed", self, health)
 	if health <= 0:
 		emit_signal("died", self)

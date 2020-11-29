@@ -6,6 +6,7 @@ const STATUS_BAR_X_OFFSET = 4
 const STATUS_BAR_Y_OFFSET = 2
 const ENEMY_STATUS_BARS_Y_OFFSET = Maze.MAX_Y + Maze.TILE_SIZE + STATUS_BAR_Y_OFFSET
 const DISTANCE_BETWEEN_ENEMY_BARS = 480
+const MAX_MINOR_ENEMIES_PER_LEVEL = 9
 
 var message_screen: MessageScreen
 var player: Player
@@ -16,6 +17,7 @@ var stairs: Stairs
 var level_number: int
 var enemies: Array
 var enemy_status_bars: Array
+var minor_enemies: Array
 var allies: Array
 var treasures: Array
 var first_items: Array
@@ -62,6 +64,13 @@ func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
 	enemies.append(enemy)
 
+func add_minor_enemy_if_possible(minor_enemy: Enemy) -> void:
+	if minor_enemies.size() < MAX_MINOR_ENEMIES_PER_LEVEL:
+		add_child(minor_enemy)
+		minor_enemies.append(minor_enemy)
+	else:
+		minor_enemy.queue_free()
+
 func add_ally(ally: Ally) -> void:
 	add_child(ally)
 	allies.append(ally)
@@ -91,18 +100,24 @@ func new_level() -> void:
 			add_enemy(Bat.new(maze.random_top_right_position(), player, maze))
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
-			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
-			add_enemy(Spider.new(maze.random_top_right_position(), player, maze))
 			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze))
+			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
+			var excluded_positions: Array = []
+			for i in 2:
+				var web_position = maze.random_top_right_position(excluded_positions)
+				excluded_positions.append(web_position)
+				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze))
+			add_enemy(Spider.new(maze.random_top_right_position(excluded_positions), player, maze))
+			add_minor_enemy_if_possible(SpiderWeb.new(maze.random_center_right_position(), player, maze))
 		4:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze))
 			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
+			add_ally(Fairy.new(maze.random_center_left_position(), player, maze))
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze))
 			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze))
-			add_ally(Fairy.new(maze.random_center_left_position(), player, maze))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			add_enemy(Shadow.new(maze.random_center_position(), player, maze))
@@ -144,6 +159,7 @@ func clean(everything: bool = false) -> void:
 	remove(stairs)
 	clean_array(enemies)
 	clean_array(enemy_status_bars)
+	clean_array(minor_enemies)
 	if everything:
 		clean_array(allies)
 		remove(player_status_bar)
@@ -248,7 +264,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				cloak = Cloak.new()
 				player_status_bar.inventory.add_child(cloak)
 				player.invisible = true
-				player.max_alpha = Spectre.MAX_ALPHA
+				player.max_alpha = IncorporealEnemy.MAX_ALPHA
 				player.modulate.a = player.max_alpha
 	else:
 		print("money")

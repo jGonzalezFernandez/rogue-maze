@@ -7,7 +7,7 @@ var viewing_distance: int
 var hearing: int
 var was_running: bool = false
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze, vision: int, hearing: int, speed: float, initial_health: int, max_alpha: float).(texture, name, initial_position, speed, initial_health, max_alpha) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, player, maze, vision: int, hearing: int, speed: float, initial_health: int, friendly_fire: int, max_alpha: float).(texture, name, initial_position, speed, initial_health, friendly_fire, max_alpha) -> void:
 	self.player = player
 	self.maze = maze
 	viewing_distance = vision * Maze.TILE_SIZE
@@ -45,7 +45,7 @@ func follow_path(path: PoolVector2Array, movement_type: int, maximum_path_length
 	var path_length = path.size()
 	if path_length > maximum_path_length:
 		path_length = maximum_path_length
-	for i in range(path_length):
+	for i in path_length:
 		var point = path[i]
 		if ongoing_collision or (stop_before_enemies and enemy_is_ahead(point)):
 			break

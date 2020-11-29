@@ -181,32 +181,38 @@ func draw_walls() -> void:
 func _random_point(factor: int, length: int, offset: int):
 	return Utils.random_int(factor * length + offset, (factor - 1) * length + offset) * TILE_SIZE
 
-func random_position() -> Vector2:
-	return Vector2(_random_point(1, COLUMNS, X_OFFSET), _random_point(1, ROWS, Y_OFFSET))
+func _recursion_until_valid_position(candidate_position: Vector2, excluded_positions: Array, func_ref: FuncRef) -> Vector2:
+	if excluded_positions.has(candidate_position):
+		return func_ref.call_func(excluded_positions)
+	else:
+		return candidate_position
 
-func random_top_left_position() -> Vector2:
-	return Vector2(_random_point(1, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET))
+func random_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(1, COLUMNS, X_OFFSET), _random_point(1, ROWS, Y_OFFSET)), excluded_positions, funcref(self, "random_position"))
 
-func random_top_center_position() -> Vector2:
-	return Vector2(_random_point(2, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET))
+func random_top_left_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(1, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_top_left_position"))
 
-func random_top_right_position() -> Vector2:
-	return Vector2(_random_point(3, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET))
+func random_top_center_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_top_center_position"))
 
-func random_center_left_position() -> Vector2:
-	return Vector2(_random_point(1, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET))
+func random_top_right_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_top_right_position"))
 
-func random_center_position() -> Vector2:
-	return Vector2(_random_point(2, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET))
+func random_center_left_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(1, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_center_left_position"))
 
-func random_center_right_position() -> Vector2:
-	return Vector2(_random_point(3, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET))
+func random_center_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_center_position"))
 
-func random_bottom_center_position() -> Vector2:
-	return Vector2(_random_point(2, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET))
+func random_center_right_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_center_right_position"))
 
-func random_bottom_right_position() -> Vector2:
-	return Vector2(_random_point(3, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET))
+func random_bottom_center_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_bottom_center_position"))
+
+func random_bottom_right_position(excluded_positions: Array = []) -> Vector2:
+	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_bottom_right_position"))
 
 func target_is_outside_boundaries(target: Vector2) -> bool:
 	return target.x < MIN_X or target.x > MAX_X or target.y < MIN_Y or target.y > MAX_Y

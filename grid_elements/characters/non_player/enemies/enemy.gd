@@ -1,6 +1,9 @@
 class_name Enemy
 extends NonPlayer
 
+signal minor_enemy_addition_requested
+
+var is_immobile: bool
 var timer: Timer
 var min_time_between_walks: float
 var max_walk_length: int
@@ -9,7 +12,8 @@ var atk: int
 var slashing_def: int
 var blunt_def: int
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, min_time_between_walks: float, max_walk_length: int, speed: float, initial_health: int, atk: int, slashing_def: int, blunt_def: int, max_alpha: float).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, max_alpha) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, is_immobile: bool, min_time_between_walks: float, max_walk_length: int, speed: float, initial_health: int, atk: int, friendly_fire: int, slashing_def: int, blunt_def: int, max_alpha: float).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, friendly_fire, max_alpha) -> void:
+	self.is_immobile = is_immobile
 	self.min_time_between_walks = min_time_between_walks
 	self.max_walk_length = max_walk_length
 	half_walk_length = Utils.rounded_half(max_walk_length)
@@ -21,11 +25,13 @@ func _init(texture: Texture, name: String, initial_position: Vector2, player, ma
 func _ready() -> void:
 	# enemies should be able to see everything in order to avoid unnecessary collisions on their paths
 	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.NORMAL_ENEMIES, Layer.SPECTRES, Layer.ALLIES])
-	timer = Timer.new()
-	add_child(timer)
-	timer.connect("timeout", self, "on_timer_timeout")
-	timer.start(min_time_between_walks)
 	connect("area_entered", self, "on_area_entered")
+	connect("minor_enemy_addition_requested", get_parent(), "add_minor_enemy_if_possible")
+	if !is_immobile:
+		timer = Timer.new()
+		add_child(timer)
+		timer.connect("timeout", self, "on_timer_timeout")
+		timer.start(min_time_between_walks)
 
 func hunt(path: PoolVector2Array) -> void:
 	get_tree().call_group(ENEMY_GROUP, "player_found", name)
@@ -65,7 +71,7 @@ func get_stats() -> String:
 	return "|  ATK: %s  |  Slashing DEF: %s  |  Blunt DEF: %s  |" % [Utils.half(atk), Utils.half(slashing_def), Utils.half(blunt_def)]
 
 func on_area_entered(area) -> void:
-	var damage = 2 # collision with other enemies
+	var damage = area.friendly_fire
 	if (area.name == PLAYER_NAME):
 		var slashing_dmg = area.slashing_atk + area.magic_atk - slashing_def
 		var blunt_dmg = area.blunt_atk + area.magic_atk - blunt_def
@@ -73,4 +79,5 @@ func on_area_entered(area) -> void:
 			damage = slashing_dmg
 		else:
 			damage = blunt_dmg
-	manage_collision(area, damage)
+	manage_collision(area, damage, is_immobile)
+	get_tree().call_group(ENEMY_GROUP, "collision_received", name, position)

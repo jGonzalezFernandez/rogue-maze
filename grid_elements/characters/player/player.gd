@@ -10,6 +10,7 @@ const TEXTURE = preload(TEXTURE_PATH)
 
 const INITIAL_SPEED = 3.5
 const INITIAL_HEALTH = 6
+const FRIENDLY_FIRE = 0
 const INITIAL_ALPHA = 1.0
 const MAX_DASH_LENGTH = 4
 
@@ -22,7 +23,7 @@ var dash_ability = false
 var teleport_ability = false
 var invisible = false
 
-func _init(initial_position: Vector2).(TEXTURE, PLAYER_NAME, initial_position, INITIAL_SPEED, INITIAL_HEALTH, INITIAL_ALPHA) -> void:
+func _init(initial_position: Vector2).(TEXTURE, PLAYER_NAME, initial_position, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, INITIAL_ALPHA) -> void:
 	pass
 
 func _ready() -> void:
@@ -51,4 +52,4 @@ func get_stats() -> String:
 
 func on_area_entered(area) -> void:
 	if area.is_in_group(ENEMY_GROUP):
-		manage_collision(area, area.atk - def)
+		manage_collision(area, area.atk - def, area.is_immobile)
