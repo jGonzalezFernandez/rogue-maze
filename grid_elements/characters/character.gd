@@ -11,9 +11,10 @@ const PLAYER_NAME = "Solène"
 const EVIL_TWIN_NAME = "Evil " + PLAYER_NAME
 const UNICORN_NAME = "Unicorn"
 const ENEMY_GROUP = "enemies"
-const SPIDER_WEB_NAME = "Spider web"
+const SPIDER_NAME = "Spider"
+const WEB_NAME = "Web"
 const SHADOW_NAME = "Shadow"
-const SHADOW_CLONE_NAME = "Shadow clone"
+const CLONE_NAME = "Clone"
 
 var running_duration: float
 var walking_duration: float

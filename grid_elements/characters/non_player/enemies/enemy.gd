@@ -24,7 +24,7 @@ func _init(texture: Texture, name: String, initial_position: Vector2, player, ma
 
 func _ready() -> void:
 	# enemies should be able to see everything in order to avoid unnecessary collisions on their paths
-	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.NORMAL_ENEMIES, Layer.SPECTRES, Layer.ALLIES])
+	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES, Layer.ALLIES])
 	connect("area_entered", self, "on_area_entered")
 	connect("minor_enemy_addition_requested", get_parent(), "add_minor_enemy_if_possible")
 	if !is_immobile:
@@ -70,14 +70,18 @@ func on_timer_timeout() -> void:
 func get_stats() -> String:
 	return "|  ATK: %s  |  Slashing DEF: %s  |  Blunt DEF: %s  |" % [Utils.half(atk), Utils.half(slashing_def), Utils.half(blunt_def)]
 
+func is_collision_exception(obj: Object) -> bool:
+	return (SPIDER_NAME in name and WEB_NAME in obj.name) or (WEB_NAME in name and SPIDER_NAME in obj.name)
+
 func on_area_entered(area) -> void:
-	var damage = area.friendly_fire
-	if (area.name == PLAYER_NAME):
-		var slashing_dmg = area.slashing_atk + area.magic_atk - slashing_def
-		var blunt_dmg = area.blunt_atk + area.magic_atk - blunt_def
-		if slashing_dmg > blunt_dmg:
-			damage = slashing_dmg
-		else:
-			damage = blunt_dmg
-	manage_collision(area, damage, is_immobile)
-	get_tree().call_group(ENEMY_GROUP, "collision_received", name, position)
+	if !is_collision_exception(area):
+		var damage = area.friendly_fire
+		if (area.name == PLAYER_NAME):
+			var slashing_dmg = area.slashing_atk + area.magic_atk - slashing_def
+			var blunt_dmg = area.blunt_atk + area.magic_atk - blunt_def
+			if slashing_dmg > blunt_dmg:
+				damage = slashing_dmg
+			else:
+				damage = blunt_dmg
+		manage_collision(area, damage, is_immobile)
+		get_tree().call_group(ENEMY_GROUP, "collision_received", name, area.position)

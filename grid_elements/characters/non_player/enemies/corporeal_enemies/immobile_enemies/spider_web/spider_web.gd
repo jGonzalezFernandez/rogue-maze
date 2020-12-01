@@ -10,5 +10,5 @@ const FRIENDLY_FIRE = 0
 const SLASHING_DEF = 0
 const BLUNT_DEF = 1
 
-func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, SPIDER_WEB_NAME, initial_position, player, maze, INITIAL_HEALTH, ATK, FRIENDLY_FIRE, SLASHING_DEF, BLUNT_DEF) -> void:
+func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, WEB_NAME, initial_position, player, maze, INITIAL_HEALTH, ATK, FRIENDLY_FIRE, SLASHING_DEF, BLUNT_DEF) -> void:
 	pass

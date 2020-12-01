@@ -103,7 +103,7 @@ func new_level() -> void:
 			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze))
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
 			var excluded_positions: Array = []
-			for i in 2:
+			for i in 3:
 				var web_position = maze.random_top_right_position(excluded_positions)
 				excluded_positions.append(web_position)
 				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze))

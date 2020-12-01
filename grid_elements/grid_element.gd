@@ -3,7 +3,7 @@ extends Area2D
 
 # The RayCast node of the Character class points by default to the first layer, which 
 # is also used by the Player, the walls, and any other node unless otherwise specified
-enum Layer {DEFAULT, NORMAL_ENEMIES, SPECTRES, ALLIES}
+enum Layer {DEFAULT, CORPOREAL_ENEMIES, INCORPOREAL_ENEMIES, ALLIES}
 
 const ALPHA_BEHIND = 0.25
 

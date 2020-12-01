@@ -34,11 +34,18 @@ func player_is_audible(path: PoolVector2Array) -> bool:
 func player_is_perceptible(path: PoolVector2Array) -> bool:
 	return player_is_audible(path) or player_is_visible()
 
+func is_collision_exception(_obj: Object) -> bool:
+	return false
+
 func enemy_is_ahead(ahead: Vector2) -> bool:
 	cast_ray_to(position.direction_to(ahead) * 2 * Maze.TILE_SIZE)
-	# Enemies are supposed to avoid colliding with the Unicorn (as if it were a member of their own group) because
-	# its special ability is to keep evil away...
-	return ray.is_colliding() and (ray.get_collider().is_in_group(ENEMY_GROUP) or ray.get_collider().name == UNICORN_NAME)
+	if ray.is_colliding():
+		var obj = ray.get_collider()
+		# Enemies are supposed to avoid colliding with the Unicorn (as if it were a member of their own group) because
+		# its special ability is to keep evil away...
+		return UNICORN_NAME in obj.name or (obj.is_in_group(ENEMY_GROUP) and !is_collision_exception(obj))
+	else:
+		return false
 
 func follow_path(path: PoolVector2Array, movement_type: int, maximum_path_length: int, stop_before_enemies: bool = true, advance_while_searching_player: bool = true) -> void:
 	was_running = movement_type == MovementType.RUN
