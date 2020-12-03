@@ -3,7 +3,7 @@ extends NonPlayer
 
 signal minor_enemy_addition_requested
 
-const MIN_TIME_BETWEEN_GROUP_CALLS = 2.0
+const MIN_TIME_BETWEEN_GROUP_CALLS = 1.0
 
 var is_immobile: bool
 var min_time_between_walks: float
@@ -43,7 +43,7 @@ func _ready() -> void:
 		movement_timer.start(min_time_between_walks)
 
 func hunt(path: PoolVector2Array) -> void:
-	if group_call_timer.is_stopped(): # because too many calls to the group can cause a message queue overflow...
+	if group_call_timer.is_stopped(): # too many calls to the group can cause a message queue overflow
 		get_tree().call_group(ENEMY_GROUP, "player_found", name)
 		group_call_timer.start(MIN_TIME_BETWEEN_GROUP_CALLS)
 	follow_path(path, MovementType.RUN, path.size())
