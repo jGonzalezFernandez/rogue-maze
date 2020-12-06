@@ -19,11 +19,10 @@ var enemies: Array
 var enemy_status_bars: Array
 var minor_enemies: Array
 var allies: Array
-var treasures: Array
+var other_elements: Array # treasures, bombs, events...
 var first_items: Array
 var second_items: Array
 var third_items: Array
-var events: Array
 var edged_weapon: Edgedweapon
 var blunt_weapon: BluntWeapon
 var shield: Shield
@@ -75,13 +74,9 @@ func add_ally(ally: Ally) -> void:
 	add_child(ally)
 	allies.append(ally)
 
-func add_treasure(treasure: Treasure) -> void:
-	add_child(treasure)
-	treasures.append(treasure)
-
-func add_event(event: Event) -> void:
-	add_child(event)
-	events.append(event)
+func add_element(element: GridElement) -> void:
+	add_child(element)
+	other_elements.append(element)
 
 func set_char_position(character: Character, position: Vector2) -> void:
 	character.tween.remove_all()
@@ -126,10 +121,10 @@ func new_level() -> void:
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze))
 	add_child(maze)
 	
-	add_treasure(Treasure.new(maze.random_top_center_position()))
-	add_treasure(Treasure.new(maze.random_bottom_center_position()))
+	add_element(Treasure.new(maze.random_top_center_position()))
+	add_element(Treasure.new(maze.random_bottom_center_position()))
 	
-#	add_event(Event.new(maze.random_position()))
+#	add_element(Event.new(maze.random_position()))
 	
 	key = Key.new(maze.random_top_left_position())
 	add_child(key)
@@ -175,8 +170,7 @@ func clean(everything: bool = false) -> void:
 		# Here we just need to unlink the nodes while the new maze is being generated
 		for ally in allies:
 			remove_child(ally)
-	clean_array(treasures)
-	clean_array(events)
+	clean_array(other_elements)
 	remove(maze)
 
 func update_allies() -> void:
@@ -280,6 +274,14 @@ func on_player_teleport_requested() -> void:
 				yield(ally.tween, "tween_all_completed")
 				ally.stand_behind()
 
+func on_player_bomb_requested() -> void:
+	add_element(Bomb.new(player.position))
+
+func on_bomb_explosion_requested(bomb: Bomb, explosion_positions: Array) -> void:
+	remove(bomb)
+	for pos in explosion_positions:
+		add_element(BombExplosion.new(pos))
+
 func on_character_health_changed(character: Character, new_health: int) -> void:
 	if character.name == Character.PLAYER_NAME:
 		player_status_bar.set_hearts(new_health)
@@ -293,4 +295,5 @@ func on_character_died(character: Character) -> void:
 		clean(true)
 		message_screen.show_game_over()
 	else:
+		# TODO: minor enemies must be removed from their array so that they can be added again if requested
 		remove(character)

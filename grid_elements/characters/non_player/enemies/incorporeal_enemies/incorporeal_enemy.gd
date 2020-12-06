@@ -1,8 +1,6 @@
 class_name IncorporealEnemy
 extends Enemy
 
-const DIAGONALS = [Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(-1, -1)]
-
 const MAX_ALPHA = 0.80
 const FRIENDLY_FIRE = 2
 const IS_IMMOBILE = false

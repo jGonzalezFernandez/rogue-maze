@@ -44,6 +44,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://gui_elements/status_bar/items/blunt_weapon/blunt_weapon.gd"
 }, {
+"base": "Thing",
+"class": "Bomb",
+"language": "GDScript",
+"path": "res://grid_elements/things/bomb/bomb.gd"
+}, {
+"base": "Thing",
+"class": "BombExplosion",
+"language": "GDScript",
+"path": "res://grid_elements/things/bomb_explosion/bomb_explosion.gd"
+}, {
 "base": "Item",
 "class": "Boots",
 "language": "GDScript",
@@ -277,6 +287,8 @@ _global_script_class_icons={
 "Bear": "",
 "BinaryTree": "",
 "BluntWeapon": "",
+"Bomb": "",
+"BombExplosion": "",
 "Boots": "",
 "Cell": "",
 "Character": "",

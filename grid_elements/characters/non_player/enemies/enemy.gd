@@ -85,7 +85,9 @@ func is_collision_exception(obj: Object) -> bool:
 	return (SPIDER_NAME in name and WEB_NAME in obj.name) or (WEB_NAME in name and SPIDER_NAME in obj.name)
 
 func on_area_entered(area) -> void:
-	if !is_collision_exception(area):
+	if area is BombExplosion:
+		emit_signal("died", self)
+	elif !is_collision_exception(area):
 		var damage = area.friendly_fire
 		if (area.name == PLAYER_NAME):
 			var slashing_dmg = area.slashing_atk + area.magic_atk - slashing_def

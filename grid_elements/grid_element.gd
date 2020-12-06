@@ -1,10 +1,13 @@
 class_name GridElement # The interactive content of the maze
 extends Area2D
 
-# The RayCast node of the Character class points by default to the first layer, which 
-# is also used by the Player, the walls, and any other node unless otherwise specified
+# The RayCast node points by default to the first layer, which is also used by
+# the Player, the walls, and any other node unless otherwise specified
 enum Layer {DEFAULT, CORPOREAL_ENEMIES, INCORPOREAL_ENEMIES, ALLIES}
 
+const BOMB_TIMER_DURATION = 1.5
+const DIAGONALS = [Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(-1, -1)]
+const ALL_DIRECTIONS = [Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT] + DIAGONALS
 const ALPHA_BEHIND = 0.25
 
 var max_alpha: float
@@ -14,6 +17,7 @@ var texture: Texture
 var sprite: Sprite
 var collision_shape: CollisionShape2D
 var tween: Tween
+var ray: RayCast2D
 
 func _init(texture: Texture, position: Vector2, max_alpha: float) -> void:
 	self.texture = texture
@@ -37,6 +41,14 @@ func _ready() -> void:
 	
 	tween = Tween.new()
 	add_child(tween)
+	
+	ray = RayCast2D.new()
+	ray.position = Vector2(half_tile, half_tile)
+	add_child(ray)
+
+func cast_ray_to(target: Vector2) -> void:
+	ray.cast_to = target
+	ray.force_raycast_update()
 
 func compute_layers(layers: Array) -> int:
 	var result = 0

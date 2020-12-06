@@ -26,8 +26,6 @@ var max_health: int
 var friendly_fire: int
 var phasing = false
 
-var ray: RayCast2D
-
 func set_durations(speed: float) -> void:
 	running_duration = 1.0/speed
 	walking_duration = running_duration + 0.25
@@ -44,11 +42,7 @@ func _init(texture: Texture, name: String, initial_position: Vector2, speed: flo
 func _ready() -> void:
 	connect("health_changed", get_parent(), "on_character_health_changed")
 	connect("died", get_parent(), "on_character_died")
-	
-	ray = RayCast2D.new()
-	ray.position = Vector2(10, 10)
 	ray.collide_with_areas = true
-	add_child(ray)
 
 func get_stats() -> String:
 	return String() # default implementation. Will be overridden by descendants when necessary
@@ -72,10 +66,6 @@ func move_tween_to(target_position: Vector2, movement_type: int, invisible_trans
 	if invisible_transition: # we remove the alpha component of the color to make the node transparent and we put it back
 		tween.interpolate_property(self, "modulate:a", 0.0, max_alpha, duration, transition_type, ease_type)
 	tween.start()
-
-func cast_ray_to(target: Vector2) -> void:
-	ray.cast_to = target
-	ray.force_raycast_update()
 
 func snap(vector2: Vector2) -> Vector2:
 	return vector2.snapped(Vector2.ONE * Maze.TILE_SIZE)
