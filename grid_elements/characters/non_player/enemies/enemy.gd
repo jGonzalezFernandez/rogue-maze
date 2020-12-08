@@ -82,6 +82,7 @@ func get_stats() -> String:
 	return "|  ATK: %s  |  Slashing DEF: %s  |  Blunt DEF: %s  |" % [Utils.half(atk), Utils.half(slashing_def), Utils.half(blunt_def)]
 
 func is_collision_exception(obj: Object) -> bool:
+    # TODO: use 'is' instead of 'in' everywhere when possible
 	return (SPIDER_NAME in name and WEB_NAME in obj.name) or (WEB_NAME in name and SPIDER_NAME in obj.name)
 
 func on_area_entered(area) -> void:

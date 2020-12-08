@@ -64,6 +64,7 @@ func add_enemy(enemy: Enemy) -> void:
 	enemies.append(enemy)
 
 func add_minor_enemy_if_possible(minor_enemy: Enemy) -> void:
+	# TODO: invalid references (deleted minor enemies) must be removed from the array
 	if minor_enemies.size() < MAX_MINOR_ENEMIES_PER_LEVEL:
 		add_child(minor_enemy)
 		minor_enemies.append(minor_enemy)
@@ -295,5 +296,4 @@ func on_character_died(character: Character) -> void:
 		clean(true)
 		message_screen.show_game_over()
 	else:
-		# TODO: minor enemies must be removed from their array so that they can be added again if requested
 		remove(character)

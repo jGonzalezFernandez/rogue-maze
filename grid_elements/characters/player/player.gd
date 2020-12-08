@@ -43,7 +43,7 @@ func _process(_delta) -> void:
 	for dir_key in MOTION_INPUTS.keys():
 		if !tween.is_active(): # we check this 4 times per frame to improve the responsiveness in the corners
 			if Input.is_action_pressed(dir_key):
-				if dash_ability and Input.is_action_pressed("ui_accept"):
+				if dash_ability and Input.is_action_pressed("dash"):
 					phasing = true
 					for i in range(MAX_DASH_LENGTH, 0, -1):
 						if move_tween_if_possible_to(MOTION_INPUTS[dir_key] * Maze.TILE_SIZE * i, MovementType.RUN, true):
@@ -52,10 +52,10 @@ func _process(_delta) -> void:
 					phasing = false
 				else:
 					move_tween_if_possible_to(MOTION_INPUTS[dir_key] * Maze.TILE_SIZE, MovementType.RUN)
-			elif teleport_ability and Input.is_action_pressed("ui_cancel"):
+			elif teleport_ability and Input.is_action_pressed("teleport"):
 				emit_signal("teleport_requested")
-			elif bomb_ability and Input.is_action_pressed("ui_cancel") and bomb_timer.is_stopped():
-				# TODO: add bomb item to set bomb_ability to true, and update the inputs
+			elif bomb_ability and Input.is_action_pressed("bomb") and bomb_timer.is_stopped():
+				# TODO: add bomb item to set bomb_ability to true
 				emit_signal("bomb_requested")
 				bomb_timer.start(BOMB_TIMER_DURATION)
 
