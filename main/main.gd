@@ -31,6 +31,7 @@ var boots: Boots
 var amulet: Amulet
 var ring: Ring
 var cloak: Cloak
+var bomb_bag: BombBag
 
 func _ready() -> void:
 #	randomize()
@@ -57,7 +58,7 @@ func on_new_game_button_pressed() -> void:
 	
 	first_items = [StatusBar.Item.SWORD, StatusBar.Item.MACE, StatusBar.Item.WOODEN_SHIELD]
 	second_items = [StatusBar.Item.CHAINMAIL, StatusBar.Item.BOOTS, StatusBar.Item.AMULET, StatusBar.Item.HEART_CONTAINER]
-	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.CLOAK]
+	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.CLOAK, StatusBar.Item.BOMB_BAG]
 
 func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
@@ -261,6 +262,10 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				player.invisible = true
 				player.max_alpha = IncorporealEnemy.MAX_ALPHA
 				player.modulate.a = player.max_alpha
+			StatusBar.Item.BOMB_BAG:
+				bomb_bag = BombBag.new()
+				player_status_bar.inventory.add_child(bomb_bag)
+				player.bomb_ability = true
 	else:
 		print("money")
 	player_status_bar.stats_label.text = player.get_stats()

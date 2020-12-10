@@ -55,7 +55,6 @@ func _process(_delta) -> void:
 			elif teleport_ability and Input.is_action_pressed("teleport"):
 				emit_signal("teleport_requested")
 			elif bomb_ability and Input.is_action_pressed("bomb") and bomb_timer.is_stopped():
-				# TODO: add bomb item to set bomb_ability to true
 				emit_signal("bomb_requested")
 				bomb_timer.start(BOMB_TIMER_DURATION)
 
