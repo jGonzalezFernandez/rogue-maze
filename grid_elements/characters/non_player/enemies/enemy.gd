@@ -87,6 +87,7 @@ func is_collision_exception(obj: Object) -> bool:
 func on_area_entered(area) -> void:
 	if area is BombExplosion:
 		emit_signal("died", self)
+		get_tree().call_group(ENEMY_GROUP, "collision_received", name, area.position)
 	elif !is_collision_exception(area):
 		var damage = area.friendly_fire
 		if (area is Player):

@@ -66,7 +66,7 @@ func add_enemy(enemy: Enemy) -> void:
 
 func add_minor_enemy_if_possible(minor_enemy: Enemy) -> void:
 	for i in range(minor_enemies.size() - 1, -1, -1):
-		if !is_instance_valid(minor_enemies[i]):
+		if !is_instance_valid(minor_enemies[i]): # this can happen if the object has been deleted, but not its reference
 			minor_enemies.remove(i)
 	if minor_enemies.size() < MAX_MINOR_ENEMIES_PER_LEVEL:
 		add_child(minor_enemy)

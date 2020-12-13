@@ -64,6 +64,10 @@ func get_stats() -> String:
 
 func on_area_entered(area) -> void:
 	if area is BombExplosion:
-		emit_signal("died", self)
+		if health == max_health:
+			health = 1
+			emit_signal("health_changed", self, health)
+		else:
+			emit_signal("died", self)
 	elif area.is_in_group(ENEMY_GROUP):
 		manage_collision(area, area.atk - def, area.is_immobile)
