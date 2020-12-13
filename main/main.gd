@@ -65,7 +65,9 @@ func add_enemy(enemy: Enemy) -> void:
 	enemies.append(enemy)
 
 func add_minor_enemy_if_possible(minor_enemy: Enemy) -> void:
-	# TODO: invalid references (deleted minor enemies) must be removed from the array
+	for i in range(minor_enemies.size() - 1, -1, -1):
+		if !is_instance_valid(minor_enemies[i]):
+			minor_enemies.remove(i)
 	if minor_enemies.size() < MAX_MINOR_ENEMIES_PER_LEVEL:
 		add_child(minor_enemy)
 		minor_enemies.append(minor_enemy)
@@ -289,7 +291,7 @@ func on_bomb_explosion_requested(bomb: Bomb, explosion_positions: Array) -> void
 		add_element(BombExplosion.new(pos))
 
 func on_character_health_changed(character: Character, new_health: int) -> void:
-	if character.name == Character.PLAYER_NAME:
+	if character is Player:
 		player_status_bar.set_hearts(new_health)
 	else:
 		for status_bar in enemy_status_bars:
@@ -297,7 +299,7 @@ func on_character_health_changed(character: Character, new_health: int) -> void:
 				status_bar.set_hearts(new_health)
 
 func on_character_died(character: Character) -> void:
-	if character.name == Character.PLAYER_NAME:
+	if character is Player:
 		clean(true)
 		message_screen.show_game_over()
 	else:

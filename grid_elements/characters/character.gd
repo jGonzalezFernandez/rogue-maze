@@ -6,7 +6,7 @@ signal died
 
 enum MovementType {RUN, WALK, COLLISION}
 
-# Some names need to be known by the whole hierarchy (and we don't want cyclic dependency errors...)
+# Some names need to be known by the whole hierarchy (since the 'is' operator can cause cyclic dependency errors...)
 const PLAYER_NAME = "Solène"
 const EVIL_TWIN_NAME = "Evil " + PLAYER_NAME
 const UNICORN_NAME = "Unicorn"

@@ -22,7 +22,7 @@ func get_point_path_to(target: Vector2) -> PoolVector2Array:
 func player_is_visible() -> bool:
 	if (!player.invisible or !is_in_group(ENEMY_GROUP)) and position.distance_to(player.position) <= viewing_distance:
 		cast_ray_to(position.direction_to(player.position) * viewing_distance)
-		return ray.is_colliding() and ray.get_collider().name == PLAYER_NAME
+		return ray.is_colliding() and ray.get_collider() is Player
 	else:
 		return false
 

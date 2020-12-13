@@ -24,7 +24,7 @@ func _process(_delta):
 			follow_path(path, MovementType.RUN, path.size(), false)
 
 func on_area_entered(area) -> void:
-	if area.name == PLAYER_NAME:
+	if area is Player:
 		stand_behind()
 
 func on_area_exited(_area) -> void:
