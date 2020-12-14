@@ -49,7 +49,7 @@ func hunt(path: PoolVector2Array) -> void:
 	follow_path(path, MovementType.RUN, path.size())
 
 func _process(_delta) -> void:
-	if !tween.is_active(): # if the enemy is already doing something, we skip the execution to try again in the next frame
+	if !tween.is_active(): # if the enemy is already doing something, we skip to try again in the next frame. Another solution? Probably with a bool
 		# TODO: Check distances before calling get_point_path_to?
 		var path = get_point_path_to(player.position)
 		if player_is_visible():

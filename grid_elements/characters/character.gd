@@ -16,6 +16,9 @@ const WEB_NAME = "Web"
 const SHADOW_NAME = "Shadow"
 const CLONE_NAME = "Clone"
 
+const PREVIOUS_POSITIONS_SIZE = 10
+
+var previous_positions = []
 var running_duration: float
 var walking_duration: float
 var collision_duration: float
@@ -47,6 +50,11 @@ func _ready() -> void:
 func get_stats() -> String:
 	return String() # default implementation. Will be overridden by descendants when necessary
 
+func append_to_previous_positions(previous_position: Vector2) -> void:
+	if previous_positions.size() >= PREVIOUS_POSITIONS_SIZE:
+		previous_positions.pop_front()
+	previous_positions.append(previous_position)
+
 func move_tween_to(target_position: Vector2, movement_type: int, invisible_transition: bool = false) -> void:
 	var duration: float
 	var transition_type = Tween.TRANS_SINE
@@ -61,10 +69,12 @@ func move_tween_to(target_position: Vector2, movement_type: int, invisible_trans
 			duration = collision_duration
 			transition_type = Tween.TRANS_BOUNCE
 			ease_type = Tween.EASE_OUT
-
+	
 	tween.interpolate_property(self, "position", position, target_position, duration, transition_type, ease_type)
 	if invisible_transition: # we remove the alpha component of the color to make the node transparent and we put it back
 		tween.interpolate_property(self, "modulate:a", 0.0, max_alpha, duration, transition_type, ease_type)
+	
+	append_to_previous_positions(position)
 	tween.start()
 
 func snap(vector2: Vector2) -> Vector2:

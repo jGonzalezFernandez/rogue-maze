@@ -8,7 +8,7 @@ const VISION = 15
 const HEARING = 14
 const MIN_TIME_BETWEEN_WALKS = 1.0
 const MAX_WALK_LENGTH = 6
-const SPEED = 2.0
+const SPEED = 3.0
 const INITIAL_HEALTH = 10
 const ATK = 8
 const SLASHING_DEF = 2
@@ -18,7 +18,7 @@ func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, EVIL_TWIN_NA
 	pass
 
 func special_movement() -> void:
-	if Utils.twenty_five_percent_chance():
-		teleport_to(maze.random_position())
+	if Utils.seventy_five_percent_chance() and !player.previous_positions.empty():
+		teleport_to(player.previous_positions.front())
 	else:
 		walk_through_walls(Utils.get_random_elem(DIAGONALS), half_walk_length)
