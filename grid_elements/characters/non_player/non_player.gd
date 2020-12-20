@@ -5,15 +5,13 @@ var player
 var maze: Maze
 var viewing_distance: int
 var hearing: int
-var stop_before_unicorns: bool
 var was_running: bool = false
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze, vision: int, hearing: int, speed: float, initial_health: int, friendly_fire: int, max_alpha: float, stop_before_unicorns: bool).(texture, name, initial_position, speed, initial_health, friendly_fire, max_alpha) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, player, maze, vision: int, hearing: int, speed: float, initial_health: int, friendly_fire: int, max_alpha: float).(texture, name, initial_position, speed, initial_health, friendly_fire, max_alpha) -> void:
 	self.player = player
 	self.maze = maze
 	viewing_distance = vision * Maze.TILE_SIZE
 	self.hearing = hearing
-	self.stop_before_unicorns = stop_before_unicorns
 
 func get_point_path_to(target: Vector2) -> PoolVector2Array:
 	var path = maze.astar.get_point_path(maze.astar.get_closest_point(position), maze.astar.get_closest_point(target))
@@ -36,11 +34,11 @@ func player_is_audible(path: PoolVector2Array) -> bool:
 func player_is_perceptible(path: PoolVector2Array) -> bool:
 	return player_is_audible(path) or player_is_visible()
 
-func is_collision_exception(_obj: Object) -> bool:
+func is_obstacle(_obj: Object) -> bool:
 	return false
 
-func is_obstacle(obj: Object) -> bool:
-	return obj.is_in_group(ENEMY_GROUP) or (stop_before_unicorns and UNICORN_NAME in obj.name)
+func is_collision_exception(_obj: Object) -> bool:
+	return false
 
 func obstacle_is_ahead(ahead: Vector2) -> bool:
 	cast_ray_to(position.direction_to(ahead) * 2 * Maze.TILE_SIZE)

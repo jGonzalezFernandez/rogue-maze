@@ -9,13 +9,13 @@ const HEARING = 4
 const MIN_TIME_BETWEEN_WALKS = 2.0
 const MAX_WALK_LENGTH = 4
 const SPEED = 2.0
+const STOPS_BEFORE_UNICORNS = true
 const INITIAL_HEALTH = 2
 const ATK = 6
 const SLASHING_DEF = 0
 const BLUNT_DEF = 0
-const STOP_BEFORE_UNICORNS = true
 
-func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, CLONE_NAME, initial_position, player, maze, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, STOP_BEFORE_UNICORNS) -> void:
+func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, CLONE_NAME, initial_position, player, maze, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, STOPS_BEFORE_UNICORNS, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF) -> void:
 	pass
 
 func special_movement() -> void:

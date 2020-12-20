@@ -9,6 +9,7 @@ var is_immobile: bool
 var min_time_between_walks: float
 var max_walk_length: int
 var half_walk_length: int
+var stops_before_unicorns: bool
 var atk: int
 var slashing_def: int
 var blunt_def: int
@@ -16,11 +17,12 @@ var blunt_def: int
 var group_call_timer: Timer
 var movement_timer: Timer
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, is_immobile: bool, min_time_between_walks: float, max_walk_length: int, speed: float, initial_health: int, atk: int, friendly_fire: int, slashing_def: int, blunt_def: int, max_alpha: float, stop_before_unicorns: bool).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, friendly_fire, max_alpha, stop_before_unicorns) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, is_immobile: bool, min_time_between_walks: float, max_walk_length: int, speed: float, stops_before_unicorns: bool, initial_health: int, atk: int, friendly_fire: int, slashing_def: int, blunt_def: int, max_alpha: float).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, friendly_fire, max_alpha) -> void:
 	self.is_immobile = is_immobile
 	self.min_time_between_walks = min_time_between_walks
 	self.max_walk_length = max_walk_length
 	half_walk_length = Utils.rounded_half(max_walk_length)
+	self.stops_before_unicorns = stops_before_unicorns
 	self.atk = atk
 	self.slashing_def = slashing_def
 	self.blunt_def = blunt_def
@@ -80,6 +82,9 @@ func on_movement_timer_timeout() -> void:
 
 func get_stats() -> String:
 	return "|  ATK: %s  |  Slashing DEF: %s  |  Blunt DEF: %s  |" % [Utils.half(atk), Utils.half(slashing_def), Utils.half(blunt_def)]
+
+func is_obstacle(obj: Object) -> bool:
+	return obj.is_in_group(ENEMY_GROUP) or (stops_before_unicorns and UNICORN_NAME in obj.name)
 
 func is_collision_exception(obj: Object) -> bool:
 	return (SPIDER_NAME in name and WEB_NAME in obj.name) or (WEB_NAME in name and SPIDER_NAME in obj.name)
