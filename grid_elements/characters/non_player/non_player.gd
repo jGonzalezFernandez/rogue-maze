@@ -5,13 +5,15 @@ var player
 var maze: Maze
 var viewing_distance: int
 var hearing: int
+var stop_before_unicorns: bool
 var was_running: bool = false
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze, vision: int, hearing: int, speed: float, initial_health: int, friendly_fire: int, max_alpha: float).(texture, name, initial_position, speed, initial_health, friendly_fire, max_alpha) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, player, maze, vision: int, hearing: int, speed: float, initial_health: int, friendly_fire: int, max_alpha: float, stop_before_unicorns: bool).(texture, name, initial_position, speed, initial_health, friendly_fire, max_alpha) -> void:
 	self.player = player
 	self.maze = maze
 	viewing_distance = vision * Maze.TILE_SIZE
 	self.hearing = hearing
+	self.stop_before_unicorns = stop_before_unicorns
 
 func get_point_path_to(target: Vector2) -> PoolVector2Array:
 	var path = maze.astar.get_point_path(maze.astar.get_closest_point(position), maze.astar.get_closest_point(target))
@@ -37,24 +39,25 @@ func player_is_perceptible(path: PoolVector2Array) -> bool:
 func is_collision_exception(_obj: Object) -> bool:
 	return false
 
-func enemy_is_ahead(ahead: Vector2) -> bool:
+func is_obstacle(obj: Object) -> bool:
+	return obj.is_in_group(ENEMY_GROUP) or (stop_before_unicorns and UNICORN_NAME in obj.name)
+
+func obstacle_is_ahead(ahead: Vector2) -> bool:
 	cast_ray_to(position.direction_to(ahead) * 2 * Maze.TILE_SIZE)
 	if ray.is_colliding():
 		var obj = ray.get_collider()
-		# Enemies are supposed to avoid colliding with the Unicorn (as if it were a member of their own group) because
-		# its special ability is to keep evil away...
-		return UNICORN_NAME in obj.name or (obj.is_in_group(ENEMY_GROUP) and !is_collision_exception(obj))
+		return is_obstacle(obj) and !is_collision_exception(obj)
 	else:
 		return false
 
-func follow_path(path: PoolVector2Array, movement_type: int, maximum_path_length: int, stop_before_enemies: bool = true, advance_while_searching_player: bool = true) -> void:
+func follow_path(path: PoolVector2Array, movement_type: int, maximum_path_length: int, stop_before_obstacles: bool = true, advance_while_searching_player: bool = true) -> void:
 	was_running = movement_type == MovementType.RUN
 	var path_length = path.size()
 	if path_length > maximum_path_length:
 		path_length = maximum_path_length
 	for i in path_length:
 		var point = path[i]
-		if ongoing_collision or (stop_before_enemies and enemy_is_ahead(point)):
+		if ongoing_collision or (stop_before_obstacles and obstacle_is_ahead(point)):
 			break
 		move_tween_to(point, movement_type)
 		yield(tween, "tween_all_completed")

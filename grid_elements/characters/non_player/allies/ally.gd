@@ -3,10 +3,11 @@ extends NonPlayer
 
 const FRIENDLY_FIRE = 0
 const MAX_ALPHA = 1.0
+const STOP_BEFORE_UNICORNS = false
 
 var knows_player = false
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, speed: float, initial_health: int).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, FRIENDLY_FIRE, MAX_ALPHA) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, speed: float, initial_health: int).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, FRIENDLY_FIRE, MAX_ALPHA, STOP_BEFORE_UNICORNS) -> void:
 	collision_layer = compute_layers([Layer.ALLIES])
 
 func _ready() -> void:

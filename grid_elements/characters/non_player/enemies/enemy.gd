@@ -16,7 +16,7 @@ var blunt_def: int
 var group_call_timer: Timer
 var movement_timer: Timer
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, is_immobile: bool, min_time_between_walks: float, max_walk_length: int, speed: float, initial_health: int, atk: int, friendly_fire: int, slashing_def: int, blunt_def: int, max_alpha: float).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, friendly_fire, max_alpha) -> void:
+func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, is_immobile: bool, min_time_between_walks: float, max_walk_length: int, speed: float, initial_health: int, atk: int, friendly_fire: int, slashing_def: int, blunt_def: int, max_alpha: float, stop_before_unicorns: bool).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, friendly_fire, max_alpha, stop_before_unicorns) -> void:
 	self.is_immobile = is_immobile
 	self.min_time_between_walks = min_time_between_walks
 	self.max_walk_length = max_walk_length
