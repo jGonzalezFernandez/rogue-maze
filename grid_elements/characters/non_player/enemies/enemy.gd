@@ -81,7 +81,7 @@ func on_movement_timer_timeout() -> void:
 			special_movement()
 
 func get_stats() -> String:
-	return "|  ATK: %s  |  Slashing DEF: %s  |  Blunt DEF: %s  |" % [Utils.half(atk), Utils.half(slashing_def), Utils.half(blunt_def)]
+	return "|  ATK: %s  |  Slashing DEF: %s  |  Blunt DEF: %s" % [Utils.half(atk), Utils.half(slashing_def), Utils.half(blunt_def)]
 
 func is_obstacle(obj: Object) -> bool:
 	return obj.is_in_group(ENEMY_GROUP) or (stops_before_unicorns and UNICORN_NAME in obj.name)

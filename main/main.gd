@@ -1,12 +1,16 @@
 extends ColorRect
 
-const BACKGROUND_COLOR = Color.black
 const STARTING_POSITION = Vector2(Maze.MIN_X, Maze.MAX_Y)
+const MAX_MINOR_ENEMIES_PER_LEVEL = 9
+
+const BACKGROUND_COLOR = Color.black
 const STATUS_BAR_X_OFFSET = 4
 const STATUS_BAR_Y_OFFSET = 2
-const ENEMY_STATUS_BARS_Y_OFFSET = Maze.MAX_Y + Maze.TILE_SIZE + STATUS_BAR_Y_OFFSET
-const DISTANCE_BETWEEN_ENEMY_BARS = 480
-const MAX_MINOR_ENEMIES_PER_LEVEL = 9
+const BOTTOM_Y_OFFSET = 0 - STATUS_BAR_Y_OFFSET
+const ENEMY_STATUS_BAR_LAYOUTS = [
+	[Control.PRESET_BOTTOM_LEFT, Vector2(STATUS_BAR_X_OFFSET, BOTTOM_Y_OFFSET)],
+	[Control.PRESET_BOTTOM_RIGHT, Vector2(0 - STATUS_BAR_X_OFFSET, BOTTOM_Y_OFFSET)],
+	[Control.PRESET_CENTER_BOTTOM, Vector2(0, BOTTOM_Y_OFFSET)]]
 
 var message_screen: MessageScreen
 var player: Player
@@ -49,8 +53,7 @@ func on_new_game_button_pressed() -> void:
 	player = Player.new(STARTING_POSITION)
 	add_child(player)
 	
-	player_status_bar = StatusBar.new(player)
-	player_status_bar.offset = Vector2(STATUS_BAR_X_OFFSET, STATUS_BAR_Y_OFFSET)
+	player_status_bar = StatusBar.new(player, Control.PRESET_TOP_LEFT, Vector2(STATUS_BAR_X_OFFSET, STATUS_BAR_Y_OFFSET))
 	add_child(player_status_bar)
 	
 	new_level()
@@ -137,13 +140,10 @@ func new_level() -> void:
 	add_child(stairs)
 
 func set_enemy_status_bars():
-	var x_offset = STATUS_BAR_X_OFFSET
-	for enemy in enemies:
-		var status_bar = StatusBar.new(enemy)
-		status_bar.offset = Vector2(x_offset, ENEMY_STATUS_BARS_Y_OFFSET)
+	for i in range(enemies.size()):
+		var status_bar = StatusBar.new(enemies[i], ENEMY_STATUS_BAR_LAYOUTS[i][0], ENEMY_STATUS_BAR_LAYOUTS[i][1])
 		add_child(status_bar)
 		enemy_status_bars.append(status_bar)
-		x_offset += DISTANCE_BETWEEN_ENEMY_BARS
 
 func remove(instance: Object) -> void:
 	if is_instance_valid(instance):

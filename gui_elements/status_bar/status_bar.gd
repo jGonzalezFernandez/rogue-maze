@@ -4,14 +4,17 @@ extends GuiElement
 enum Item {SWORD, MACE, WOODEN_SHIELD, CHAINMAIL, BOOTS, AMULET, HEART_CONTAINER, CHAOS_SWORD, HAMMER, SHIELD, RING, CLOAK, BOMB_BAG}
 
 var character: Character
+var layout_preset: int
 var name_label: Label
 var heart_bar: HBoxContainer
 var stats_label: Label
 var inventory: HBoxContainer
 var main_container: HBoxContainer
 
-func _init(character) -> void:
+func _init(character: Character, layout_preset: int, offset: Vector2 = Vector2.ZERO) -> void:
 	self.character = character
+	self.layout_preset = layout_preset
+	self.offset = offset
 
 func _ready() -> void:
 	dynamic_font.size = 8
@@ -38,6 +41,7 @@ func _ready() -> void:
 	main_container.add_child(stats_label)
 	main_container.add_child(inventory)
 	main_container.set("custom_constants/separation", 6)
+	main_container.set_anchors_and_margins_preset(layout_preset)
 	add_child(main_container)
 
 func set_hearts(health) -> void:
