@@ -56,6 +56,8 @@ func on_new_game_button_pressed() -> void:
 	player_status_bar = StatusBar.new(player, Control.PRESET_TOP_LEFT, Vector2(STATUS_BAR_X_OFFSET, STATUS_BAR_Y_OFFSET))
 	add_child(player_status_bar)
 	
+	player_status_bar.inventory.add_child(Gauntlets.new()) # to visually represent the initial state of the Player
+	
 	new_level()
 	set_enemy_status_bars()
 	
@@ -218,7 +220,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 			StatusBar.Item.MACE:
 				blunt_weapon = BluntWeapon.new()
 				player_status_bar.inventory.add_child(blunt_weapon)
-				player.blunt_atk = 2
+				player.blunt_atk += 1
 			StatusBar.Item.WOODEN_SHIELD:
 				shield = Shield.new()
 				player_status_bar.inventory.add_child(shield)
@@ -253,7 +255,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				player.blunt_atk += 2
 			StatusBar.Item.SHIELD:
 				shield.texture = Shield.SHIELD_TEXTURE
-				player.def += 2
+				player.def += 1
 			StatusBar.Item.RING:
 				ring = Ring.new()
 				player_status_bar.inventory.add_child(ring)

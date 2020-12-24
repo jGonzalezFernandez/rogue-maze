@@ -11,7 +11,7 @@ const MIN_TIME_BETWEEN_WALKS = 4.0
 const MAX_WALK_LENGTH = 10
 const SPEED = 3.0
 const INITIAL_HEALTH = 4
-const ATK = 2
+const ATK = 3
 const SLASHING_DEF = 0
 const BLUNT_DEF = 0
 
