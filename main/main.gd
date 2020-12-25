@@ -292,17 +292,21 @@ func on_bomb_explosion_requested(bomb: Bomb, explosion_positions: Array) -> void
 	for pos in explosion_positions:
 		add_element(BombExplosion.new(pos))
 
+func _get_enemy_status_bar(character: Character):
+	for status_bar in enemy_status_bars:
+		if character == status_bar.character:
+			return status_bar
+
 func on_character_health_changed(character: Character, new_health: int) -> void:
 	if character is Player:
 		player_status_bar.set_hearts(new_health)
-	else:
-		for status_bar in enemy_status_bars:
-			if character == status_bar.character:
-				status_bar.set_hearts(new_health)
+	elif !enemy_status_bars.empty(): # otherwise, we are cleaning (game over)
+		_get_enemy_status_bar(character).set_hearts(new_health)
 
 func on_character_died(character: Character) -> void:
 	if character is Player:
 		clean(true)
 		message_screen.show_game_over()
-	else:
+	elif !enemy_status_bars.empty():
+		remove(_get_enemy_status_bar(character))
 		remove(character)

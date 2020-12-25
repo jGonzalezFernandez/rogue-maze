@@ -12,7 +12,7 @@ const MAX_WALK_LENGTH = 6
 const SPEED = 2.0
 const STOPS_BEFORE_UNICORNS = true
 const INITIAL_HEALTH = 6
-const ATK = 4
+const ATK = 5
 const SLASHING_DEF = 2
 const BLUNT_DEF = 4
 

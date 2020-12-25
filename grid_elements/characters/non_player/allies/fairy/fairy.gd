@@ -9,7 +9,7 @@ const VISION = 1
 const HEARING = 1
 const SPEED = 3.5
 const INITIAL_HEALTH = -1
-const TIME_BETWEEN_HEALINGS = 10.0
+const TIME_BETWEEN_HEALINGS = 13.0
 
 var timer: Timer
 
