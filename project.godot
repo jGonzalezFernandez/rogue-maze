@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://gui_elements/status_bar/items/boots/boots.gd"
 }, {
+"base": "ImmobileEnemy",
+"class": "CarnivorousPlant",
+"language": "GDScript",
+"path": "res://grid_elements/characters/non_player/enemies/corporeal_enemies/immobile_enemies/carnivorous_plant/carnivorous_plant.gd"
+}, {
 "base": "Reference",
 "class": "Cell",
 "language": "GDScript",
@@ -301,6 +306,7 @@ _global_script_class_icons={
 "BombBag": "",
 "BombExplosion": "",
 "Boots": "",
+"CarnivorousPlant": "",
 "Cell": "",
 "Character": "",
 "Cloak": "",

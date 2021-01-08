@@ -17,6 +17,8 @@ const MIN_X = X_OFFSET * TILE_SIZE
 const MAX_X = (COLUMNS + X_OFFSET - 1) * TILE_SIZE
 const MIN_Y = Y_OFFSET * TILE_SIZE
 const MAX_Y = (ROWS + Y_OFFSET - 1) * TILE_SIZE
+const BOTTOM_LEFT_CORNER = Vector2(MIN_X, MAX_Y)
+const TOP_RIGHT_CORNER = Vector2(MAX_X, MIN_Y)
 # We will divide the maze into 9 areas to balance a little the random distribution
 # of the grid elements during level generation
 var area_width = Utils.rounded_division(COLUMNS, 3.0)

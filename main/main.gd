@@ -1,6 +1,6 @@
 extends ColorRect
 
-const STARTING_POSITION = Vector2(Maze.MIN_X, Maze.MAX_Y)
+const STARTING_POSITION = Maze.BOTTOM_LEFT_CORNER
 const MAX_MINOR_ENEMIES_PER_LEVEL = 9
 
 const BACKGROUND_COLOR = Color.black
@@ -87,20 +87,16 @@ func add_element(element: GridElement) -> void:
 	add_child(element)
 	other_elements.append(element)
 
-func set_char_position(character: Character, position: Vector2) -> void:
-	character.tween.remove_all()
-	character.modulate.a = character.max_alpha
-	character.position = position
-
 func new_level() -> void:
 	level_number += 1
 	match level_number:
 		1:
 			maze = Maze.new(GenerationAlgorithm.BINARY_TREE, true)
-			add_enemy(Bear.new(maze.random_center_position(), player, maze))
+			add_enemy(Crocodile.new(maze.random_center_position(), player, maze))
+			add_enemy(CarnivorousPlant.new(maze.TOP_RIGHT_CORNER, player, maze))
 		2:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
-			add_enemy(Crocodile.new(maze.random_center_position(), player, maze))
+			add_enemy(Bear.new(maze.random_center_position(), player, maze))
 			add_enemy(Bat.new(maze.random_top_right_position(), player, maze))
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
@@ -108,11 +104,11 @@ func new_level() -> void:
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
 			var excluded_positions: Array = []
 			for i in 3:
-				var web_position = maze.random_top_right_position(excluded_positions)
+				var web_position = maze.random_center_right_position(excluded_positions)
 				excluded_positions.append(web_position)
 				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze))
-			add_enemy(Spider.new(maze.random_top_right_position(excluded_positions), player, maze))
-			add_minor_enemy_if_possible(SpiderWeb.new(maze.random_center_right_position(), player, maze))
+			add_enemy(Spider.new(maze.random_center_right_position(excluded_positions), player, maze))
+			add_minor_enemy_if_possible(SpiderWeb.new(maze.random_top_right_position(), player, maze))
 		4:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze))
@@ -129,7 +125,7 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze))
 	add_child(maze)
-	
+
 	add_element(Treasure.new(maze.random_top_center_position()))
 	add_element(Treasure.new(maze.random_bottom_center_position()))
 	
@@ -178,6 +174,11 @@ func clean(everything: bool = false) -> void:
 			remove_child(ally)
 	clean_array(other_elements)
 	remove(maze)
+
+func set_char_position(character: Character, position: Vector2) -> void:
+	character.tween.remove_all()
+	character.modulate.a = character.max_alpha
+	character.position = position
 
 func update_allies() -> void:
 	for i in range(allies.size() - 1, -1, -1):
