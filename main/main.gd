@@ -95,10 +95,13 @@ func new_level() -> void:
 			add_enemy(Crocodile.new(maze.random_center_position(), player, maze))
 			add_enemy(CarnivorousPlant.new(maze.TOP_RIGHT_CORNER, player, maze))
 			add_element(Apple.new(maze.random_center_right_position()))
+			add_element(Coin.new(maze.random_center_left_position()))
 		2:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
 			add_enemy(Bear.new(maze.random_center_position(), player, maze))
 			add_enemy(Bat.new(maze.random_top_right_position(), player, maze))
+			add_element(Coin.new(maze.random_center_left_position()))
+			add_element(Coin.new(maze.random_center_right_position()))
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
@@ -114,18 +117,26 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze))
 			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze))
+			add_element(Coin.new(maze.random_center_left_position()))
+			add_element(Coin.new(maze.random_center_right_position()))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze))
 			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze))
 			add_ally(Fairy.new(maze.random_center_left_position(), player, maze))
+			add_element(Coin.new(maze.random_center_right_position()))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			add_enemy(Shadow.new(maze.random_center_position(), player, maze))
+			add_element(Coin.new(maze.random_top_right_position()))
+			add_element(Coin.new(maze.random_center_left_position()))
+			add_element(Coin.new(maze.random_center_right_position()))
 		_:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze))
 #			add_element(Event.new(maze.random_top_right_position()))
+			add_element(Coin.new(maze.random_center_left_position()))
+			add_element(Coin.new(maze.random_center_right_position()))
 	add_child(maze)
 	
 	add_element(Treasure.new(maze.random_top_center_position()))
@@ -276,6 +287,11 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 	player_status_bar.stats_label.text = player.get_stats()
 	remove(treasure)
 
+func on_coin_area_entered(_area, coin: Coin) -> void:
+	player.coins += 1
+	player_status_bar.stats_label.text = player.get_stats()
+	remove(coin)
+
 func on_player_teleport_requested() -> void:
 	if player.position != STARTING_POSITION:
 		player.teleport_to(STARTING_POSITION)
@@ -295,7 +311,7 @@ func on_bomb_explosion_requested(bomb: Bomb, explosion_positions: Array) -> void
 
 func _get_enemy_status_bar(character: Character):
 	for status_bar in enemy_status_bars:
-		if character == status_bar.character:
+		if is_instance_valid(status_bar) and character == status_bar.character: # status bar could be null while cleaning
 			return status_bar
 
 func on_character_health_changed(character: Character, new_health: int) -> void:
