@@ -12,6 +12,7 @@ const IMMOBILE_ENEMIES = CORPOREAL_ENEMIES + "immobile_enemies/"
 const MOBILE_ENEMIES = CORPOREAL_ENEMIES + "mobile_enemies/"
 const INCORPOREAL_ENEMIES = ENEMIES + "incorporeal_enemies/"
 const THINGS = GRID_ELEMENTS + "things/"
+const FOOD = THINGS + "food/"
 
 const GUI_ELEMENTS = RES + "gui_elements/"
 const STATUS_BAR = GUI_ELEMENTS + "status_bar/"

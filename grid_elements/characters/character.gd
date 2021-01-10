@@ -95,11 +95,20 @@ func teleport_to(target_position: Vector2) -> void:
 	yield(tween, "tween_all_completed")
 	phasing = false
 
+func increase_health_if_possible(increment: int) -> bool:
+	if health < max_health:
+		if increment >= max_health - health:
+			health = max_health
+		else:
+			health += increment
+		emit_signal("health_changed", self, health)
+		return true
+	else:
+		return false
+
 func teleport_while_healing_to(target_position: Vector2) -> void:
 	teleport_to(target_position)
-	if health < max_health:
-		health += 1
-		emit_signal("health_changed", self, health)
+	increase_health_if_possible(Utils.rounded_half(max_health))
 
 func bounce_tween(dir: Vector2) -> void: # two pixels
 	tween.interpolate_property(self, "position", position + 2 * dir, snap(position), bounce_duration, Tween.TRANS_BOUNCE, Tween.EASE_OUT)

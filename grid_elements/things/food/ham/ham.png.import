@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/apple.png-baf4c344537deb6b2d27f02fef9d42b8.stex"
+path="res://.import/ham.png-9cb661f570d6a1cca5440267ca58198a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://grid_elements/things/food/apple.png"
-dest_files=[ "res://.import/apple.png-baf4c344537deb6b2d27f02fef9d42b8.stex" ]
+source_file="res://grid_elements/things/food/ham/ham.png"
+dest_files=[ "res://.import/ham.png-9cb661f570d6a1cca5440267ca58198a.stex" ]
 
 [params]
 

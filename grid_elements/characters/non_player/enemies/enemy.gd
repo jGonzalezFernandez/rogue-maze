@@ -95,7 +95,7 @@ func on_area_entered(area) -> void:
 		get_tree().call_group(ENEMY_GROUP, "collision_received", name, area.position)
 	elif !is_collision_exception(area):
 		var damage = area.friendly_fire
-		if (area is Player):
+		if area is Player:
 			var slashing_dmg = area.slashing_atk + area.magic_atk - slashing_def
 			var blunt_dmg = area.blunt_atk + area.magic_atk - blunt_def
 			if slashing_dmg > blunt_dmg:

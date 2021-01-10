@@ -94,42 +94,42 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.BINARY_TREE, true)
 			add_enemy(Crocodile.new(maze.random_center_position(), player, maze))
 			add_enemy(CarnivorousPlant.new(maze.TOP_RIGHT_CORNER, player, maze))
+			add_element(Apple.new(maze.random_center_right_position()))
 		2:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
 			add_enemy(Bear.new(maze.random_center_position(), player, maze))
 			add_enemy(Bat.new(maze.random_top_right_position(), player, maze))
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
-			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze))
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
 			var excluded_positions: Array = []
-			for i in 3:
+			for i in 4:
 				var web_position = maze.random_center_right_position(excluded_positions)
 				excluded_positions.append(web_position)
 				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze))
 			add_enemy(Spider.new(maze.random_center_right_position(excluded_positions), player, maze))
-			add_minor_enemy_if_possible(SpiderWeb.new(maze.random_top_right_position(), player, maze))
+			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze))
+			add_element(Ham.new(maze.random_top_right_position()))
 		4:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze))
 			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
-			add_ally(Fairy.new(maze.random_center_left_position(), player, maze))
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze))
 			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze))
+			add_ally(Fairy.new(maze.random_center_left_position(), player, maze))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			add_enemy(Shadow.new(maze.random_center_position(), player, maze))
 		_:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze))
+#			add_element(Event.new(maze.random_top_right_position()))
 	add_child(maze)
-
+	
 	add_element(Treasure.new(maze.random_top_center_position()))
 	add_element(Treasure.new(maze.random_bottom_center_position()))
-	
-#	add_element(Event.new(maze.random_position()))
 	
 	key = Key.new(maze.random_top_left_position())
 	add_child(key)
@@ -301,13 +301,24 @@ func _get_enemy_status_bar(character: Character):
 func on_character_health_changed(character: Character, new_health: int) -> void:
 	if character is Player:
 		player_status_bar.set_hearts(new_health)
-	elif !enemy_status_bars.empty(): # otherwise, we are cleaning (game over)
-		_get_enemy_status_bar(character).set_hearts(new_health)
+	else:
+		var enemy_status_bar_opt = _get_enemy_status_bar(character) # minor enemies have no status bar
+		if is_instance_valid(enemy_status_bar_opt):
+			enemy_status_bar_opt.set_hearts(new_health)
 
 func on_character_died(character: Character) -> void:
 	if character is Player:
 		clean(true)
 		message_screen.show_game_over()
-	elif !enemy_status_bars.empty():
+	else:
 		remove(_get_enemy_status_bar(character))
 		remove(character)
+
+func on_food_area_entered(_area, food: Food) -> void:
+	if player.increase_health_if_possible(food.health_refill):
+		remove(food)
+	else:
+		food.stand_behind()
+
+func on_food_area_exited(_area, food: Food) -> void:
+	food.stand_forward()

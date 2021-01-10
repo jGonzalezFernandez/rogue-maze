@@ -23,6 +23,5 @@ func _ready() -> void:
 	timer.start(TIME_BETWEEN_HEALINGS)
 
 func on_timer_timeout() -> void:
-	if knows_player and player.health < player.max_health:
-		player.health += 1
-		emit_signal("health_changed", player, player.health)
+	if knows_player:
+		player.increase_health_if_possible(1)
