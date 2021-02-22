@@ -44,7 +44,7 @@ func _ready() -> void:
 	color = BACKGROUND_COLOR
 	rect_size = OS.get_window_size()
 	
-	message_screen = MessageScreen.new()
+	message_screen = MessageScreen.new(BACKGROUND_COLOR)
 	add_child(message_screen)
 
 func on_new_game_button_pressed() -> void:
@@ -53,7 +53,7 @@ func on_new_game_button_pressed() -> void:
 	player = Player.new(STARTING_POSITION)
 	add_child(player)
 	
-	player_status_bar = StatusBar.new(player, Control.PRESET_TOP_LEFT, Vector2(STATUS_BAR_X_OFFSET, STATUS_BAR_Y_OFFSET))
+	player_status_bar = StatusBar.new(BACKGROUND_COLOR, player, Control.PRESET_TOP_LEFT, Vector2(STATUS_BAR_X_OFFSET, STATUS_BAR_Y_OFFSET))
 	add_child(player_status_bar)
 	
 	player_status_bar.inventory.add_child(Gauntlets.new()) # to visually represent the initial state of the Player
@@ -150,7 +150,7 @@ func new_level() -> void:
 
 func set_enemy_status_bars():
 	for i in range(enemies.size()):
-		var status_bar = StatusBar.new(enemies[i], ENEMY_STATUS_BAR_LAYOUTS[i][0], ENEMY_STATUS_BAR_LAYOUTS[i][1])
+		var status_bar = StatusBar.new(BACKGROUND_COLOR, enemies[i], ENEMY_STATUS_BAR_LAYOUTS[i][0], ENEMY_STATUS_BAR_LAYOUTS[i][1])
 		add_child(status_bar)
 		enemy_status_bars.append(status_bar)
 

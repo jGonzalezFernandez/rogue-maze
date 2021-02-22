@@ -11,18 +11,19 @@ var stats_label: Label
 var inventory: HBoxContainer
 var main_container: HBoxContainer
 
-func _init(character: Character, layout_preset: int, offset: Vector2 = Vector2.ZERO) -> void:
+func _init(background_color: Color, character: Character, layout_preset: int, offset: Vector2 = Vector2.ZERO).(background_color) -> void:
 	self.character = character
 	self.layout_preset = layout_preset
 	self.offset = offset
 
 func _ready() -> void:
-	dynamic_font.size = 8
-	dynamic_font.extra_spacing_top = 4
+	var modified_font = modified_font(8)
+	modified_font.extra_spacing_top = 4
+	var modified_theme = modified_theme(modified_font)
 	
 	name_label = Label.new()
 	name_label.text = character.name.to_upper() + "  |" # vertical bar to separate the name from the hearts
-	name_label.set("custom_fonts/font", dynamic_font)
+	name_label.theme = modified_theme
 	
 	heart_bar = HBoxContainer.new()
 	for i in Utils.rounded_half(character.max_health):
@@ -31,7 +32,7 @@ func _ready() -> void:
 	
 	stats_label = Label.new()
 	stats_label.text = character.get_stats()
-	stats_label.set("custom_fonts/font", dynamic_font)
+	stats_label.theme = modified_theme
 	
 	inventory = HBoxContainer.new()
 	

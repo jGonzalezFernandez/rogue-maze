@@ -9,20 +9,21 @@ var new_game_button: Button
 var exit_button: Button
 var main_container: VBoxContainer
 
+func _init(background_color: Color).(background_color) -> void:
+	pass
+
 func _ready() -> void:
-	dynamic_font.size = 20
-	
 	message = Label.new()
 	message.text = GAME_NAME
-	message.set("custom_fonts/font", dynamic_font)
+	message.theme = modified_theme(modified_font(20))
 	
 	new_game_button = Button.new()
 	new_game_button.text = "new game"
-	new_game_button.set("custom_fonts/font", dynamic_font)
+	new_game_button.theme = base_theme
 	
 	exit_button = Button.new()
 	exit_button.text = "exit"
-	exit_button.set("custom_fonts/font", dynamic_font)
+	exit_button.theme = base_theme
 	
 	main_container = VBoxContainer.new()
 	main_container.add_child(message)
