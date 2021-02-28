@@ -17,7 +17,8 @@ var blunt_def: int
 var group_call_timer: Timer
 var movement_timer: Timer
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, is_immobile: bool, min_time_between_walks: float, max_walk_length: int, speed: float, stops_before_unicorns: bool, initial_health: int, atk: int, friendly_fire: int, slashing_def: int, blunt_def: int, max_alpha: float).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, friendly_fire, max_alpha) -> void:
+func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: Texture, name: String, vision: int, hearing: int, min_time_between_walks: float, max_walk_length: int, speed: float, initial_health: int, atk: int, slashing_def: int, blunt_def: int, friendly_fire: int, is_immobile: bool, stops_before_unicorns: bool, max_alpha: float) \
+.(initial_position, player, maze, main, texture, name, vision, hearing, speed, initial_health, friendly_fire, max_alpha) -> void:
 	self.is_immobile = is_immobile
 	self.min_time_between_walks = min_time_between_walks
 	self.max_walk_length = max_walk_length
@@ -32,7 +33,7 @@ func _ready() -> void:
 	# enemies should be able to see everything in order to avoid unnecessary collisions on their paths
 	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES, Layer.ALLIES])
 	connect("area_entered", self, "on_area_entered")
-	connect("minor_enemy_addition_requested", get_parent(), "add_minor_enemy_if_possible")
+	connect("minor_enemy_addition_requested", main, "add_minor_enemy_if_possible")
 	
 	group_call_timer = Timer.new()
 	group_call_timer.one_shot = true

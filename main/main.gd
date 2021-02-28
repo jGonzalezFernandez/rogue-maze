@@ -12,7 +12,8 @@ const ENEMY_STATUS_BAR_LAYOUTS = [
 	[Control.PRESET_BOTTOM_RIGHT, Vector2(0 - STATUS_BAR_X_OFFSET, BOTTOM_Y_OFFSET)],
 	[Control.PRESET_CENTER_BOTTOM, Vector2(0, BOTTOM_Y_OFFSET)]]
 
-var message_screen: MessageScreen
+var gui_layer: CanvasLayer
+var menu_popup: MenuPopup
 var player: Player
 var player_status_bar: StatusBar
 var maze: Maze
@@ -44,17 +45,20 @@ func _ready() -> void:
 	color = BACKGROUND_COLOR
 	rect_size = OS.get_window_size()
 	
-	message_screen = MessageScreen.new(BACKGROUND_COLOR)
-	add_child(message_screen)
+	gui_layer = CanvasLayer.new()
+	add_child(gui_layer)
+	menu_popup = MenuPopup.new(self)
+	gui_layer.add_child(menu_popup)
+	menu_popup.popup_centered()
 
 func on_new_game_button_pressed() -> void:
-	message_screen.hide()
+	menu_popup.hide()
 	
-	player = Player.new(STARTING_POSITION)
+	player = Player.new(STARTING_POSITION, self)
 	add_child(player)
 	
-	player_status_bar = StatusBar.new(BACKGROUND_COLOR, player, Control.PRESET_TOP_LEFT, Vector2(STATUS_BAR_X_OFFSET, STATUS_BAR_Y_OFFSET))
-	add_child(player_status_bar)
+	player_status_bar = StatusBar.new(player, Control.PRESET_TOP_LEFT, Vector2(STATUS_BAR_X_OFFSET, STATUS_BAR_Y_OFFSET), self)
+	gui_layer.add_child(player_status_bar)
 	
 	player_status_bar.inventory.add_child(Gauntlets.new()) # to visually represent the initial state of the Player
 	
@@ -92,66 +96,66 @@ func new_level() -> void:
 	match level_number:
 		1:
 			maze = Maze.new(GenerationAlgorithm.BINARY_TREE, true)
-			add_enemy(Crocodile.new(maze.random_center_position(), player, maze))
-			add_enemy(CarnivorousPlant.new(maze.TOP_RIGHT_CORNER, player, maze))
-			add_element(Apple.new(maze.random_center_right_position()))
-			add_element(Coin.new(maze.random_center_left_position()))
+			add_enemy(Crocodile.new(maze.random_center_position(), player, maze, self))
+			add_enemy(CarnivorousPlant.new(maze.TOP_RIGHT_CORNER, player, maze, self))
+			add_element(Apple.new(maze.random_center_right_position(), self))
+			add_element(Coin.new(maze.random_center_left_position(), self))
 		2:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
-			add_enemy(Bear.new(maze.random_center_position(), player, maze))
-			add_enemy(Bat.new(maze.random_top_right_position(), player, maze))
-			add_element(Coin.new(maze.random_center_left_position()))
-			add_element(Coin.new(maze.random_center_right_position()))
+			add_enemy(Bear.new(maze.random_center_position(), player, maze, self))
+			add_enemy(Bat.new(maze.random_top_right_position(), player, maze, self))
+			add_element(Coin.new(maze.random_center_left_position(), self))
+			add_element(Coin.new(maze.random_center_right_position(), self))
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
-			add_enemy(Scorpion.new(maze.random_center_position(), player, maze))
+			add_enemy(Scorpion.new(maze.random_center_position(), player, maze, self))
 			var excluded_positions: Array = []
 			for i in 4:
 				var web_position = maze.random_center_right_position(excluded_positions)
 				excluded_positions.append(web_position)
-				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze))
-			add_enemy(Spider.new(maze.random_center_right_position(excluded_positions), player, maze))
-			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze))
-			add_element(Ham.new(maze.random_top_right_position()))
+				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze, self))
+			add_enemy(Spider.new(maze.random_center_right_position(excluded_positions), player, maze, self))
+			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze, self))
+			add_element(Ham.new(maze.random_top_right_position(), self))
 		4:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
-			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze))
-			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze))
-			add_element(Coin.new(maze.random_center_left_position()))
-			add_element(Coin.new(maze.random_center_right_position()))
+			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze, self))
+			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze, self))
+			add_element(Coin.new(maze.random_center_left_position(), self))
+			add_element(Coin.new(maze.random_center_right_position(), self))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
-			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze))
-			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze))
-			add_ally(Fairy.new(maze.random_center_left_position(), player, maze))
-			add_element(Coin.new(maze.random_center_right_position()))
+			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze, self))
+			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze, self))
+			add_ally(Fairy.new(maze.random_center_left_position(), player, maze, self))
+			add_element(Coin.new(maze.random_center_right_position(), self))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
-			add_enemy(Shadow.new(maze.random_center_position(), player, maze))
-			add_element(Coin.new(maze.random_top_right_position()))
-			add_element(Coin.new(maze.random_center_left_position()))
-			add_element(Coin.new(maze.random_center_right_position()))
+			add_enemy(Shadow.new(maze.random_center_position(), player, maze, self))
+			add_element(Coin.new(maze.random_top_right_position(), self))
+			add_element(Coin.new(maze.random_center_left_position(), self))
+			add_element(Coin.new(maze.random_center_right_position(), self))
 		_:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
-			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze))
-#			add_element(Event.new(maze.random_top_right_position()))
-			add_element(Coin.new(maze.random_center_left_position()))
-			add_element(Coin.new(maze.random_center_right_position()))
+			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze, self))
+#			add_element(Event.new(maze.random_top_right_position(), self))
+			add_element(Coin.new(maze.random_center_left_position(), self))
+			add_element(Coin.new(maze.random_center_right_position(), self))
 	add_child(maze)
 	
-	add_element(Treasure.new(maze.random_top_center_position()))
-	add_element(Treasure.new(maze.random_bottom_center_position()))
+	add_element(Treasure.new(maze.random_top_center_position(), self))
+	add_element(Treasure.new(maze.random_bottom_center_position(), self))
 	
-	key = Key.new(maze.random_top_left_position())
+	key = Key.new(maze.random_top_left_position(), self)
 	add_child(key)
 	
-	stairs = Stairs.new(maze.random_bottom_right_position())
+	stairs = Stairs.new(maze.random_bottom_right_position(), self)
 	add_child(stairs)
 
 func set_enemy_status_bars():
 	for i in range(enemies.size()):
-		var status_bar = StatusBar.new(BACKGROUND_COLOR, enemies[i], ENEMY_STATUS_BAR_LAYOUTS[i][0], ENEMY_STATUS_BAR_LAYOUTS[i][1])
-		add_child(status_bar)
+		var status_bar = StatusBar.new(enemies[i], ENEMY_STATUS_BAR_LAYOUTS[i][0], ENEMY_STATUS_BAR_LAYOUTS[i][1], self)
+		gui_layer.add_child(status_bar)
 		enemy_status_bars.append(status_bar)
 
 func remove(instance: Object) -> void:
@@ -302,12 +306,12 @@ func on_player_teleport_requested() -> void:
 				ally.stand_behind()
 
 func on_player_bomb_requested() -> void:
-	add_element(Bomb.new(player.position))
+	add_element(Bomb.new(player.position, self))
 
 func on_bomb_explosion_requested(bomb: Bomb, explosion_positions: Array) -> void:
 	remove(bomb)
 	for pos in explosion_positions:
-		add_element(BombExplosion.new(pos))
+		add_element(BombExplosion.new(pos, self))
 
 func _get_enemy_status_bar(character: Character):
 	for status_bar in enemy_status_bars:
@@ -325,7 +329,7 @@ func on_character_health_changed(character: Character, new_health: int) -> void:
 func on_character_died(character: Character) -> void:
 	if character is Player:
 		clean(true)
-		message_screen.show_game_over()
+		menu_popup.show_game_over()
 	else:
 		remove(_get_enemy_status_bar(character))
 		remove(character)

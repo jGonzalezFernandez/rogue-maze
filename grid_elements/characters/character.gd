@@ -35,7 +35,8 @@ func set_durations(speed: float) -> void:
 	collision_duration = 1.5 * walking_duration
 	bounce_duration = collision_duration / 2.0
 
-func _init(texture: Texture, name: String, initial_position: Vector2, speed: float, initial_health: int, friendly_fire: int, max_alpha: float).(texture, initial_position, max_alpha) -> void:
+func _init(initial_position: Vector2, main: Node, texture: Texture, name: String, speed: float, initial_health: int, friendly_fire: int, max_alpha: float) \
+.(initial_position, main, texture, max_alpha) -> void:
 	self.name = name
 	set_durations(speed)
 	health = initial_health
@@ -43,8 +44,8 @@ func _init(texture: Texture, name: String, initial_position: Vector2, speed: flo
 	self.friendly_fire = friendly_fire
 
 func _ready() -> void:
-	connect("health_changed", get_parent(), "on_character_health_changed")
-	connect("died", get_parent(), "on_character_died")
+	connect("health_changed", main, "on_character_health_changed")
+	connect("died", main, "on_character_died")
 	ray.collide_with_areas = true
 
 func get_stats() -> String:

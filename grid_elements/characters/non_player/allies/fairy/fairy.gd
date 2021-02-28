@@ -13,7 +13,8 @@ const TIME_BETWEEN_HEALINGS = 13.0
 
 var timer: Timer
 
-func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, NAME, initial_position, player, maze, VISION, HEARING, SPEED, INITIAL_HEALTH) -> void:
+func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
+.(initial_position, player, maze, main, TEXTURE, NAME, VISION, HEARING, SPEED, INITIAL_HEALTH) -> void:
 	pass
 
 func _ready() -> void:

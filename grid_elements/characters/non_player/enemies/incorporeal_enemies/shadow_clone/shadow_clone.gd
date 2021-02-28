@@ -15,7 +15,8 @@ const ATK = 6
 const SLASHING_DEF = 0
 const BLUNT_DEF = 0
 
-func _init(initial_position: Vector2, player, maze: Maze).(TEXTURE, CLONE_NAME, initial_position, player, maze, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, STOPS_BEFORE_UNICORNS, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF) -> void:
+func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
+.(initial_position, player, maze, main, TEXTURE, CLONE_NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, STOPS_BEFORE_UNICORNS, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF) -> void:
 	pass
 
 func special_movement() -> void:

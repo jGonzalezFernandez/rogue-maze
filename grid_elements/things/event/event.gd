@@ -4,7 +4,7 @@ extends Thing
 const TEXTURE_PATH = ResourcePath.THINGS + "/event/event.png"
 const TEXTURE = preload(TEXTURE_PATH)
 
-func _init(position: Vector2).(TEXTURE, position) -> void:
+func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
 	pass
 
 func _ready() -> void:

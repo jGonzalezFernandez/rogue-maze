@@ -6,7 +6,8 @@ const MAX_ALPHA = 1.0
 
 var knows_player = false
 
-func _init(texture: Texture, name: String, initial_position: Vector2, player, maze: Maze, vision: int, hearing: int, speed: float, initial_health: int).(texture, name, initial_position, player, maze, vision, hearing, speed, initial_health, FRIENDLY_FIRE, MAX_ALPHA) -> void:
+func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: Texture, name: String, vision: int, hearing: int, speed: float, initial_health: int) \
+.(initial_position, player, maze, main, texture, name, vision, hearing, speed, initial_health, FRIENDLY_FIRE, MAX_ALPHA) -> void:
 	collision_layer = compute_layers([Layer.ALLIES])
 
 func _ready() -> void:

@@ -13,15 +13,17 @@ const ALPHA_BEHIND = 0.25
 var max_alpha: float
 var half_tile = Utils.rounded_half(Maze.TILE_SIZE)
 
+var main: Node
 var texture: Texture
 var sprite: Sprite
 var collision_shape: CollisionShape2D
 var tween: Tween
 var ray: RayCast2D
 
-func _init(texture: Texture, position: Vector2, max_alpha: float) -> void:
-	self.texture = texture
+func _init(position: Vector2, main: Node, texture: Texture, max_alpha: float) -> void:
 	self.position = position
+	self.main = main
+	self.texture = texture
 	self.max_alpha = max_alpha
 	modulate.a = max_alpha
 

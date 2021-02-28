@@ -19,11 +19,11 @@ static func pop_random_elem(array: Array):
 	array.shuffle()
 	return array.pop_back()
 
-static func rounded_division(dividend: int, divisor: float) -> int:
+static func rounded_division(dividend: float, divisor: float) -> int:
 	return int(round(dividend / divisor))
 
-static func rounded_half(value: int) -> int:
+static func rounded_half(value: float) -> int:
 	return rounded_division(value, 2.0)
 
-static func half(value: int) -> float:
+static func half(value: float) -> float:
 	return value / 2.0

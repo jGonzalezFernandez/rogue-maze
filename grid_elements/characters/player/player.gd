@@ -27,13 +27,14 @@ var invisible = false
 
 var bomb_timer: Timer
 
-func _init(initial_position: Vector2).(TEXTURE, PLAYER_NAME, initial_position, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, INITIAL_ALPHA) -> void:
+func _init(initial_position: Vector2, main: Node) \
+.(initial_position, main, TEXTURE, PLAYER_NAME, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, INITIAL_ALPHA) -> void:
 	pass
 
 func _ready() -> void:
 	connect("area_entered", self, "on_area_entered")
-	connect("teleport_requested", get_parent(), "on_player_teleport_requested")
-	connect("bomb_requested", get_parent(), "on_player_bomb_requested")
+	connect("teleport_requested", main, "on_player_teleport_requested")
+	connect("bomb_requested", main, "on_player_bomb_requested")
 	
 	bomb_timer = Timer.new()
 	bomb_timer.one_shot = true

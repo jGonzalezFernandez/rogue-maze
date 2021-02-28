@@ -4,8 +4,8 @@ extends Thing
 const TEXTURE_PATH = ResourcePath.THINGS + "/key/key.png"
 const TEXTURE = preload(TEXTURE_PATH)
 
-func _init(position: Vector2).(TEXTURE, position) -> void:
+func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
 	pass
 
 func _ready() -> void:
-	connect("area_entered", get_parent(), "on_key_area_entered")
+	connect("area_entered", main, "on_key_area_entered")

@@ -10,7 +10,7 @@ const EXPLOSION_LENGTH = 2
 
 var timer: Timer
 
-func _init(position: Vector2).(TEXTURE, position) -> void:
+func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
 	pass
 
 func _ready() -> void:
@@ -19,7 +19,7 @@ func _ready() -> void:
 	add_child(timer)
 	timer.connect("timeout", self, "on_timer_timeout")
 	timer.start(BOMB_TIMER_DURATION)
-	connect("explosion_requested", get_parent(), "on_bomb_explosion_requested")
+	connect("explosion_requested", main, "on_bomb_explosion_requested")
 
 func on_timer_timeout() -> void:
 	var explosion_positions = []

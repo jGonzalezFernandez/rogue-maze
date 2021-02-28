@@ -6,5 +6,5 @@ const TEXTURE = preload(TEXTURE_PATH)
 
 const HEALTH_REFILL = 6
 
-func _init(position: Vector2).(TEXTURE, HEALTH_REFILL, position) -> void:
+func _init(position: Vector2, main: Node).(position, main, TEXTURE, HEALTH_REFILL) -> void:
 	pass

@@ -1,5 +1,3 @@
-extends Node
-
 class_name GenerationAlgorithm
 
 const BINARY_TREE = 0

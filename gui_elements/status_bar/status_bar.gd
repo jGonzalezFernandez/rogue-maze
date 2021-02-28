@@ -1,29 +1,32 @@
 class_name StatusBar
-extends GuiElement
+extends HBoxContainer
 
 enum Item {GAUNTLETS, SWORD, MACE, WOODEN_SHIELD, CHAINMAIL, BOOTS, AMULET, HEART_CONTAINER, CHAOS_SWORD, HAMMER, SHIELD, RING, CLOAK, BOMB_BAG}
 
-var character: Character
 var layout_preset: int
+var offset: Vector2
+
+var character: Character
+var custom_theme: CustomTheme
 var name_label: Label
 var heart_bar: HBoxContainer
 var stats_label: Label
 var inventory: HBoxContainer
-var main_container: HBoxContainer
 
-func _init(background_color: Color, character: Character, layout_preset: int, offset: Vector2 = Vector2.ZERO).(background_color) -> void:
+func _init(character: Character, layout_preset: int, offset: Vector2, main: ColorRect) -> void:
 	self.character = character
 	self.layout_preset = layout_preset
 	self.offset = offset
+	
+	var custom_font = CustomFont.new(8)
+	custom_font.extra_spacing_top = 4
+	custom_theme = CustomTheme.new(custom_font, main.color)
+	add_constant_override("separation", 6)
 
 func _ready() -> void:
-	var modified_font = modified_font(8)
-	modified_font.extra_spacing_top = 4
-	var modified_theme = modified_theme(modified_font)
-	
 	name_label = Label.new()
 	name_label.text = character.name.to_upper() + "  |" # vertical bar to separate the name from the hearts
-	name_label.theme = modified_theme
+	name_label.theme = custom_theme
 	
 	heart_bar = HBoxContainer.new()
 	for i in Utils.rounded_half(character.max_health):
@@ -32,18 +35,16 @@ func _ready() -> void:
 	
 	stats_label = Label.new()
 	stats_label.text = character.get_stats()
-	stats_label.theme = modified_theme
+	stats_label.theme = custom_theme
 	
 	inventory = HBoxContainer.new()
 	
-	main_container = HBoxContainer.new()
-	main_container.add_child(name_label)
-	main_container.add_child(heart_bar)
-	main_container.add_child(stats_label)
-	main_container.add_child(inventory)
-	main_container.set("custom_constants/separation", 6)
-	main_container.set_anchors_and_margins_preset(layout_preset)
-	add_child(main_container)
+	add_child(name_label)
+	add_child(heart_bar)
+	add_child(stats_label)
+	add_child(inventory)
+	set_anchors_and_margins_preset(layout_preset)
+	set_begin(Vector2(margin_left + offset.x, margin_top + offset.y))
 
 func set_hearts(health) -> void:
 	for i in heart_bar.get_child_count():
