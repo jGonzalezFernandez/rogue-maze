@@ -37,6 +37,7 @@ var amulet: Amulet
 var ring: Ring
 var cloak: Cloak
 var bomb_bag: BombBag
+var first_events: Array
 
 func _ready() -> void:
 #	randomize()
@@ -47,6 +48,7 @@ func _ready() -> void:
 	
 	gui_layer = CanvasLayer.new()
 	add_child(gui_layer)
+	
 	menu_popup = MenuPopup.new(self)
 	gui_layer.add_child(menu_popup)
 	menu_popup.popup_centered()
@@ -68,6 +70,8 @@ func on_new_game_button_pressed() -> void:
 	first_items = [StatusBar.Item.SWORD, StatusBar.Item.MACE, StatusBar.Item.WOODEN_SHIELD]
 	second_items = [StatusBar.Item.CHAINMAIL, StatusBar.Item.BOOTS, StatusBar.Item.AMULET, StatusBar.Item.HEART_CONTAINER]
 	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.CLOAK, StatusBar.Item.BOMB_BAG]
+	
+	first_events = [EventPopup.EventName.BAD_LEVER]
 
 func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
@@ -181,6 +185,7 @@ func clean(everything: bool = false) -> void:
 		second_items.clear()
 		third_items.clear()
 		remove(key)
+		first_events.clear()
 	else:
 		# We want the allies to follow the Player to the next level, so we don't delete
 		# them to continue their treatment later (in the update_allies() function).
@@ -342,3 +347,21 @@ func on_food_area_entered(_area, food: Food) -> void:
 
 func on_food_area_exited(_area, food: Food) -> void:
 	food.stand_forward()
+
+func on_event_area_entered(_area, event: Event) -> void:
+	if !first_events.empty():
+		var event_popup = EventPopup.new(Utils.pop_random_elem(first_events), self)
+		gui_layer.add_child(event_popup)
+		event_popup.popup_centered()
+	
+	remove(event)
+
+func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
+	get_tree().paused = false
+	
+	match event_popup.event_name:
+		EventPopup.EventName.BAD_LEVER:
+			player.health = 1
+			player_status_bar.set_hearts(player.health)
+	
+	remove(event_popup)

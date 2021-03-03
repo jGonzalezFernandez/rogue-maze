@@ -18,7 +18,7 @@ func _init(character: Character, layout_preset: int, offset: Vector2, main: Colo
 	self.layout_preset = layout_preset
 	self.offset = offset
 	
-	var custom_font = CustomFont.new(8)
+	var custom_font = CustomFont.new(CustomFont.SMALL_FONT_SIZE)
 	custom_font.extra_spacing_top = 4
 	custom_theme = CustomTheme.new(custom_font, main.color)
 	add_constant_override("separation", 6)

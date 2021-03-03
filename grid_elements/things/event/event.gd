@@ -8,7 +8,7 @@ func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
 	pass
 
 func _ready() -> void:
-	connect("area_entered", self, "on_area_entered")
+	connect("area_entered", main, "on_event_area_entered", [self])
 	tween.connect("tween_all_completed", self, "on_tween_all_completed")
 	reverse_transparency()
 
@@ -18,6 +18,3 @@ func reverse_transparency() -> void:
 
 func on_tween_all_completed() -> void:
 	reverse_transparency()
-
-func on_area_entered(area) -> void:
-	print("event")
