@@ -21,7 +21,7 @@ func _ready() -> void:
 	add_child(panel)
 	
 	message = Label.new()
-	message.set_anchors_and_margins_preset(Control.PRESET_WIDE, 0, 50)
+	message.set_anchors_and_margins_preset(Control.PRESET_WIDE, 0, 30)
 	message.align = Label.ALIGN_CENTER
 	message.autowrap = true
 	add_child(message)

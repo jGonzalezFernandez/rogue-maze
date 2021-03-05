@@ -31,6 +31,7 @@ var third_items: Array
 var edged_weapon: Edgedweapon
 var blunt_weapon: BluntWeapon
 var shield: Shield
+var lens: Lens
 var armor: Armor
 var boots: Boots
 var amulet: Amulet
@@ -38,6 +39,7 @@ var ring: Ring
 var cloak: Cloak
 var bomb_bag: BombBag
 var first_events: Array
+var second_events: Array
 
 func _ready() -> void:
 #	randomize()
@@ -67,11 +69,12 @@ func on_new_game_button_pressed() -> void:
 	new_level()
 	set_enemy_status_bars()
 	
-	first_items = [StatusBar.Item.SWORD, StatusBar.Item.MACE, StatusBar.Item.WOODEN_SHIELD]
+	first_items = [StatusBar.Item.SWORD, StatusBar.Item.MACE, StatusBar.Item.WOODEN_SHIELD, StatusBar.Item.LENS]
 	second_items = [StatusBar.Item.CHAINMAIL, StatusBar.Item.BOOTS, StatusBar.Item.AMULET, StatusBar.Item.HEART_CONTAINER]
 	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.CLOAK, StatusBar.Item.BOMB_BAG]
 	
-	first_events = [EventPopup.EventName.BAD_LEVER]
+	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.LOOSE_TILE]
+	second_events = [EventPopup.EventName.GOOD_LEVER]
 
 func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
@@ -108,7 +111,7 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
 			add_enemy(Bear.new(maze.random_center_position(), player, maze, self))
 			add_enemy(Bat.new(maze.random_top_right_position(), player, maze, self))
-			add_element(Coin.new(maze.random_center_left_position(), self))
+			add_element(Event.new(maze.random_center_left_position(), self))
 			add_element(Coin.new(maze.random_center_right_position(), self))
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
@@ -126,7 +129,7 @@ func new_level() -> void:
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze, self))
 			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze, self))
 			add_element(Coin.new(maze.random_center_left_position(), self))
-			add_element(Coin.new(maze.random_center_right_position(), self))
+			add_element(Event.new(maze.random_center_right_position(), self))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze, self))
@@ -176,6 +179,7 @@ func clean(everything: bool = false) -> void:
 	clean_array(enemies)
 	clean_array(enemy_status_bars)
 	clean_array(minor_enemies)
+	remove(key)
 	if everything:
 		clean_array(allies)
 		remove(player_status_bar)
@@ -184,8 +188,8 @@ func clean(everything: bool = false) -> void:
 		first_items.clear()
 		second_items.clear()
 		third_items.clear()
-		remove(key)
 		first_events.clear()
+		second_events.clear()
 	else:
 		# We want the allies to follow the Player to the next level, so we don't delete
 		# them to continue their treatment later (in the update_allies() function).
@@ -231,6 +235,15 @@ func on_stairs_area_entered(_area) -> void:
 func on_stairs_area_exited(_area) -> void:
 	stairs.stand_forward()
 
+func set_player_health(new_health: int) -> void:
+	player.health = new_health
+	player_status_bar.set_hearts(player.health)
+
+func add_heart_container(new_health: int) -> void:
+	player.max_health += 2
+	player_status_bar.heart_bar.add_child(Heart.new())
+	set_player_health(new_health)
+
 func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 	if !first_items.empty():
 		match Utils.pop_random_elem(first_items):
@@ -246,6 +259,10 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				shield = Shield.new()
 				player_status_bar.inventory.add_child(shield)
 				player.def += 1
+			StatusBar.Item.LENS:
+				lens = Lens.new()
+				player_status_bar.inventory.add_child(lens)
+				player.perception += 1
 	elif !second_items.empty():
 		match Utils.pop_random_elem(second_items):
 			StatusBar.Item.CHAINMAIL:
@@ -262,10 +279,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				player_status_bar.inventory.add_child(amulet)
 				player.teleport_ability = true
 			StatusBar.Item.HEART_CONTAINER:
-				player.max_health += 2
-				player_status_bar.heart_bar.add_child(Heart.new())
-				player.health += 2
-				player_status_bar.set_hearts(player.health)
+				add_heart_container(player.health + 2)
 	elif !third_items.empty():
 		match Utils.pop_random_elem(third_items):
 			StatusBar.Item.CHAOS_SWORD:
@@ -349,19 +363,28 @@ func on_food_area_exited(_area, food: Food) -> void:
 	food.stand_forward()
 
 func on_event_area_entered(_area, event: Event) -> void:
-	if !first_events.empty():
-		var event_popup = EventPopup.new(Utils.pop_random_elem(first_events), self)
-		gui_layer.add_child(event_popup)
-		event_popup.popup_centered()
+	var event_popup: EventPopup
 	
+	if !first_events.empty() and level_number < 4:
+		event_popup = EventPopup.new(Utils.pop_random_elem(first_events), player, menu_popup, self)
+	elif !second_events.empty() and level_number < 7:
+		event_popup = EventPopup.new(Utils.pop_random_elem(second_events), player, menu_popup, self)
+	
+	gui_layer.add_child(event_popup)
+	event_popup.popup_centered()
 	remove(event)
 
 func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
+	menu_popup.set_process_input(true)
 	get_tree().paused = false
 	
 	match event_popup.event_name:
 		EventPopup.EventName.BAD_LEVER:
-			player.health = 1
-			player_status_bar.set_hearts(player.health)
+			set_player_health(1)
+		EventPopup.EventName.LOOSE_TILE:
+			set_player_health(1)
+			call_deferred("next_level")
+		EventPopup.EventName.GOOD_LEVER:
+			add_heart_container(player.max_health + 2)
 	
 	remove(event_popup)

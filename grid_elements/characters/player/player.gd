@@ -19,6 +19,7 @@ var slashing_atk = 0
 var blunt_atk = 1
 var magic_atk = 0
 var def = 1
+var perception = 0
 var coins = 0
 var dash_ability = false
 var teleport_ability = false
@@ -61,7 +62,7 @@ func _process(_delta) -> void:
 
 func get_stats() -> String:
 	# We halve the stats displayed in the interface because it's easier to think in terms of whole hearts and half hearts
-	return "|  Slashing ATK: %s  |  Blunt ATK: %s  |  Magic ATK: %s  |  DEF: %s  |  Coins: %s  |" % [Utils.half(slashing_atk), Utils.half(blunt_atk), Utils.half(magic_atk), Utils.half(def), coins]
+	return "|  Slashing ATK: %s  |  Blunt ATK: %s  |  Magic ATK: %s  |  DEF: %s  |  Perception: %s  |  Coins: %s  |" % [Utils.half(slashing_atk), Utils.half(blunt_atk), Utils.half(magic_atk), Utils.half(def), perception, coins]
 
 func on_area_entered(area) -> void:
 	if area is BombExplosion:

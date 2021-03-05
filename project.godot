@@ -199,6 +199,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://grid_elements/things/key/key.gd"
 }, {
+"base": "Item",
+"class": "Lens",
+"language": "GDScript",
+"path": "res://gui_elements/status_bar/items/lens/lens.gd"
+}, {
 "base": "Node2D",
 "class": "Maze",
 "language": "GDScript",
@@ -368,6 +373,7 @@ _global_script_class_icons={
 "IncorporealEnemy": "",
 "Item": "",
 "Key": "",
+"Lens": "",
 "Maze": "",
 "MenuPopup": "",
 "MobileEnemy": "",
