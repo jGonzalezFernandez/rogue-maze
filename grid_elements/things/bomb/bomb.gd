@@ -5,6 +5,8 @@ signal explosion_requested
 
 const TEXTURE_PATH = ResourcePath.THINGS + "/bomb/bomb.png"
 const TEXTURE = preload(TEXTURE_PATH)
+const EXPLOSION_PATH = ResourcePath.SOUNDS + "/explosion.wav"
+const EXPLOSION_SOUND = preload(EXPLOSION_PATH)
 
 const EXPLOSION_LENGTH = 2
 
@@ -14,6 +16,8 @@ func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
 	pass
 
 func _ready() -> void:
+	audio_player.stream = EXPLOSION_SOUND
+	
 	timer = Timer.new()
 	timer.one_shot = true
 	add_child(timer)
@@ -31,4 +35,5 @@ func on_timer_timeout() -> void:
 				break
 			else:
 				explosion_positions.append(position + target_cell)
+	audio_player.play()
 	emit_signal("explosion_requested", self, explosion_positions)

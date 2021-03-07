@@ -20,6 +20,7 @@ var sprite: Sprite
 var collision_shape: CollisionShape2D
 var tween: Tween
 var ray: RayCast2D
+var audio_player: AudioStreamPlayer2D
 
 func _init(position: Vector2, main: Node, texture: Texture, max_alpha: float) -> void:
 	self.position = position
@@ -47,6 +48,10 @@ func _ready() -> void:
 	ray = RayCast2D.new()
 	ray.position = tile_center
 	add_child(ray)
+	
+	audio_player = AudioStreamPlayer2D.new()
+	audio_player.position = tile_center
+	add_child(audio_player)
 
 func cast_ray_to(target: Vector2) -> void:
 	ray.cast_to = target

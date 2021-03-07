@@ -175,6 +175,9 @@ func set_enemy_status_bars():
 
 func remove(instance: Object) -> void:
 	if is_instance_valid(instance):
+		if instance is GridElement and instance.audio_player.playing:
+			instance.hide()
+			yield(instance.audio_player, "finished")
 		instance.queue_free()
 
 func clean_array(array: Array) -> void:

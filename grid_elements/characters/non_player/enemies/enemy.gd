@@ -3,6 +3,13 @@ extends NonPlayer
 
 signal minor_enemy_addition_requested
 
+const THWACK_PATH = ResourcePath.SOUNDS + "/thwack.wav"
+const THWACK_SOUND = preload(THWACK_PATH)
+const METAL_HIT_01_PATH = ResourcePath.SOUNDS + "/metal_hit_01.wav"
+const METAL_HIT_01_SOUND = preload(METAL_HIT_01_PATH)
+const METAL_HIT_02_PATH = ResourcePath.SOUNDS + "/metal_hit_02.wav"
+const METAL_HIT_02_SOUND = preload(METAL_HIT_02_PATH)
+
 const MIN_TIME_BETWEEN_GROUP_CALLS = 1.0
 
 var is_immobile: bool
@@ -96,12 +103,16 @@ func on_area_entered(area) -> void:
 		get_tree().call_group(ENEMY_GROUP, "collision_received", name, area.position)
 	elif !is_collision_exception(area):
 		var damage = area.friendly_fire
+		var sound = THWACK_SOUND
 		if area is Player:
 			var slashing_dmg = area.slashing_atk + area.magic_atk - slashing_def
 			var blunt_dmg = area.blunt_atk + area.magic_atk - blunt_def
 			if slashing_dmg > blunt_dmg:
 				damage = slashing_dmg
+				sound = Utils.get_random_elem([METAL_HIT_01_SOUND, METAL_HIT_02_SOUND])
 			else:
 				damage = blunt_dmg
+		audio_player.stream = sound
+		audio_player.play()
 		manage_collision(area, damage, is_immobile)
 		get_tree().call_group(ENEMY_GROUP, "collision_received", name, area.position)

@@ -4,7 +4,7 @@ extends Thing
 const TEXTURE_PATH = ResourcePath.THINGS + "/bomb_explosion/bomb_explosion.png"
 const TEXTURE = preload(TEXTURE_PATH)
 
-const EXPLOSION_DURATION = 0.30
+const EXPLOSION_DURATION = 1.30
 
 var timer: Timer
 
