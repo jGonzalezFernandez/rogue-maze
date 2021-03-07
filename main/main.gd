@@ -12,6 +12,7 @@ const ENEMY_STATUS_BAR_LAYOUTS = [
 	[Control.PRESET_BOTTOM_RIGHT, Vector2(0 - STATUS_BAR_X_OFFSET, BOTTOM_Y_OFFSET)],
 	[Control.PRESET_CENTER_BOTTOM, Vector2(0, BOTTOM_Y_OFFSET)]]
 
+var canvas_modulate: CanvasModulate
 var gui_layer: CanvasLayer
 var menu_popup: MenuPopup
 var player: Player
@@ -48,6 +49,9 @@ func _ready() -> void:
 	color = BACKGROUND_COLOR
 	rect_size = OS.get_window_size()
 	
+	canvas_modulate = CanvasModulate.new()
+	add_child(canvas_modulate)
+	
 	gui_layer = CanvasLayer.new()
 	add_child(gui_layer)
 	
@@ -56,6 +60,7 @@ func _ready() -> void:
 	menu_popup.popup_centered()
 
 func on_new_game_button_pressed() -> void:
+	canvas_modulate.color = Color.white
 	menu_popup.hide()
 	
 	player = Player.new(STARTING_POSITION, self)
@@ -132,18 +137,21 @@ func new_level() -> void:
 			add_element(Event.new(maze.random_center_right_position(), self))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
+			canvas_modulate.color = Color.lightgray
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze, self))
 			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze, self))
 			add_ally(Fairy.new(maze.random_center_left_position(), player, maze, self))
 			add_element(Coin.new(maze.random_center_right_position(), self))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
+			canvas_modulate.color = Color.gray
 			add_enemy(Shadow.new(maze.random_center_position(), player, maze, self))
 			add_element(Coin.new(maze.random_top_right_position(), self))
 			add_element(Coin.new(maze.random_center_left_position(), self))
 			add_element(Coin.new(maze.random_center_right_position(), self))
 		_:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
+			canvas_modulate.color = Color(0.1, 0.1, 0.1, 1)
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze, self))
 #			add_element(Event.new(maze.random_top_right_position(), self))
 			add_element(Coin.new(maze.random_center_left_position(), self))

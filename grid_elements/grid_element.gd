@@ -12,6 +12,7 @@ const ALPHA_BEHIND = 0.25
 
 var max_alpha: float
 var half_tile = Utils.rounded_half(Maze.TILE_SIZE)
+var tile_center = Vector2(half_tile, half_tile)
 
 var main: Node
 var texture: Texture
@@ -29,15 +30,14 @@ func _init(position: Vector2, main: Node, texture: Texture, max_alpha: float) ->
 
 func _ready() -> void:
 	sprite = Sprite.new()
-	# We want each element to be adjusted to the cell size
-	sprite.offset = Vector2(half_tile, half_tile)
+	sprite.offset = tile_center
 	sprite.texture = texture
 	add_child(sprite)
 	
 	var rectangle_shape = RectangleShape2D.new()
 	rectangle_shape.extents = Vector2(7.50361, 7.37397)
 	collision_shape = CollisionShape2D.new()
-	collision_shape.position = Vector2(half_tile, half_tile)
+	collision_shape.position = tile_center
 	collision_shape.shape = rectangle_shape
 	add_child(collision_shape)
 	
@@ -45,7 +45,7 @@ func _ready() -> void:
 	add_child(tween)
 	
 	ray = RayCast2D.new()
-	ray.position = Vector2(half_tile, half_tile)
+	ray.position = tile_center
 	add_child(ray)
 
 func cast_ray_to(target: Vector2) -> void:
