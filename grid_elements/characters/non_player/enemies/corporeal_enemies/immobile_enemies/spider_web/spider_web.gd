@@ -6,10 +6,10 @@ const TEXTURE = preload(TEXTURE_PATH)
 
 const INITIAL_HEALTH = 6
 const ATK = 0
-const FRIENDLY_FIRE = 0
 const SLASHING_DEF = 0
 const BLUNT_DEF = 1
+const FRIENDLY_FIRE = 0
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
-.(initial_position, player, maze, main, TEXTURE, WEB_NAME, INITIAL_HEALTH, ATK, FRIENDLY_FIRE, SLASHING_DEF, BLUNT_DEF) -> void:
+.(initial_position, player, maze, main, TEXTURE, WEB_NAME, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, FRIENDLY_FIRE) -> void:
 	pass
