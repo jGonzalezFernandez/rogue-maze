@@ -176,7 +176,7 @@ func set_enemy_status_bars():
 func remove(instance: Object) -> void:
 	if is_instance_valid(instance):
 		if instance is GridElement and instance.audio_player.playing:
-			instance.hide()
+			instance.disable()
 			yield(instance.audio_player, "finished")
 		instance.queue_free()
 
@@ -261,11 +261,11 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 			StatusBar.Item.SWORD:
 				edged_weapon = Edgedweapon.new()
 				player_status_bar.inventory.add_child(edged_weapon)
-				player.slashing_atk += 2
+				player.slashing_atk += 3
 			StatusBar.Item.MACE:
 				blunt_weapon = BluntWeapon.new()
 				player_status_bar.inventory.add_child(blunt_weapon)
-				player.blunt_atk += 1
+				player.blunt_atk = 3
 			StatusBar.Item.WOODEN_SHIELD:
 				shield = Shield.new()
 				player_status_bar.inventory.add_child(shield)
@@ -295,10 +295,10 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 		match Utils.pop_random_elem(third_items):
 			StatusBar.Item.CHAOS_SWORD:
 				edged_weapon.texture = Edgedweapon.CHAOS_SWORD_TEXTURE
-				player.slashing_atk += 2
+				player.slashing_atk += 3
 			StatusBar.Item.HAMMER:
 				blunt_weapon.texture = BluntWeapon.HAMMER_TEXTURE
-				player.blunt_atk += 2
+				player.blunt_atk += 3
 			StatusBar.Item.SHIELD:
 				shield.texture = Shield.SHIELD_TEXTURE
 				player.def += 1

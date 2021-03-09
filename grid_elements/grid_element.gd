@@ -68,3 +68,8 @@ func stand_behind() -> void:
 
 func stand_forward() -> void:
 	modulate.a = max_alpha
+
+func disable() -> void:
+	hide()
+	collision_shape.set_deferred("disabled", true)
+	set_process(false)

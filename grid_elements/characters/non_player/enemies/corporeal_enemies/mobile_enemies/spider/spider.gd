@@ -11,8 +11,8 @@ const MAX_WALK_LENGTH = 3
 const SPEED = 2.5
 const INITIAL_HEALTH = 6
 const ATK = 4
-const SLASHING_DEF = 0
-const BLUNT_DEF = 0
+const SLASHING_DEF = 1
+const BLUNT_DEF = 1
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
 .(initial_position, player, maze, main, TEXTURE, SPIDER_NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF) -> void:

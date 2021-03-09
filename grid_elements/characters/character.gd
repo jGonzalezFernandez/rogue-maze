@@ -124,9 +124,8 @@ func collide(dir: Vector2, slight_recoil: bool) -> void:
 
 func manage_collision(character: Area2D, damage: int, slight_recoil: bool) -> void:
 	if phasing:
-		health -= Utils.rounded_half(damage)
+		damage = Utils.rounded_half(damage)
 	else:
-		health -= damage
 		if character.position.x < position.x:
 			collide(Vector2.RIGHT, slight_recoil)
 		elif character.position.x > position.x:
@@ -135,7 +134,8 @@ func manage_collision(character: Area2D, damage: int, slight_recoil: bool) -> vo
 			collide(Vector2.UP, slight_recoil)
 		else:
 			collide(Vector2.DOWN, slight_recoil)
-	if damage != 0:
+	if damage > 0:
+		health -= damage
 		emit_signal("health_changed", self, health)
 	if health <= 0:
 		emit_signal("died", self)

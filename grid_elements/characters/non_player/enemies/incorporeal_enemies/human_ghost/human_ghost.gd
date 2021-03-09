@@ -12,8 +12,8 @@ const MAX_WALK_LENGTH = 6
 const SPEED = 2.0
 const INITIAL_HEALTH = 6
 const ATK = 5
-const SLASHING_DEF = 2
-const BLUNT_DEF = 4
+const SLASHING_DEF = 3
+const BLUNT_DEF = 5
 const STOPS_BEFORE_UNICORNS = true
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \

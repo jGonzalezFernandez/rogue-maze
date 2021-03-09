@@ -8,7 +8,7 @@ const NAME = "Carnivorous Plant"
 const INITIAL_HEALTH = 4
 const ATK = 3
 const SLASHING_DEF = 0
-const BLUNT_DEF = 0
+const BLUNT_DEF = 1
 const FRIENDLY_FIRE = 2
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \

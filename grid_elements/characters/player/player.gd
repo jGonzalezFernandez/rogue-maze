@@ -16,7 +16,7 @@ const INITIAL_ALPHA = 1.0
 const MAX_DASH_LENGTH = 4
 
 var slashing_atk = 0
-var blunt_atk = 1
+var blunt_atk = 2
 var magic_atk = 0
 var def = 1
 var perception = 0
