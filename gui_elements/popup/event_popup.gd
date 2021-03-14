@@ -1,7 +1,7 @@
 class_name EventPopup
 extends PopupExt
 
-enum EventName {BAD_LEVER, LOOSE_TILE, GOOD_LEVER}
+enum EventName {BAD_LEVER, LOOSE_TILE, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN}
 
 const BAD_LEVER_INTRO_MESSAGE = "You notice a lever on the wall hidden in the shadows.\nIt has a small circle engraved on it.\nDo you move the lever?"
 const BAD_LEVER_HINT = "\nPERCEPTION: in fact, the circle looks like some kind of skull."
@@ -11,9 +11,17 @@ const LOOSE_TILE_INTRO_MESSAGE = "You notice a loose tile in the corner of the h
 const LOOSE_TILE_HINT = "\nPERCEPTION: the floor sounds hollow in this area."
 const LOOSE_TILE_RESULT_MESSAGE = "The floor opens and you fall to the next level!\nYour life is reduced to half a heart."
 
+const RED_FOUNTAIN_INTRO_MESSAGE = "You come across a fountain, its water glowing with a faint, unnatural red light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
+const RED_FOUNTAIN_HINT = "\nPERCEPTION: even in the depths of this dungeon, it seems strange to you that there is no trace of life around a water source."
+const RED_FOUNTAIN_RESULT_MESSAGE = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets. They're ruined!\nDEF -0.5"
+
 const GOOD_LEVER_INTRO_MESSAGE = "You notice a lever on the wall hidden in the shadows.\nIt has a small X engraved on it.\nDo you move the lever?"
 const GOOD_LEVER_HINT = "\nPERCEPTION: in fact, the X looks like a crossed fork and knife."
 const GOOD_LEVER_RESULT_MESSAGE = "A secret compartment opens in the wall. Under the light of a candelabra, the most wonderful food awaits you. What a delicious surprise!\nYou feel better than ever, and you regain all your life plus an extra heart."
+
+const BLUE_FOUNTAIN_INTRO_MESSAGE = "You come across a fountain, its water glowing with a faint, unnatural blue light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
+const BLUE_FOUNTAIN_HINT = "\nPERCEPTION: silver flowers grow beside the water."
+const BLUE_FOUNTAIN_RESULT_MESSAGE = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets. They've been enchanted!\nMagic ATK +0.5"
 
 var event_name: int
 var intro_message: String
@@ -38,10 +46,18 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 			self.intro_message = LOOSE_TILE_INTRO_MESSAGE
 			self.hint = LOOSE_TILE_HINT
 			self.result_message = LOOSE_TILE_RESULT_MESSAGE
+		EventName.RED_FOUNTAIN:
+			self.intro_message = RED_FOUNTAIN_INTRO_MESSAGE
+			self.hint = RED_FOUNTAIN_HINT
+			self.result_message = RED_FOUNTAIN_RESULT_MESSAGE
 		EventName.GOOD_LEVER:
 			self.intro_message = GOOD_LEVER_INTRO_MESSAGE
 			self.hint = GOOD_LEVER_HINT
 			self.result_message = GOOD_LEVER_RESULT_MESSAGE
+		EventName.BLUE_FOUNTAIN:
+			self.intro_message = BLUE_FOUNTAIN_INTRO_MESSAGE
+			self.hint = BLUE_FOUNTAIN_HINT
+			self.result_message = BLUE_FOUNTAIN_RESULT_MESSAGE
 	
 	self.player = player
 	self.menu_popup = menu_popup

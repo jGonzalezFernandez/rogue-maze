@@ -12,7 +12,7 @@ const SPEED = 2.0
 const INITIAL_HEALTH = 10
 const ATK = 8
 const SLASHING_DEF = 4
-const BLUNT_DEF = 6
+const BLUNT_DEF = 5
 const STOPS_BEFORE_UNICORNS = true
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \

@@ -1,7 +1,7 @@
 class_name IncorporealEnemy
 extends Enemy
 
-const MAX_ALPHA = 0.80
+const MAX_ALPHA = 0.70
 const FRIENDLY_FIRE = 2
 const IS_IMMOBILE = false
 

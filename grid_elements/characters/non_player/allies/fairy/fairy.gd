@@ -24,6 +24,7 @@ func _ready() -> void:
 	light = Light2D.new()
 	light.position = tile_center
 	light.texture = LIGHT_TEXTURE
+	light.mode = Light2D.MODE_MIX
 	light.shadow_enabled = true
 	add_child(light)
 	

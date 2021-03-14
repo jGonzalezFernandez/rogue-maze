@@ -78,8 +78,8 @@ func on_new_game_button_pressed() -> void:
 	second_items = [StatusBar.Item.CHAINMAIL, StatusBar.Item.BOOTS, StatusBar.Item.AMULET, StatusBar.Item.HEART_CONTAINER]
 	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.CLOAK, StatusBar.Item.BOMB_BAG]
 	
-	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.LOOSE_TILE]
-	second_events = [EventPopup.EventName.GOOD_LEVER]
+	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.LOOSE_TILE, EventPopup.EventName.RED_FOUNTAIN]
+	second_events = [EventPopup.EventName.GOOD_LEVER, EventPopup.EventName.BLUE_FOUNTAIN]
 
 func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
@@ -133,8 +133,8 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze, self))
 			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze, self))
-			add_element(Coin.new(maze.random_center_left_position(), self))
 			add_element(Event.new(maze.random_center_right_position(), self))
+			add_element(Coin.new(maze.random_center_left_position(), self))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
 			canvas_modulate.color = Color.lightgray
@@ -317,7 +317,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				player_status_bar.inventory.add_child(bomb_bag)
 				player.bomb_ability = true
 	else:
-		print("money")
+		player.coins += 7
 	player_status_bar.stats_label.text = player.get_stats()
 	remove(treasure)
 
@@ -395,7 +395,13 @@ func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
 		EventPopup.EventName.LOOSE_TILE:
 			set_player_health(1)
 			call_deferred("next_level")
+		EventPopup.EventName.RED_FOUNTAIN:
+			player.def -= 1
+			player_status_bar.stats_label.text = player.get_stats()
 		EventPopup.EventName.GOOD_LEVER:
 			add_heart_container(player.max_health + 2)
+		EventPopup.EventName.BLUE_FOUNTAIN:
+			player.magic_atk += 1
+			player_status_bar.stats_label.text = player.get_stats()
 	
 	remove(event_popup)
