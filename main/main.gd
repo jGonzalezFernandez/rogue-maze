@@ -1,6 +1,7 @@
 extends ColorRect
 
 const STARTING_POSITION = Maze.BOTTOM_LEFT_CORNER
+const HELMET_PRICE = 4
 const MAX_MINOR_ENEMIES_PER_LEVEL = 9
 
 const BACKGROUND_COLOR = Color.black
@@ -41,6 +42,7 @@ var cloak: Cloak
 var bomb_bag: BombBag
 var first_events: Array
 var second_events: Array
+var third_events: Array
 
 func _ready() -> void:
 #	randomize()
@@ -80,6 +82,7 @@ func on_new_game_button_pressed() -> void:
 	
 	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.LOOSE_TILE, EventPopup.EventName.RED_FOUNTAIN]
 	second_events = [EventPopup.EventName.GOOD_LEVER, EventPopup.EventName.BLUE_FOUNTAIN]
+	third_events = [EventPopup.EventName.PAINTING, EventPopup.EventName.SELLER]
 
 func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
@@ -146,16 +149,14 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			canvas_modulate.color = Color.gray
 			add_enemy(Shadow.new(maze.random_center_position(), player, maze, self))
-			add_element(Coin.new(maze.random_top_right_position(), self))
-			add_element(Coin.new(maze.random_center_left_position(), self))
+			add_element(Event.new(maze.random_top_right_position(), self))
+			add_element(Event.new(maze.random_center_left_position(), self))
 			add_element(Coin.new(maze.random_center_right_position(), self))
 		_:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			canvas_modulate.color = Color(0.1, 0.1, 0.1, 1)
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze, self))
 #			add_element(Event.new(maze.random_top_right_position(), self))
-			add_element(Coin.new(maze.random_center_left_position(), self))
-			add_element(Coin.new(maze.random_center_right_position(), self))
 	add_child(maze)
 	
 	add_element(Treasure.new(maze.random_top_center_position(), self))
@@ -201,6 +202,7 @@ func clean(everything: bool = false) -> void:
 		third_items.clear()
 		first_events.clear()
 		second_events.clear()
+		third_events.clear()
 	else:
 		# We want the allies to follow the Player to the next level, so we don't delete
 		# them to continue their treatment later (in the update_allies() function).
@@ -317,7 +319,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				player_status_bar.inventory.add_child(bomb_bag)
 				player.bomb_ability = true
 	else:
-		player.coins += 7
+		player.coins += HELMET_PRICE
 	player_status_bar.stats_label.text = player.get_stats()
 	remove(treasure)
 
@@ -376,10 +378,19 @@ func on_food_area_exited(_area, food: Food) -> void:
 func on_event_area_entered(_area, event: Event) -> void:
 	var event_popup: EventPopup
 	
-	if !first_events.empty() and level_number < 4:
+	if level_number < 4 and !first_events.empty():
 		event_popup = EventPopup.new(Utils.pop_random_elem(first_events), player, menu_popup, self)
-	elif !second_events.empty() and level_number < 7:
+	elif level_number < 6 and !second_events.empty():
 		event_popup = EventPopup.new(Utils.pop_random_elem(second_events), player, menu_popup, self)
+	elif level_number == 6 and !third_events.empty():
+		match Utils.pop_random_elem(third_events):
+			EventPopup.EventName.SELLER:
+				if player.coins >= HELMET_PRICE:
+					event_popup = EventPopup.new(EventPopup.EventName.SELLER, player, menu_popup, self, true, [player.coins])
+				else:
+					event_popup = EventPopup.new(EventPopup.EventName.SELLER, player, menu_popup, self, false, [HELMET_PRICE])
+			var event_name:
+					event_popup = EventPopup.new(event_name, player, menu_popup, self)
 	
 	gui_layer.add_child(event_popup)
 	event_popup.popup_centered()
@@ -389,19 +400,27 @@ func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
 	menu_popup.set_process_input(true)
 	get_tree().paused = false
 	
-	match event_popup.event_name:
-		EventPopup.EventName.BAD_LEVER:
+	match [event_popup.event_name, event_popup.success]:
+		[EventPopup.EventName.BAD_LEVER, _]:
 			set_player_health(1)
-		EventPopup.EventName.LOOSE_TILE:
+		[EventPopup.EventName.LOOSE_TILE, _]:
 			set_player_health(1)
 			call_deferred("next_level")
-		EventPopup.EventName.RED_FOUNTAIN:
+		[EventPopup.EventName.RED_FOUNTAIN, _]:
 			player.def -= 1
 			player_status_bar.stats_label.text = player.get_stats()
-		EventPopup.EventName.GOOD_LEVER:
+		[EventPopup.EventName.GOOD_LEVER, _]:
 			add_heart_container(player.max_health + 2)
-		EventPopup.EventName.BLUE_FOUNTAIN:
+		[EventPopup.EventName.BLUE_FOUNTAIN, _]:
 			player.magic_atk += 1
+			player_status_bar.stats_label.text = player.get_stats()
+		[EventPopup.EventName.PAINTING, _]:
+			player.perception -= 1
+			player_status_bar.stats_label.text = player.get_stats()
+		[EventPopup.EventName.SELLER, true]:
+			player.coins = 0
+			player_status_bar.inventory.add_child(Helmet.new())
+			player.def += 1
 			player_status_bar.stats_label.text = player.get_stats()
 	
 	remove(event_popup)

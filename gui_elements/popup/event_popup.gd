@@ -1,32 +1,42 @@
 class_name EventPopup
 extends PopupExt
 
-enum EventName {BAD_LEVER, LOOSE_TILE, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN}
+enum EventName {BAD_LEVER, LOOSE_TILE, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN, PAINTING, SELLER}
 
-const BAD_LEVER_INTRO_MESSAGE = "You notice a lever on the wall hidden in the shadows.\nIt has a small circle engraved on it.\nDo you move the lever?"
+const BAD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small circle engraved on it.\nDo you move the lever?"
 const BAD_LEVER_HINT = "\nPERCEPTION: in fact, the circle looks like some kind of skull."
-const BAD_LEVER_RESULT_MESSAGE = "It was a trap!\nA secret trapdoor opens in the ceiling and a stone falls on your head.\nYour life is reduced to half a heart."
+const BAD_LEVER_RESULT_MSG = "It was a trap!\nA secret trapdoor opens in the ceiling and a stone falls on your head.\nYour life is reduced to half a heart."
 
-const LOOSE_TILE_INTRO_MESSAGE = "You notice a loose tile in the corner of the hallway that looks like a switch.\nUnder normal circumstances you would think it's a trap, but it's strange that it's not right in the middle of the path.\nDo you press it?"
+const LOOSE_TILE_INTRO_MSG = "You notice a loose tile in the corner of the hallway that looks like a switch.\nUnder normal circumstances you would think it's a trap, but it's strange that it's not right in the middle of the path.\nDo you press it?"
 const LOOSE_TILE_HINT = "\nPERCEPTION: the floor sounds hollow in this area."
-const LOOSE_TILE_RESULT_MESSAGE = "The floor opens and you fall to the next level!\nYour life is reduced to half a heart."
+const LOOSE_TILE_RESULT_MSG = "The floor opens and you fall to the next level!\nYour life is reduced to half a heart."
 
-const RED_FOUNTAIN_INTRO_MESSAGE = "You come across a fountain, its water glowing with a faint, unnatural red light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
+const RED_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural red light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
 const RED_FOUNTAIN_HINT = "\nPERCEPTION: even in the depths of this dungeon, it seems strange to you that there is no trace of life around a water source."
-const RED_FOUNTAIN_RESULT_MESSAGE = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets. They're ruined!\nDEF -0.5"
+const RED_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey're ruined! DEF -0.5"
 
-const GOOD_LEVER_INTRO_MESSAGE = "You notice a lever on the wall hidden in the shadows.\nIt has a small X engraved on it.\nDo you move the lever?"
+const GOOD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small X engraved on it.\nDo you move the lever?"
 const GOOD_LEVER_HINT = "\nPERCEPTION: in fact, the X looks like a crossed fork and knife."
-const GOOD_LEVER_RESULT_MESSAGE = "A secret compartment opens in the wall. Under the light of a candelabra, the most wonderful food awaits you. What a delicious surprise!\nYou feel better than ever, and you regain all your life plus an extra heart."
+const GOOD_LEVER_RESULT_MSG = "A secret compartment opens in the wall. Under the light of a candelabra, the most wonderful food awaits you. What a delicious surprise!\nYou feel better than ever, and you regain all your life plus an extra heart."
 
-const BLUE_FOUNTAIN_INTRO_MESSAGE = "You come across a fountain, its water glowing with a faint, unnatural blue light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
+const BLUE_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural blue light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
 const BLUE_FOUNTAIN_HINT = "\nPERCEPTION: silver flowers grow beside the water."
-const BLUE_FOUNTAIN_RESULT_MESSAGE = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets. They've been enchanted!\nMagic ATK +0.5"
+const BLUE_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey've been enchanted! Magic ATK +0.5\nAfter that, the water loses its shine."
+
+const PAINTING_INTRO_MSG = "You find a dusty cloth that seems to be hiding something human-sized.\nDo you remove it to see what's underneath?"
+const PAINTING_HINT = "\nPERCEPTION: you feel an evil aura."
+const PAINTING_RESULT_MSG = "After removing the fabric, you discover a picture stand with an old painting of yourself, but no face.\nThis vision deeply disturbs you. Perception -1"
+
+const SELLER_INTRO_MSG = "You meet a small, suspicious-looking humanoid.\nHe says: \"I'll sell you the helmet I found for %s gold coins\".\nHe doesn't seem to be carrying the item with him, but perhaps it is hidden somewhere.\nDo you give him the coins you have?"
+const SELLER_HINT = "\nPERCEPTION: you notice that he has looked out of the corner of his eye at some vines."
+const SELLER_RESULT_MSG = "The little humanoid takes the money and moves some vines, revealing a hole in the wall, from which he pulls out the helmet.\nAfter giving it to you, he says: \"No refunds!\"."
+const SELLER_RESULT_MSG_ALT = "You don't have enough money to make the purchase!"
 
 var event_name: int
-var intro_message: String
+var success: bool
+var intro_msg: String
 var hint: String
-var result_message: String
+var result_msg: String
 
 var player: Player
 var menu_popup: MenuPopup
@@ -35,29 +45,43 @@ var yes_button: Button
 var no_button: Button
 var continue_button: Button
 
-func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRect).(main) -> void:
+func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRect, success: bool = true, intro_placeholders_content: Array = []).(main) -> void:
 	self.event_name = event_name
-	match event_name:
-		EventName.BAD_LEVER:
-			self.intro_message = BAD_LEVER_INTRO_MESSAGE
+	self.success = success
+	
+	match [event_name, success]:
+		[EventName.BAD_LEVER, _]:
+			self.intro_msg = BAD_LEVER_INTRO_MSG % intro_placeholders_content
 			self.hint = BAD_LEVER_HINT
-			self.result_message = BAD_LEVER_RESULT_MESSAGE
-		EventName.LOOSE_TILE:
-			self.intro_message = LOOSE_TILE_INTRO_MESSAGE
+			self.result_msg = BAD_LEVER_RESULT_MSG
+		[EventName.LOOSE_TILE, _]:
+			self.intro_msg = LOOSE_TILE_INTRO_MSG % intro_placeholders_content
 			self.hint = LOOSE_TILE_HINT
-			self.result_message = LOOSE_TILE_RESULT_MESSAGE
-		EventName.RED_FOUNTAIN:
-			self.intro_message = RED_FOUNTAIN_INTRO_MESSAGE
+			self.result_msg = LOOSE_TILE_RESULT_MSG
+		[EventName.RED_FOUNTAIN, _]:
+			self.intro_msg = RED_FOUNTAIN_INTRO_MSG % intro_placeholders_content
 			self.hint = RED_FOUNTAIN_HINT
-			self.result_message = RED_FOUNTAIN_RESULT_MESSAGE
-		EventName.GOOD_LEVER:
-			self.intro_message = GOOD_LEVER_INTRO_MESSAGE
+			self.result_msg = RED_FOUNTAIN_RESULT_MSG
+		[EventName.GOOD_LEVER, _]:
+			self.intro_msg = GOOD_LEVER_INTRO_MSG % intro_placeholders_content
 			self.hint = GOOD_LEVER_HINT
-			self.result_message = GOOD_LEVER_RESULT_MESSAGE
-		EventName.BLUE_FOUNTAIN:
-			self.intro_message = BLUE_FOUNTAIN_INTRO_MESSAGE
+			self.result_msg = GOOD_LEVER_RESULT_MSG
+		[EventName.BLUE_FOUNTAIN, _]:
+			self.intro_msg = BLUE_FOUNTAIN_INTRO_MSG % intro_placeholders_content
 			self.hint = BLUE_FOUNTAIN_HINT
-			self.result_message = BLUE_FOUNTAIN_RESULT_MESSAGE
+			self.result_msg = BLUE_FOUNTAIN_RESULT_MSG
+		[EventName.PAINTING, _]:
+			self.intro_msg = PAINTING_INTRO_MSG % intro_placeholders_content
+			self.hint = PAINTING_HINT
+			self.result_msg = PAINTING_RESULT_MSG
+		[EventName.SELLER, true]:
+			self.intro_msg = SELLER_INTRO_MSG % intro_placeholders_content
+			self.hint = SELLER_HINT
+			self.result_msg = SELLER_RESULT_MSG
+		[EventName.SELLER, false]:
+			self.intro_msg = SELLER_INTRO_MSG % intro_placeholders_content
+			self.hint = SELLER_HINT
+			self.result_msg = SELLER_RESULT_MSG_ALT
 	
 	self.player = player
 	self.menu_popup = menu_popup
@@ -67,8 +91,8 @@ func _ready() -> void:
 	menu_popup.set_process_input(false)
 	get_tree().paused = true
 	
-	var full_message = intro_message
-	if player.perception > 0:
+	var full_message = intro_msg
+	if player.perception > 1:
 		full_message += hint
 	message.text = full_message
 	message.theme = small_font_theme
@@ -99,6 +123,6 @@ func _ready() -> void:
 func on_yes_button_pressed() -> void:
 	yes_button.hide()
 	no_button.hide()
-	message.text = result_message
+	message.text = result_msg
 	continue_button.show()
 	continue_button.grab_focus()
