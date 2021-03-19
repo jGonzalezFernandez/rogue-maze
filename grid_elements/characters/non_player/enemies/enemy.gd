@@ -54,7 +54,7 @@ func _ready() -> void:
 
 func hunt(path: PoolVector2Array) -> void:
 	if group_call_timer.is_stopped(): # too many calls to the group can cause a message queue overflow
-		get_tree().call_group(ENEMY_GROUP, "player_found", name)
+		get_tree().call_group(ENEMY_GROUP, "player_found", char_name)
 		group_call_timer.start(MIN_TIME_BETWEEN_GROUP_CALLS)
 	follow_path(path, MovementType.RUN, path.size())
 
@@ -92,15 +92,15 @@ func get_stats() -> String:
 	return "|  ATK: %s  |  Slashing DEF: %s  |  Blunt DEF: %s" % [Utils.half(atk), Utils.half(slashing_def), Utils.half(blunt_def)]
 
 func is_obstacle(obj: Object) -> bool:
-	return obj.is_in_group(ENEMY_GROUP) or (stops_before_unicorns and UNICORN_NAME in obj.name)
+	return obj is Character and (obj.is_in_group(ENEMY_GROUP) or (stops_before_unicorns and obj.char_name == UNICORN_NAME))
 
 func is_collision_exception(obj: Object) -> bool:
-	return (SPIDER_NAME in name and WEB_NAME in obj.name) or (WEB_NAME in name and SPIDER_NAME in obj.name)
+	return obj is Character and ((char_name == SPIDER_NAME and obj.char_name == WEB_NAME) or (char_name == WEB_NAME and obj.char_name == SPIDER_NAME))
 
 func on_area_entered(area) -> void:
 	if area is BombExplosion:
 		emit_signal("died", self)
-		get_tree().call_group(ENEMY_GROUP, "collision_received", name, area.position)
+		get_tree().call_group(ENEMY_GROUP, "collision_received", char_name, area.position)
 	elif !is_collision_exception(area):
 		var damage = area.friendly_fire
 		var sound = THWACK_SOUND
@@ -115,4 +115,4 @@ func on_area_entered(area) -> void:
 		audio_player.stream = sound
 		audio_player.play()
 		manage_collision(area, damage, is_immobile)
-		get_tree().call_group(ENEMY_GROUP, "collision_received", name, area.position)
+		get_tree().call_group(ENEMY_GROUP, "collision_received", char_name, area.position)

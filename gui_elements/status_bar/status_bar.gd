@@ -25,7 +25,7 @@ func _init(character: Character, layout_preset: int, offset: Vector2, main: Colo
 
 func _ready() -> void:
 	name_label = Label.new()
-	name_label.text = character.name.to_upper() + "  |" # vertical bar to separate the name from the hearts
+	name_label.text = character.char_name.to_upper() + "  |" # vertical bar to separate the name from the hearts
 	name_label.theme = custom_theme
 	
 	heart_bar = HBoxContainer.new()

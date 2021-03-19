@@ -1,7 +1,7 @@
 class_name EventPopup
 extends PopupExt
 
-enum EventName {BAD_LEVER, LOOSE_TILE, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN, PAINTING, SELLER}
+enum EventName {BAD_LEVER, LOOSE_TILE, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN, PAINTING, SELLER, STATUES}
 
 const BAD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small circle engraved on it.\nDo you move the lever?"
 const BAD_LEVER_HINT = "\nPERCEPTION: in fact, the circle looks like some kind of skull."
@@ -32,6 +32,11 @@ const SELLER_HINT = "\nPERCEPTION: you notice that he has looked out of the corn
 const SELLER_RESULT_MSG = "The little humanoid takes the money and moves some vines, revealing a hole in the wall, from which he pulls out the helmet.\nAfter giving it to you, he says: \"No refunds!\"."
 const SELLER_RESULT_MSG_ALT = "You don't have enough money to make the purchase!"
 
+const STATUES_INTRO_MSG = "You find a room full of statues in grotesque poses.\nThe room, rather large, seems even more so because one of the walls is a mirror.\nAfter examining the sculptures, you realize that each of them is missing an object.\nVoices echo in your head: \"You will never be able to leave this cursed maze, unless you restore the stolen treasures. Give them to us, and we will give you what you seek\".\nDo you trust the voices and put the inventory items you have in place?"
+const STATUES_HINT = "\nPERCEPTION: one of the voices sounds familiar and comforting."
+const STATUES_RESULT_MSG = "After putting the last of the items in place, you are startled to see that... your reflection has disappeared from the mirror!\nHowever, you soon realize the truth: the mirror is no longer there and what looks like a reflection is a completely identical adjacent room.\nUpon inspecting this new room, you discover a treasure chest hidden behind one of the statues, which contains a gem... but not just any gem!\nYou have found the lost family gemstone! Your twin sister can finally rest in peace.\nPress continue to start a new game."
+const STATUES_RESULT_MSG_ALT = "You put the items you have in place, but nothing happens.\nIt seems you are missing %s treasures."
+
 var event_name: int
 var success: bool
 var intro_msg: String
@@ -45,33 +50,33 @@ var yes_button: Button
 var no_button: Button
 var continue_button: Button
 
-func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRect, success: bool = true, intro_placeholders_content: Array = []).(main) -> void:
+func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRect, success: bool = true, intro_placeholders_content: Array = [], result_placeholders_content: Array = []).(main) -> void:
 	self.event_name = event_name
 	self.success = success
 	
 	match [event_name, success]:
 		[EventName.BAD_LEVER, _]:
-			self.intro_msg = BAD_LEVER_INTRO_MSG % intro_placeholders_content
+			self.intro_msg = BAD_LEVER_INTRO_MSG
 			self.hint = BAD_LEVER_HINT
 			self.result_msg = BAD_LEVER_RESULT_MSG
 		[EventName.LOOSE_TILE, _]:
-			self.intro_msg = LOOSE_TILE_INTRO_MSG % intro_placeholders_content
+			self.intro_msg = LOOSE_TILE_INTRO_MSG
 			self.hint = LOOSE_TILE_HINT
 			self.result_msg = LOOSE_TILE_RESULT_MSG
 		[EventName.RED_FOUNTAIN, _]:
-			self.intro_msg = RED_FOUNTAIN_INTRO_MSG % intro_placeholders_content
+			self.intro_msg = RED_FOUNTAIN_INTRO_MSG
 			self.hint = RED_FOUNTAIN_HINT
 			self.result_msg = RED_FOUNTAIN_RESULT_MSG
 		[EventName.GOOD_LEVER, _]:
-			self.intro_msg = GOOD_LEVER_INTRO_MSG % intro_placeholders_content
+			self.intro_msg = GOOD_LEVER_INTRO_MSG
 			self.hint = GOOD_LEVER_HINT
 			self.result_msg = GOOD_LEVER_RESULT_MSG
 		[EventName.BLUE_FOUNTAIN, _]:
-			self.intro_msg = BLUE_FOUNTAIN_INTRO_MSG % intro_placeholders_content
+			self.intro_msg = BLUE_FOUNTAIN_INTRO_MSG
 			self.hint = BLUE_FOUNTAIN_HINT
 			self.result_msg = BLUE_FOUNTAIN_RESULT_MSG
 		[EventName.PAINTING, _]:
-			self.intro_msg = PAINTING_INTRO_MSG % intro_placeholders_content
+			self.intro_msg = PAINTING_INTRO_MSG
 			self.hint = PAINTING_HINT
 			self.result_msg = PAINTING_RESULT_MSG
 		[EventName.SELLER, true]:
@@ -82,6 +87,14 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 			self.intro_msg = SELLER_INTRO_MSG % intro_placeholders_content
 			self.hint = SELLER_HINT
 			self.result_msg = SELLER_RESULT_MSG_ALT
+		[EventName.STATUES, true]:
+			self.intro_msg = STATUES_INTRO_MSG
+			self.hint = STATUES_HINT
+			self.result_msg = STATUES_RESULT_MSG
+		[EventName.STATUES, false]:
+			self.intro_msg = STATUES_INTRO_MSG
+			self.hint = STATUES_HINT
+			self.result_msg = STATUES_RESULT_MSG_ALT % result_placeholders_content
 	
 	self.player = player
 	self.menu_popup = menu_popup

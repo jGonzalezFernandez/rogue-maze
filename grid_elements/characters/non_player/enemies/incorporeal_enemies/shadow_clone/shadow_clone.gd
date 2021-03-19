@@ -24,5 +24,5 @@ func special_movement() -> void:
 
 func player_found(sender: String) -> void:
 	# The Shadow and its clones are supposed to have a shared vision (but only the clones attack mindlessly when called)
-	if !tween.is_active() and (SHADOW_NAME in sender or CLONE_NAME in sender):
+	if !tween.is_active() and (sender == SHADOW_NAME or sender == CLONE_NAME):
 		hunt(get_point_path_to(player.position))

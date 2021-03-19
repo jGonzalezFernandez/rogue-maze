@@ -19,5 +19,5 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
 	pass
 
 func collision_received(sender: String, collider_position: Vector2) -> void:
-	if !tween.is_active() and (WEB_NAME in sender):
+	if !tween.is_active() and (sender == WEB_NAME):
 		hunt(get_point_path_to(collider_position))

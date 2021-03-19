@@ -2,6 +2,7 @@ extends ColorRect
 
 const STARTING_POSITION = Maze.BOTTOM_LEFT_CORNER
 const HELMET_PRICE = 4
+const MIN_ITEMS_TO_WIN = 14
 const MAX_MINOR_ENEMIES_PER_LEVEL = 9
 
 const BACKGROUND_COLOR = Color.black
@@ -61,7 +62,7 @@ func _ready() -> void:
 	gui_layer.add_child(menu_popup)
 	menu_popup.popup_centered()
 
-func on_new_game_button_pressed() -> void:
+func on_new_game_button_pressed(is_new_game_plus: bool = false) -> void:
 	canvas_modulate.color = Color.white
 	menu_popup.hide()
 	
@@ -72,6 +73,8 @@ func on_new_game_button_pressed() -> void:
 	gui_layer.add_child(player_status_bar)
 	
 	player_status_bar.inventory.add_child(Gauntlets.new()) # to visually represent the initial state of the Player
+	if is_new_game_plus:
+		player_status_bar.inventory.add_child(Gem.new())
 	
 	new_level()
 	set_enemy_status_bars()
@@ -156,7 +159,7 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			canvas_modulate.color = Color(0.1, 0.1, 0.1, 1)
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze, self))
-#			add_element(Event.new(maze.random_top_right_position(), self))
+			add_element(Event.new(maze.random_top_right_position(), self))
 	add_child(maze)
 	
 	add_element(Treasure.new(maze.random_top_center_position(), self))
@@ -391,6 +394,9 @@ func on_event_area_entered(_area, event: Event) -> void:
 					event_popup = EventPopup.new(EventPopup.EventName.SELLER, player, menu_popup, self, false, [HELMET_PRICE])
 			var event_name:
 					event_popup = EventPopup.new(event_name, player, menu_popup, self)
+	elif level_number > 6:
+		var item_count = player_status_bar.inventory.get_child_count()
+		event_popup = EventPopup.new(EventPopup.EventName.STATUES, player, menu_popup, self, item_count >= MIN_ITEMS_TO_WIN, [], [MIN_ITEMS_TO_WIN - item_count])
 	
 	gui_layer.add_child(event_popup)
 	event_popup.popup_centered()
@@ -422,5 +428,8 @@ func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
 			player_status_bar.inventory.add_child(Helmet.new())
 			player.def += 1
 			player_status_bar.stats_label.text = player.get_stats()
+		[EventPopup.EventName.STATUES, true]:
+			clean(true)
+			on_new_game_button_pressed(true)
 	
 	remove(event_popup)

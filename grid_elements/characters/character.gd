@@ -18,6 +18,9 @@ const CLONE_NAME = "Clone"
 
 const PREVIOUS_POSITIONS_SIZE = 10
 
+# We use char_name instead of the name property of Node, because it is exposed in the GUI, and Godot changes the String
+# to make it unique when more than one instance exists at the same time
+var char_name: String
 var previous_positions = []
 var running_duration: float
 var walking_duration: float
@@ -37,7 +40,7 @@ func set_durations(speed: float) -> void:
 
 func _init(initial_position: Vector2, main: Node, texture: Texture, name: String, speed: float, initial_health: int, friendly_fire: int, max_alpha: float) \
 .(initial_position, main, texture, max_alpha) -> void:
-	self.name = name
+	self.char_name = name
 	set_durations(speed)
 	health = initial_health
 	max_health = health
