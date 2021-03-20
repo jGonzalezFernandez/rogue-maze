@@ -8,7 +8,7 @@ const EXPLOSION_DURATION = 1.30
 
 var timer: Timer
 
-func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
+func _init(position: Vector2, main: Node).(position, main, TEXTURE, [Layer.EXPLOSIONS]) -> void:
 	collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES])
 
 func _ready() -> void:

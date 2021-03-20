@@ -5,6 +5,7 @@ var player
 var maze: Maze
 var viewing_distance: int
 var hearing: int
+var hearing_loud_sounds: int
 var was_running: bool = false
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: Texture, name: String, vision: int, hearing: int, speed: float, initial_health: int, friendly_fire: int, max_alpha: float) \
@@ -13,6 +14,7 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: T
 	self.maze = maze
 	viewing_distance = vision * Maze.TILE_SIZE
 	self.hearing = hearing
+	self.hearing_loud_sounds = 3 * hearing
 
 func get_point_path_to(target: Vector2) -> PoolVector2Array:
 	var path = maze.astar.get_point_path(maze.astar.get_closest_point(position), maze.astar.get_closest_point(target))

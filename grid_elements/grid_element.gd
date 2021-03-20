@@ -3,7 +3,7 @@ extends Area2D
 
 # The RayCast node points by default to the first layer, which is also used by
 # the Player, the walls, and any other node unless otherwise specified
-enum Layer {DEFAULT, CORPOREAL_ENEMIES, INCORPOREAL_ENEMIES, ALLIES}
+enum Layer {DEFAULT, CORPOREAL_ENEMIES, INCORPOREAL_ENEMIES, ALLIES, EXPLOSIONS}
 
 const BOMB_TIMER_DURATION = 1.5
 const DIAGONALS = [Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(-1, -1)]

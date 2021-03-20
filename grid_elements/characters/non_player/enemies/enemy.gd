@@ -38,7 +38,7 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: T
 
 func _ready() -> void:
 	# enemies should be able to see everything in order to avoid unnecessary collisions on their paths
-	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES, Layer.ALLIES])
+	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES, Layer.ALLIES, Layer.EXPLOSIONS])
 	connect("area_entered", self, "on_area_entered")
 	connect("minor_enemy_addition_requested", main, "add_minor_enemy_if_possible")
 	
@@ -88,11 +88,17 @@ func on_movement_timer_timeout() -> void:
 		elif Utils.fifty_percent_chance():
 			special_movement()
 
+func run_to_explosion_if_audible(target: Vector2) -> void:
+	if !tween.is_active():
+		var path = get_point_path_to(target)
+		if path.size() <= hearing_loud_sounds:
+			follow_path(path, MovementType.RUN, path.size())
+
 func get_stats() -> String:
 	return "|  ATK: %s  |  Slashing DEF: %s  |  Blunt DEF: %s" % [Utils.half(atk), Utils.half(slashing_def), Utils.half(blunt_def)]
 
 func is_obstacle(obj: Object) -> bool:
-	return obj is Character and (obj.is_in_group(ENEMY_GROUP) or (stops_before_unicorns and obj.char_name == UNICORN_NAME))
+	return obj is BombExplosion or obj.is_in_group(ENEMY_GROUP) or (stops_before_unicorns and obj is Character and obj.char_name == UNICORN_NAME)
 
 func is_collision_exception(obj: Object) -> bool:
 	return obj is Character and ((char_name == SPIDER_NAME and obj.char_name == WEB_NAME) or (char_name == WEB_NAME and obj.char_name == SPIDER_NAME))
