@@ -48,7 +48,6 @@ var menu_popup: MenuPopup
 var small_font_theme: CustomTheme
 var yes_button: Button
 var no_button: Button
-var continue_button: Button
 
 func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRect, success: bool = true, intro_placeholders_content: Array = [], result_placeholders_content: Array = []).(main) -> void:
 	self.event_name = event_name
@@ -118,19 +117,14 @@ func _ready() -> void:
 	no_button.text = "no"
 	no_button.theme = custom_theme
 	
-	continue_button = Button.new()
-	continue_button.text = "continue"
-	continue_button.focus_mode = FOCUS_ALL
-	continue_button.theme = custom_theme
-	
 	v_container.add_child(yes_button)
 	v_container.add_child(no_button)
-	v_container.add_child(continue_button)
 	v_container.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM, 0, MARGIN)
 	
 	continue_button.hide()
 	
 	yes_button.connect("pressed", self, "on_yes_button_pressed")
+	no_button.connect("pressed", self, "on_no_button_pressed")
 	continue_button.connect("pressed", main, "on_event_popup_continue_button_pressed", [self])
 
 func on_yes_button_pressed() -> void:
@@ -139,3 +133,8 @@ func on_yes_button_pressed() -> void:
 	message.text = result_msg
 	continue_button.show()
 	continue_button.grab_focus()
+
+func on_no_button_pressed() -> void:
+	menu_popup.set_process_input(true)
+	get_tree().paused = false
+	queue_free()

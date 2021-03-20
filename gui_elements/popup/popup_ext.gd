@@ -9,6 +9,7 @@ var custom_theme: CustomTheme
 var panel: Panel
 var message: Label
 var v_container: VBoxContainer
+var continue_button: Button
 
 func _init(main: ColorRect) -> void:
 	self.main = main
@@ -31,3 +32,10 @@ func _ready() -> void:
 	
 	v_container = VBoxContainer.new()
 	add_child(v_container)
+	
+	continue_button = Button.new()
+	continue_button.text = "continue"
+	continue_button.focus_mode = FOCUS_ALL
+	continue_button.theme = custom_theme
+	v_container.add_child(continue_button)
+	

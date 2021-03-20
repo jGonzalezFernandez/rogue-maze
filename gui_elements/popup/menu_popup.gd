@@ -28,20 +28,35 @@ func _ready() -> void:
 	v_container.add_child(exit_button)
 	v_container.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM, 0, MARGIN)
 	
+	continue_button.hide()
+	
 	new_game_button.connect("pressed", main, "on_new_game_button_pressed")
+	exit_button.connect("pressed", self, "on_exit_button_pressed")
+	continue_button.connect("pressed", self, "on_continue_button_pressed")
 
 func _input(_event):
 	if Input.is_action_just_pressed("menu"):
 		if get_tree().paused:
 			new_game_button.show()
+			continue_button.hide()
 			get_tree().paused = false
 			hide()
 		elif not visible:
 			message.text = PAUSE_MESSAGE
 			new_game_button.hide()
+			continue_button.show()
 			get_tree().paused = true
 			popup()
 
 func show_game_over() -> void:
 	message.text = GAME_OVER_MESSAGE
 	popup()
+
+func on_exit_button_pressed() -> void:
+	get_tree().quit()
+
+func on_continue_button_pressed() -> void:
+	new_game_button.show()
+	continue_button.hide()
+	get_tree().paused = false
+	hide()
