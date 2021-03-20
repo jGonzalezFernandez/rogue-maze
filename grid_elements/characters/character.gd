@@ -18,8 +18,8 @@ const CLONE_NAME = "Clone"
 
 const PREVIOUS_POSITIONS_SIZE = 10
 
-# We use char_name instead of the name property of Node, because it is exposed in the GUI, and Godot changes the String
-# to make it unique when more than one instance exists at the same time
+# We use char_name instead of the name property of Node, because Godot changes this String to make it unique when 
+# more than one instance exists at the same time, but we don't want to display @ and numbers in the GUI
 var char_name: String
 var previous_positions = []
 var running_duration: float

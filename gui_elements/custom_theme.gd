@@ -1,6 +1,9 @@
 class_name CustomTheme
 extends Theme
 
+const STYLE_BOX_BORDER_WIDTH = 2
+const STYLE_BOX_MARGIN = 10
+
 func _init(custom_font: CustomFont, background_color: Color) -> void:
 	var font_color = background_color.inverted()
 	
@@ -10,7 +13,11 @@ func _init(custom_font: CustomFont, background_color: Color) -> void:
 	var style_box = StyleBoxFlat.new()
 	style_box.bg_color = background_color
 	style_box.border_color = background_color.inverted()
-	style_box.set_border_width_all(2)
+	style_box.set_border_width_all(STYLE_BOX_BORDER_WIDTH)
+	style_box.content_margin_top = STYLE_BOX_MARGIN
+	style_box.content_margin_bottom = STYLE_BOX_MARGIN
+	style_box.content_margin_right = STYLE_BOX_MARGIN
+	style_box.content_margin_left = STYLE_BOX_MARGIN
 	
 	set_stylebox("panel", "Panel", style_box)
 	

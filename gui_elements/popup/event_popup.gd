@@ -126,7 +126,7 @@ func _ready() -> void:
 	v_container.add_child(yes_button)
 	v_container.add_child(no_button)
 	v_container.add_child(continue_button)
-	v_container.set_anchors_and_margins_preset(Control.PRESET_CENTER)
+	v_container.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM, 0, MARGIN)
 	
 	continue_button.hide()
 	

@@ -1,6 +1,9 @@
 class_name PopupExt
 extends Popup
 
+const MARGIN = 60
+const RECT_SIZE_DIVISOR = 1.2
+
 var main: ColorRect
 var custom_theme: CustomTheme
 var panel: Panel
@@ -10,7 +13,7 @@ var v_container: VBoxContainer
 func _init(main: ColorRect) -> void:
 	self.main = main
 	custom_theme = CustomTheme.new(CustomFont.new(), main.color)
-	rect_size = Vector2(Utils.half(main.rect_size.x), Utils.half(main.rect_size.y))
+	rect_size = Vector2(main.rect_size.x / RECT_SIZE_DIVISOR, main.rect_size.y / RECT_SIZE_DIVISOR)
 	popup_exclusive = true
 	pause_mode = PAUSE_MODE_PROCESS
 
@@ -21,7 +24,7 @@ func _ready() -> void:
 	add_child(panel)
 	
 	message = Label.new()
-	message.set_anchors_and_margins_preset(Control.PRESET_WIDE, 0, 30)
+	message.set_anchors_and_margins_preset(Control.PRESET_WIDE, 0, MARGIN)
 	message.align = Label.ALIGN_CENTER
 	message.autowrap = true
 	add_child(message)

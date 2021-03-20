@@ -26,7 +26,7 @@ func _ready() -> void:
 	
 	v_container.add_child(new_game_button)
 	v_container.add_child(exit_button)
-	v_container.set_anchors_and_margins_preset(Control.PRESET_CENTER)
+	v_container.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM, 0, MARGIN)
 	
 	new_game_button.connect("pressed", main, "on_new_game_button_pressed")
 
