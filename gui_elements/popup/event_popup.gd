@@ -45,7 +45,6 @@ var result_msg: String
 
 var player: Player
 var menu_popup: MenuPopup
-var small_font_theme: CustomTheme
 var yes_button: Button
 var no_button: Button
 
@@ -97,7 +96,6 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 	
 	self.player = player
 	self.menu_popup = menu_popup
-	small_font_theme = CustomTheme.new(CustomFont.new(CustomFont.SMALL_FONT_SIZE), main.color)
 
 func _ready() -> void:
 	menu_popup.set_process_input(false)
@@ -111,11 +109,11 @@ func _ready() -> void:
 	
 	yes_button = Button.new()
 	yes_button.text = "yes"
-	yes_button.theme = custom_theme
+	yes_button.theme = normal_font_theme
 	
 	no_button = Button.new()
 	no_button.text = "no"
-	no_button.theme = custom_theme
+	no_button.theme = normal_font_theme
 	
 	v_container.add_child(yes_button)
 	v_container.add_child(no_button)
@@ -134,7 +132,10 @@ func on_yes_button_pressed() -> void:
 	continue_button.show()
 	continue_button.grab_focus()
 
-func on_no_button_pressed() -> void:
+func resume_game() -> void:
 	menu_popup.set_process_input(true)
 	get_tree().paused = false
+
+func on_no_button_pressed() -> void:
+	resume_game()
 	queue_free()

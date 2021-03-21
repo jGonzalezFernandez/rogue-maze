@@ -405,8 +405,7 @@ func on_event_area_entered(_area, event: Event) -> void:
 	remove(event)
 
 func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
-	menu_popup.set_process_input(true)
-	get_tree().paused = false
+	event_popup.resume_game()
 	
 	match [event_popup.event_name, event_popup.success]:
 		[EventPopup.EventName.BAD_LEVER, _]:
