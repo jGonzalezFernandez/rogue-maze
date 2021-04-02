@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/thwack.wav-fb6f3c9f84ea648b1301544c99995943.sample"
+
+[deps]
+
+source_file="res://grid_elements/characters/non_player/enemies/thwack.wav"
+dest_files=[ "res://.import/thwack.wav-fb6f3c9f84ea648b1301544c99995943.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -19,5 +19,3 @@ const STATUS_BAR = GUI_ELEMENTS + "status_bar/"
 const ITEMS = STATUS_BAR + "items/"
 
 const MAZE = RES + "maze/"
-
-const SOUNDS = RES + "sounds/"

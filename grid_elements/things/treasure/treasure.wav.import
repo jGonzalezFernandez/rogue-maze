@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/treasure.wav-b49ee8da75ada1d2cfb5dae84185f927.sample"
+
+[deps]
+
+source_file="res://grid_elements/things/treasure/treasure.wav"
+dest_files=[ "res://.import/treasure.wav-b49ee8da75ada1d2cfb5dae84185f927.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

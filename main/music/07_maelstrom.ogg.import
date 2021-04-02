@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/07_maelstrom.ogg-290357ed0863839c97784803a6d8ed50.oggstr"
+
+[deps]
+
+source_file="res://main/music/07_maelstrom.ogg"
+dest_files=[ "res://.import/07_maelstrom.ogg-290357ed0863839c97784803a6d8ed50.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

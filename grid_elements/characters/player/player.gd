@@ -9,6 +9,12 @@ const MOTION_INPUTS = {"ui_up": Vector2.UP, "ui_down": Vector2.DOWN, "ui_right":
 const TEXTURE_PATH = ResourcePath.CHARACTERS + "/player/player.png"
 const TEXTURE = preload(TEXTURE_PATH)
 
+const DASH_01_PATH = ResourcePath.CHARACTERS + "/player/dash_01.wav"
+const DASH_01_SOUND = preload(DASH_01_PATH)
+
+const DASH_02_PATH = ResourcePath.CHARACTERS + "/player/dash_02.wav"
+const DASH_02_SOUND = preload(DASH_02_PATH)
+
 const INITIAL_SPEED = 3.5
 const INITIAL_HEALTH = 6
 const FRIENDLY_FIRE = 0
@@ -47,6 +53,8 @@ func _process(_delta) -> void:
 			if Input.is_action_pressed(dir_key):
 				if dash_ability and Input.is_action_pressed("dash"):
 					phasing = true
+					audio_player.stream = Utils.get_random_elem([DASH_01_SOUND, DASH_02_SOUND])
+					audio_player.play()
 					for i in range(MAX_DASH_LENGTH, 0, -1):
 						if move_tween_if_possible_to(MOTION_INPUTS[dir_key] * Maze.TILE_SIZE * i, MovementType.RUN, true):
 							break

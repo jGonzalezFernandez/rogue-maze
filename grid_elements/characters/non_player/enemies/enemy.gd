@@ -3,11 +3,13 @@ extends NonPlayer
 
 signal minor_enemy_addition_requested
 
-const THWACK_PATH = ResourcePath.SOUNDS + "/thwack.wav"
+const THWACK_PATH = ResourcePath.ENEMIES + "/thwack.wav"
 const THWACK_SOUND = preload(THWACK_PATH)
-const METAL_HIT_01_PATH = ResourcePath.SOUNDS + "/metal_hit_01.wav"
+
+const METAL_HIT_01_PATH = ResourcePath.ENEMIES + "/metal_hit_01.wav"
 const METAL_HIT_01_SOUND = preload(METAL_HIT_01_PATH)
-const METAL_HIT_02_PATH = ResourcePath.SOUNDS + "/metal_hit_02.wav"
+
+const METAL_HIT_02_PATH = ResourcePath.ENEMIES + "/metal_hit_02.wav"
 const METAL_HIT_02_SOUND = preload(METAL_HIT_02_PATH)
 
 const MIN_TIME_BETWEEN_GROUP_CALLS = 1.0

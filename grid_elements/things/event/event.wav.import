@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/event.wav-53f8442e82bf6388da89e3ad41960868.sample"
+
+[deps]
+
+source_file="res://grid_elements/things/event/event.wav"
+dest_files=[ "res://.import/event.wav-53f8442e82bf6388da89e3ad41960868.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

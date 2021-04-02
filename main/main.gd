@@ -240,6 +240,7 @@ func next_level() -> void:
 
 func on_key_area_entered(_area) -> void:
 	stairs.unlock()
+	key.audio_player.play()
 	remove(key)
 
 func on_stairs_area_entered(_area) -> void:
@@ -324,11 +325,13 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 	else:
 		player.coins += HELMET_PRICE
 	player_status_bar.stats_label.text = player.get_stats()
+	treasure.audio_player.play()
 	remove(treasure)
 
 func on_coin_area_entered(_area, coin: Coin) -> void:
 	player.coins += 1
 	player_status_bar.stats_label.text = player.get_stats()
+	coin.audio_player.play()
 	remove(coin)
 
 func on_player_teleport_requested() -> void:
@@ -344,6 +347,7 @@ func on_player_bomb_requested() -> void:
 	add_element(Bomb.new(player.position, self))
 
 func on_bomb_explosion_requested(bomb: Bomb, explosion_positions: Array) -> void:
+	bomb.audio_player.play()
 	remove(bomb)
 	for pos in explosion_positions:
 		add_element(BombExplosion.new(pos, self))
@@ -373,6 +377,7 @@ func on_character_died(character: Character) -> void:
 
 func on_food_area_entered(_area, food: Food) -> void:
 	if player.increase_health_if_possible(food.health_refill):
+		food.audio_player.play()
 		remove(food)
 	else:
 		food.stand_behind()
@@ -402,6 +407,7 @@ func on_event_area_entered(_area, event: Event) -> void:
 	
 	gui_layer.add_child(event_popup)
 	event_popup.popup_centered()
+	event.audio_player.play()
 	remove(event)
 
 func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
