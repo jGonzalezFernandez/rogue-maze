@@ -10,10 +10,12 @@ https://kz.itch.io/1-bit-fantasy-items by kcaze (CC BY 4.0): the chainmail.
 
 Finally, some things (like that ugly carnivorous plant, or the coins) were drawn by me.
 
-**Sound effects**:
+**Music and sound effects**:
 
-thwack: Jordan Irwin (CC0 1.0).
+https://www.zapsplat.com (standard license with gold account, no attribution required): Ghosts Walk Here, Hallowdream, Maelstrom...
 
-metal_hit_01, metal_hit_02 and explosion: https://www.zapsplat.com/ (standard license with gold account, no attribution required).
+https://freepd.com (CC0 1.0): Creepy Hallow and Asking Questions.
+
+Jordan Irwin (CC0 1.0): thwack.
 
 **Font**: https://www.1001fonts.com/fff-forward-font.html by Fonts For Flash (free for personal and commercial use).

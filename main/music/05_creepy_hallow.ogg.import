@@ -11,5 +11,5 @@ dest_files=[ "res://.import/05_creepy_hallow.ogg-4aaef848886204a32a3ef10063c8506
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

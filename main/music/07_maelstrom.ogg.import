@@ -11,5 +11,5 @@ dest_files=[ "res://.import/07_maelstrom.ogg-290357ed0863839c97784803a6d8ed50.og
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

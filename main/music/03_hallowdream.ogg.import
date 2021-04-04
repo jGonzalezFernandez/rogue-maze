@@ -11,5 +11,5 @@ dest_files=[ "res://.import/03_hallowdream.ogg-f245ba1d5617d072d571bdfc1622730b.
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

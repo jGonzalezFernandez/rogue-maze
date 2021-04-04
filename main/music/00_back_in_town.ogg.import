@@ -11,5 +11,5 @@ dest_files=[ "res://.import/00_back_in_town.ogg-8b6f9e789b27cd7dcdbcd518f2fe0504
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

@@ -11,5 +11,5 @@ dest_files=[ "res://.import/02_ghosts_walk_here.ogg-4a8ebe67c9d64eb015a48f86d3c5
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

@@ -14,9 +14,32 @@ const ENEMY_STATUS_BAR_LAYOUTS = [
 	[Control.PRESET_BOTTOM_RIGHT, Vector2(0 - STATUS_BAR_X_OFFSET, BOTTOM_Y_OFFSET)],
 	[Control.PRESET_CENTER_BOTTOM, Vector2(0, BOTTOM_Y_OFFSET)]]
 
+const NO_SOUND_VOLUME = -80
+const MUSIC_VOLUME = -10 # excluding main menu
+const MAIN_MENU_TRACK_PATH = ResourcePath.MUSIC + "00_back_in_town.ogg"
+const MAIN_MENU_TRACK = preload(MAIN_MENU_TRACK_PATH)
+const FIRST_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "01_movement.ogg"
+const FIRST_LEVEL_TRACK = preload(FIRST_LEVEL_TRACK_PATH)
+const SECOND_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "02_ghosts_walk_here.ogg"
+const SECOND_LEVEL_TRACK = preload(SECOND_LEVEL_TRACK_PATH)
+const THIRD_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "03_hallowdream.ogg"
+const THIRD_LEVEL_TRACK = preload(THIRD_LEVEL_TRACK_PATH)
+const FOURTH_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "04_asking_questions.ogg"
+const FOURTH_LEVEL_TRACK = preload(FOURTH_LEVEL_TRACK_PATH)
+const FIFTH_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "05_creepy_hallow.ogg"
+const FIFTH_LEVEL_TRACK = preload(FIFTH_LEVEL_TRACK_PATH)
+const SIXTH_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "06_aggressive_lightning.ogg"
+const SIXTH_LEVEL_TRACK = preload(SIXTH_LEVEL_TRACK_PATH)
+const SEVENTH_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "07_maelstrom.ogg"
+const SEVENTH_LEVEL_TRACK = preload(SEVENTH_LEVEL_TRACK_PATH)
+const AMBIENCE_TRACK_PATH = ResourcePath.MAIN + "horror_ambience_loop.ogg" # TODO: Find a better one?
+const AMBIENCE_TRACK = preload(AMBIENCE_TRACK_PATH)
+
 var canvas_modulate: CanvasModulate
 var gui_layer: CanvasLayer
 var menu_popup: MenuPopup
+var tween: Tween
+var audio_player: AudioStreamPlayer
 var player: Player
 var player_status_bar: StatusBar
 var maze: Maze
@@ -61,6 +84,15 @@ func _ready() -> void:
 	menu_popup = MenuPopup.new(self)
 	gui_layer.add_child(menu_popup)
 	menu_popup.popup_centered()
+	
+	tween = Tween.new()
+	add_child(tween)
+	
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	play_track(MAIN_MENU_TRACK)
+	
+	audio_player.connect("finished", self, "on_audio_player_finished")
 
 func on_new_game_button_pressed(is_new_game_plus: bool = false) -> void:
 	canvas_modulate.color = Color.white
@@ -86,6 +118,26 @@ func on_new_game_button_pressed(is_new_game_plus: bool = false) -> void:
 	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.LOOSE_TILE, EventPopup.EventName.RED_FOUNTAIN]
 	second_events = [EventPopup.EventName.GOOD_LEVER, EventPopup.EventName.BLUE_FOUNTAIN]
 	third_events = [EventPopup.EventName.PAINTING, EventPopup.EventName.SELLER]
+
+func play_track(track: AudioStream, volume: float = 0) -> void:
+	audio_player.stream = track
+	audio_player.volume_db = volume
+	audio_player.play()
+
+func change_volume(target_volume: float, duration: float) -> void:
+	tween.interpolate_property(audio_player, "volume_db", audio_player.volume_db, target_volume, duration)
+	tween.start()
+
+func change_track(new_track: AudioStream) -> void:
+	if audio_player.playing:
+		change_volume(NO_SOUND_VOLUME, 1)
+		yield(tween, "tween_all_completed")
+	play_track(new_track, MUSIC_VOLUME)
+
+func on_audio_player_finished() -> void:
+	if level_number > 0:
+		play_track(AMBIENCE_TRACK, NO_SOUND_VOLUME)
+		change_volume(MUSIC_VOLUME, 10)
 
 func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
@@ -114,18 +166,21 @@ func new_level() -> void:
 	match level_number:
 		1:
 			maze = Maze.new(GenerationAlgorithm.BINARY_TREE, true)
+			change_track(FIRST_LEVEL_TRACK)
 			add_enemy(Crocodile.new(maze.random_center_position(), player, maze, self))
 			add_enemy(CarnivorousPlant.new(maze.TOP_RIGHT_CORNER, player, maze, self))
 			add_element(Apple.new(maze.random_center_right_position(), self))
 			add_element(Coin.new(maze.random_center_left_position(), self))
 		2:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
+			change_track(SECOND_LEVEL_TRACK)
 			add_enemy(Bear.new(maze.random_center_position(), player, maze, self))
 			add_enemy(Bat.new(maze.random_top_right_position(), player, maze, self))
 			add_element(Event.new(maze.random_center_left_position(), self))
 			add_element(Coin.new(maze.random_center_right_position(), self))
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
+			change_track(THIRD_LEVEL_TRACK)
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze, self))
 			var excluded_positions: Array = []
 			for i in 4:
@@ -137,6 +192,7 @@ func new_level() -> void:
 			add_element(Ham.new(maze.random_top_right_position(), self))
 		4:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
+			change_track(FOURTH_LEVEL_TRACK)
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze, self))
 			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze, self))
 			add_element(Event.new(maze.random_center_right_position(), self))
@@ -144,6 +200,7 @@ func new_level() -> void:
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
 			canvas_modulate.color = Color.lightgray
+			change_track(FIFTH_LEVEL_TRACK)
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze, self))
 			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze, self))
 			add_ally(Fairy.new(maze.random_center_left_position(), player, maze, self))
@@ -151,6 +208,7 @@ func new_level() -> void:
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			canvas_modulate.color = Color.gray
+			change_track(SIXTH_LEVEL_TRACK)
 			add_enemy(Shadow.new(maze.random_center_position(), player, maze, self))
 			add_element(Event.new(maze.random_top_right_position(), self))
 			add_element(Event.new(maze.random_center_left_position(), self))
@@ -158,6 +216,7 @@ func new_level() -> void:
 		_:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			canvas_modulate.color = Color(0.1, 0.1, 0.1, 1)
+			change_track(SEVENTH_LEVEL_TRACK)
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze, self))
 			add_element(Event.new(maze.random_top_right_position(), self))
 	add_child(maze)

@@ -18,4 +18,7 @@ const GUI_ELEMENTS = RES + "gui_elements/"
 const STATUS_BAR = GUI_ELEMENTS + "status_bar/"
 const ITEMS = STATUS_BAR + "items/"
 
+const MAIN = RES + "main/"
+const MUSIC = MAIN + "music/"
+
 const MAZE = RES + "maze/"

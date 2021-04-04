@@ -11,7 +11,6 @@ const TEXTURE = preload(TEXTURE_PATH)
 
 const DASH_01_PATH = ResourcePath.CHARACTERS + "/player/dash_01.wav"
 const DASH_01_SOUND = preload(DASH_01_PATH)
-
 const DASH_02_PATH = ResourcePath.CHARACTERS + "/player/dash_02.wav"
 const DASH_02_SOUND = preload(DASH_02_PATH)
 
