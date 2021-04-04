@@ -73,3 +73,8 @@ func disable() -> void:
 	hide()
 	collision_shape.set_deferred("disabled", true)
 	set_process(false)
+
+func enable() -> void:
+	show()
+	collision_shape.set_deferred("disabled", false)
+	set_process(true)

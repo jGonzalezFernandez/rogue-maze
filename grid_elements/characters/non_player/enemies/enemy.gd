@@ -122,3 +122,13 @@ func on_area_entered(area) -> void:
 		audio_player.play()
 		manage_collision(area, damage, is_immobile)
 		get_tree().call_group(ENEMY_GROUP, "collision_received", char_name, area.position)
+
+func disable() -> void:
+	.disable()
+	if is_instance_valid(movement_timer) and movement_timer.is_connected("timeout", self, "on_movement_timer_timeout"):
+		movement_timer.disconnect("timeout", self, "on_movement_timer_timeout")
+
+func enable() -> void:
+	.enable()
+	if is_instance_valid(movement_timer) and !movement_timer.is_connected("timeout", self, "on_movement_timer_timeout"):
+		movement_timer.connect("timeout", self, "on_movement_timer_timeout")

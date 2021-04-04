@@ -313,14 +313,14 @@ func on_stairs_area_entered(_area) -> void:
 func on_stairs_area_exited(_area) -> void:
 	stairs.stand_forward()
 
-func set_player_health(new_health: int) -> void:
-	player.health = new_health
-	player_status_bar.set_hearts(player.health)
+func set_health(new_health: int, character: Character = player, status_bar: StatusBar = player_status_bar) -> void:
+	character.health = new_health
+	status_bar.set_hearts(character.health)
 
-func add_heart_container(new_health: int) -> void:
-	player.max_health += 2
-	player_status_bar.heart_bar.add_child(Heart.new())
-	set_player_health(new_health)
+func add_heart_container(new_health: int, character: Character = player, status_bar: StatusBar = player_status_bar) -> void:
+	character.max_health += 2
+	status_bar.heart_bar.add_child(Heart.new())
+	set_health(new_health, character, status_bar)
 
 func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 	if !first_items.empty():
@@ -433,6 +433,13 @@ func on_character_died(character: Character) -> void:
 		clean(true)
 		menu_popup.show_game_over()
 		change_track(GAME_OVER_TRACK, 0)
+	elif character is EvilTwin:
+		character.disable()
+		yield(get_tree().create_timer(character.RESPAWN), "timeout")
+		var enemy_status_bar_opt = _get_enemy_status_bar(character)
+		if is_instance_valid(enemy_status_bar_opt) and is_instance_valid(character):
+			add_heart_container(character.max_health + 2, character, enemy_status_bar_opt)
+			character.enable()
 	else:
 		remove(_get_enemy_status_bar(character))
 		remove(character)
@@ -477,9 +484,9 @@ func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
 	
 	match [event_popup.event_name, event_popup.success]:
 		[EventPopup.EventName.BAD_LEVER, _]:
-			set_player_health(1)
+			set_health(1)
 		[EventPopup.EventName.LOOSE_TILE, _]:
-			set_player_health(1)
+			set_health(1)
 			call_deferred("next_level")
 		[EventPopup.EventName.RED_FOUNTAIN, _]:
 			player.def -= 1
