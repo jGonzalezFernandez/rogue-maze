@@ -34,6 +34,8 @@ const SEVENTH_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "07_maelstrom.ogg"
 const SEVENTH_LEVEL_TRACK = preload(SEVENTH_LEVEL_TRACK_PATH)
 const AMBIENCE_TRACK_PATH = ResourcePath.MAIN + "horror_ambience_loop.ogg" # TODO: Find a better one?
 const AMBIENCE_TRACK = preload(AMBIENCE_TRACK_PATH)
+const GAME_OVER_TRACK_PATH = ResourcePath.MAIN + "game_over.wav"
+const GAME_OVER_TRACK = preload(GAME_OVER_TRACK_PATH)
 
 var canvas_modulate: CanvasModulate
 var gui_layer: CanvasLayer
@@ -128,16 +130,16 @@ func change_volume(target_volume: float, duration: float) -> void:
 	tween.interpolate_property(audio_player, "volume_db", audio_player.volume_db, target_volume, duration)
 	tween.start()
 
-func change_track(new_track: AudioStream) -> void:
+func change_track(new_track: AudioStream, duration = 0.5) -> void:
 	if audio_player.playing:
-		change_volume(NO_SOUND_VOLUME, 1)
+		change_volume(NO_SOUND_VOLUME, duration)
 		yield(tween, "tween_all_completed")
 	play_track(new_track, MUSIC_VOLUME)
 
 func on_audio_player_finished() -> void:
 	if level_number > 0:
 		play_track(AMBIENCE_TRACK, NO_SOUND_VOLUME)
-		change_volume(MUSIC_VOLUME, 10)
+		change_volume(MUSIC_VOLUME, 5)
 
 func add_enemy(enemy: Enemy) -> void:
 	add_child(enemy)
@@ -430,6 +432,7 @@ func on_character_died(character: Character) -> void:
 	if character is Player:
 		clean(true)
 		menu_popup.show_game_over()
+		change_track(GAME_OVER_TRACK, 0)
 	else:
 		remove(_get_enemy_status_bar(character))
 		remove(character)
