@@ -216,5 +216,5 @@ func random_bottom_center_position(excluded_positions: Array = []) -> Vector2:
 func random_bottom_right_position(excluded_positions: Array = []) -> Vector2:
 	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_bottom_right_position"))
 
-func target_is_outside_boundaries(target: Vector2) -> bool:
+static func target_is_outside_boundaries(target: Vector2) -> bool:
 	return target.x < MIN_X or target.x > MAX_X or target.y < MIN_Y or target.y > MAX_Y

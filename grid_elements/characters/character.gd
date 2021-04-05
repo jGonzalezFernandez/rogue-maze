@@ -59,37 +59,41 @@ func append_to_previous_positions(previous_position: Vector2) -> void:
 		previous_positions.pop_front()
 	previous_positions.append(previous_position)
 
-func move_tween_to(target_position: Vector2, movement_type: int, invisible_transition: bool = false) -> void:
-	var duration: float
-	var transition_type = Tween.TRANS_SINE
-	var ease_type = Tween.EASE_IN_OUT
-	
-	match movement_type:
-		MovementType.RUN:
-			duration = running_duration
-		MovementType.WALK:
-			duration = walking_duration
-		_:
-			duration = collision_duration
-			transition_type = Tween.TRANS_BOUNCE
-			ease_type = Tween.EASE_OUT
-	
-	tween.interpolate_property(self, "position", position, target_position, duration, transition_type, ease_type)
-	if invisible_transition: # we remove the alpha component of the color to make the node transparent and we put it back
-		tween.interpolate_property(self, "modulate:a", 0.0, max_alpha, duration, transition_type, ease_type)
-	
-	append_to_previous_positions(position)
-	tween.start()
+func move_tween_to(target_position: Vector2, movement_type: int, invisible_transition: bool = false) -> bool:
+	# This only checks the outer walls of the maze. The returned boolean indicates if the movement has happened
+	if Maze.target_is_outside_boundaries(target_position):
+		return false
+	else:
+		var duration: float
+		var transition_type = Tween.TRANS_SINE
+		var ease_type = Tween.EASE_IN_OUT
+		
+		match movement_type:
+			MovementType.RUN:
+				duration = running_duration
+			MovementType.WALK:
+				duration = walking_duration
+			_:
+				duration = collision_duration
+				transition_type = Tween.TRANS_BOUNCE
+				ease_type = Tween.EASE_OUT
+		
+		tween.interpolate_property(self, "position", position, target_position, duration, transition_type, ease_type)
+		if invisible_transition: # we remove the alpha component of the color to make the node transparent and we put it back
+			tween.interpolate_property(self, "modulate:a", 0.0, max_alpha, duration, transition_type, ease_type)
+		
+		append_to_previous_positions(position)
+		tween.start()
+		return true
 
 func snap(vector2: Vector2) -> Vector2:
 	return vector2.snapped(Vector2.ONE * Maze.TILE_SIZE)
 
 func move_tween_if_possible_to(target_cell: Vector2, movement_type: int, invisible_transition: bool = false) -> bool:
-	# To be used when we need to avoid walls. The returned boolean indicates if the movement has happened
+	# To be used when we need to avoid all the walls
 	cast_ray_to(target_cell)
 	if !ray.is_colliding():
-		move_tween_to(snap(position + target_cell), movement_type, invisible_transition)
-		return true
+		return move_tween_to(snap(position + target_cell), movement_type, invisible_transition)
 	else:
 		return false
 

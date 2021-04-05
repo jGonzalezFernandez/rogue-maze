@@ -12,8 +12,8 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: T
 func walk_through_walls(dir: Vector2, maximum_path_length: int) -> void:
 	phasing = true
 	for _i in range(maximum_path_length):
-		var target = position + dir * maze.TILE_SIZE
-		if player_is_visible() or maze.target_is_outside_boundaries(target):
+		var target = position + dir * Maze.TILE_SIZE
+		if player_is_visible():
 			break
 		move_tween_to(target, MovementType.WALK, true)
 		yield(tween, "tween_all_completed")

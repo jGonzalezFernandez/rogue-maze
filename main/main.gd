@@ -1,6 +1,7 @@
 extends ColorRect
 
 const STARTING_POSITION = Maze.BOTTOM_LEFT_CORNER
+var is_new_game_plus: bool = false
 const HELMET_PRICE = 4
 const MIN_ITEMS_TO_WIN = 10
 const MAX_MINOR_ENEMIES_PER_LEVEL = 9
@@ -71,8 +72,8 @@ var second_events: Array
 var third_events: Array
 
 func _ready() -> void:
-#	randomize()
-	seed(255) # for testing
+	randomize()
+#	seed(255) # for testing
 	
 	color = BACKGROUND_COLOR
 	rect_size = OS.get_window_size()
@@ -96,7 +97,7 @@ func _ready() -> void:
 	
 	audio_player.connect("finished", self, "on_audio_player_finished")
 
-func on_new_game_button_pressed(is_new_game_plus: bool = false) -> void:
+func on_new_game_button_pressed() -> void:
 	canvas_modulate.color = Color.white
 	menu_popup.hide()
 	
@@ -109,6 +110,8 @@ func on_new_game_button_pressed(is_new_game_plus: bool = false) -> void:
 	player_status_bar.inventory.add_child(Gauntlets.new()) # to visually represent the initial state of the Player
 	if is_new_game_plus:
 		player_status_bar.inventory.add_child(Gem.new())
+		player.ignore_walls = true
+		player.change_transparency(0.85)
 	
 	new_level()
 	set_enemy_status_bars()
@@ -377,8 +380,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				cloak = Cloak.new()
 				player_status_bar.inventory.add_child(cloak)
 				player.invisible = true
-				player.max_alpha = IncorporealEnemy.MAX_ALPHA
-				player.modulate.a = player.max_alpha
+				player.change_transparency(IncorporealEnemy.MAX_ALPHA)
 			StatusBar.Item.BOMB_BAG:
 				bomb_bag = BombBag.new()
 				player_status_bar.inventory.add_child(bomb_bag)
@@ -506,6 +508,7 @@ func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
 			player_status_bar.stats_label.text = player.get_stats()
 		[EventPopup.EventName.STATUES, true]:
 			clean(true)
-			on_new_game_button_pressed(true)
+			is_new_game_plus = true
+			on_new_game_button_pressed()
 	
 	remove(event_popup)
