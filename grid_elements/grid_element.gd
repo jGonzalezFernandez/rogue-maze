@@ -6,8 +6,9 @@ extends Area2D
 enum Layer {DEFAULT, CORPOREAL_ENEMIES, INCORPOREAL_ENEMIES, ALLIES, EXPLOSIONS}
 
 const BOMB_TIMER_DURATION = 1.5
+const ORTHOGONAL_DIRECTIONS = [Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT]
 const DIAGONALS = [Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(-1, -1)]
-const ALL_DIRECTIONS = [Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT] + DIAGONALS
+const ALL_DIRECTIONS = ORTHOGONAL_DIRECTIONS + DIAGONALS
 const ALPHA_BEHIND = 0.25
 
 var max_alpha: float

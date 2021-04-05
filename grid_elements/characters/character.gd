@@ -6,6 +6,11 @@ signal died
 
 enum MovementType {RUN, WALK, COLLISION}
 
+const DASH_01_PATH = ResourcePath.CHARACTERS + "/dash_01.wav"
+const DASH_01_SOUND = preload(DASH_01_PATH)
+const DASH_02_PATH = ResourcePath.CHARACTERS + "/dash_02.wav"
+const DASH_02_SOUND = preload(DASH_02_PATH)
+
 # Some names need to be known by the whole hierarchy (since the 'is' operator can cause cyclic dependency errors...)
 const PLAYER_NAME = "Solène"
 const EVIL_TWIN_NAME = "Evil " + PLAYER_NAME
@@ -16,6 +21,7 @@ const WEB_NAME = "Web"
 const SHADOW_NAME = "Shadow"
 const CLONE_NAME = "Clone"
 
+const MAX_DASH_LENGTH = 4
 const PREVIOUS_POSITIONS_SIZE = 10
 
 # We use char_name instead of the name property of Node, because Godot changes this String to make it unique when 
@@ -59,6 +65,9 @@ func append_to_previous_positions(previous_position: Vector2) -> void:
 		previous_positions.pop_front()
 	previous_positions.append(previous_position)
 
+func snap(vector2: Vector2) -> Vector2:
+	return vector2.snapped(Vector2.ONE * Maze.TILE_SIZE)
+
 func move_tween_to(target_position: Vector2, movement_type: int, invisible_transition: bool = false) -> bool:
 	# This only checks the outer walls of the maze. The returned boolean indicates if the movement has happened
 	if Maze.target_is_outside_boundaries(target_position):
@@ -78,7 +87,7 @@ func move_tween_to(target_position: Vector2, movement_type: int, invisible_trans
 				transition_type = Tween.TRANS_BOUNCE
 				ease_type = Tween.EASE_OUT
 		
-		tween.interpolate_property(self, "position", position, target_position, duration, transition_type, ease_type)
+		tween.interpolate_property(self, "position", position, snap(target_position), duration, transition_type, ease_type)
 		if invisible_transition: # we remove the alpha component of the color to make the node transparent and we put it back
 			tween.interpolate_property(self, "modulate:a", 0.0, max_alpha, duration, transition_type, ease_type)
 		
@@ -86,16 +95,23 @@ func move_tween_to(target_position: Vector2, movement_type: int, invisible_trans
 		tween.start()
 		return true
 
-func snap(vector2: Vector2) -> Vector2:
-	return vector2.snapped(Vector2.ONE * Maze.TILE_SIZE)
-
 func move_tween_if_possible_to(target_cell: Vector2, movement_type: int, invisible_transition: bool = false) -> bool:
 	# To be used when we need to avoid all the walls
 	cast_ray_to(target_cell)
 	if !ray.is_colliding():
-		return move_tween_to(snap(position + target_cell), movement_type, invisible_transition)
+		return move_tween_to(position + target_cell, movement_type, invisible_transition)
 	else:
 		return false
+
+func dash_to(target_cell: Vector2) -> void:
+	phasing = true
+	for i in range(MAX_DASH_LENGTH, 0, -1):
+		if move_tween_if_possible_to(target_cell * i, MovementType.RUN, true):
+			audio_player.stream = Utils.get_random_elem([DASH_01_SOUND, DASH_02_SOUND])
+			audio_player.play()
+			break
+	yield(tween, "tween_all_completed")
+	phasing = false
 
 func teleport_to(target_position: Vector2) -> void:
 	phasing = true

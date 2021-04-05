@@ -19,4 +19,5 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
 .(initial_position, player, maze, main, TEXTURE, NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF) -> void:
 	pass
 
-# TODO: Add dash ability?
+func special_movement() -> void:
+	dash_to(Utils.get_random_elem(ORTHOGONAL_DIRECTIONS) * Maze.TILE_SIZE)

@@ -9,16 +9,10 @@ const MOTION_INPUTS = {"ui_up": Vector2.UP, "ui_down": Vector2.DOWN, "ui_right":
 const TEXTURE_PATH = ResourcePath.CHARACTERS + "/player/player.png"
 const TEXTURE = preload(TEXTURE_PATH)
 
-const DASH_01_PATH = ResourcePath.CHARACTERS + "/player/dash_01.wav"
-const DASH_01_SOUND = preload(DASH_01_PATH)
-const DASH_02_PATH = ResourcePath.CHARACTERS + "/player/dash_02.wav"
-const DASH_02_SOUND = preload(DASH_02_PATH)
-
 const INITIAL_SPEED = 3.5
 const INITIAL_HEALTH = 6
 const FRIENDLY_FIRE = 0
 const INITIAL_ALPHA = 1.0
-const MAX_DASH_LENGTH = 4
 
 var slashing_atk = 0
 var blunt_atk = 2
@@ -53,16 +47,9 @@ func _process(_delta) -> void:
 			if Input.is_action_pressed(dir_key):
 				var target_cell = MOTION_INPUTS[dir_key] * Maze.TILE_SIZE
 				if dash_ability and Input.is_action_pressed("dash"):
-					phasing = true
-					audio_player.stream = Utils.get_random_elem([DASH_01_SOUND, DASH_02_SOUND])
-					audio_player.play()
-					for i in range(MAX_DASH_LENGTH, 0, -1):
-						if move_tween_if_possible_to(target_cell * i, MovementType.RUN, true):
-							break
-					yield(tween, "tween_all_completed")
-					phasing = false
+					dash_to(target_cell)
 				elif ignore_walls:
-					move_tween_to(snap(position + target_cell), MovementType.RUN)
+					move_tween_to(position + target_cell, MovementType.RUN)
 				else:
 					move_tween_if_possible_to(target_cell, MovementType.RUN)
 			elif teleport_ability and Input.is_action_pressed("teleport"):
