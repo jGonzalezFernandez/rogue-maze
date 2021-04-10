@@ -19,7 +19,6 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
 
 func _ready() -> void:
 	light = Light2D.new()
-	light.position = tile_center
 	light.texture = LIGHT_TEXTURE
 	light.mode = Light2D.MODE_MIX
 	light.shadow_enabled = true

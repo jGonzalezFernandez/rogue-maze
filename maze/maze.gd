@@ -8,7 +8,8 @@ enum Walls {NONE, W, S, SW, E, EW, ES, ESW, N, NW, NS, NSW, NE, NEW, NES, ALL}
 const TILE_MAP_SCENE_PATH = ResourcePath.MAZE + "tile_map/tile_map.tscn"
 const TILE_MAP_SCENE = preload(TILE_MAP_SCENE_PATH)
 
-const TILE_SIZE = 20
+const HALF_TILE = 10
+const TILE_SIZE = HALF_TILE * 2
 const ROWS = 28
 const COLUMNS = 51
 const X_OFFSET = 0
@@ -42,7 +43,7 @@ func set_cells() -> void:
 		for column in COLUMNS:
 			var cell_id = astar.get_available_point_id()
 			indexed_cells[row][column] = Cell.new(cell_id, row, column)
-			astar.add_point(cell_id, Vector2((column + X_OFFSET) * TILE_SIZE, (row + Y_OFFSET) * TILE_SIZE))
+			astar.add_point(cell_id, Vector2((column + X_OFFSET) * TILE_SIZE + HALF_TILE, (row + Y_OFFSET) * TILE_SIZE + HALF_TILE))
 
 func sort_cells_by_link_count_asc(cell1: Cell, cell2: Cell) -> bool:
 	return cell1.link_count < cell2.link_count
