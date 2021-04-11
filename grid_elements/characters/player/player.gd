@@ -28,8 +28,8 @@ var ignore_walls = false
 
 var bomb_timer: Timer
 
-func _init(initial_position: Vector2, main: Node) \
-.(initial_position, main, TEXTURE, PLAYER_NAME, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, INITIAL_ALPHA) -> void:
+func _init(initial_position: Vector2, maze: Maze, main: Node) \
+.(initial_position, maze, main, TEXTURE, PLAYER_NAME, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, INITIAL_ALPHA) -> void:
 	pass
 
 func _ready() -> void:

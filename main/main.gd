@@ -101,7 +101,7 @@ func on_new_game_button_pressed() -> void:
 	canvas_modulate.color = Color.white
 	menu_popup.hide()
 	
-	player = Player.new(STARTING_POSITION, self)
+	player = Player.new(STARTING_POSITION, maze, self)
 	add_child(player)
 	
 	player_status_bar = StatusBar.new(player, Control.PRESET_TOP_LEFT, Vector2(STATUS_BAR_X_OFFSET, STATUS_BAR_Y_OFFSET), self)
@@ -225,6 +225,7 @@ func new_level() -> void:
 			add_enemy(EvilTwin.new(maze.random_center_position(), player, maze, self))
 			add_element(Event.new(maze.random_top_right_position(), self))
 	add_child(maze)
+	player.maze = maze
 	
 	add_element(Treasure.new(maze.random_top_center_position(), self))
 	add_element(Treasure.new(maze.random_bottom_center_position(), self))

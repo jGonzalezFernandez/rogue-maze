@@ -24,6 +24,7 @@ const CLONE_NAME = "Clone"
 const MAX_DASH_LENGTH = 4
 const PREVIOUS_POSITIONS_SIZE = 10
 
+var maze: Maze
 # We use char_name instead of the name property of Node, because Godot changes this String to make it unique when 
 # more than one instance exists at the same time, but we don't want to display @ and numbers in the GUI
 var char_name: String
@@ -44,8 +45,9 @@ func set_durations(speed: float) -> void:
 	collision_duration = 1.5 * walking_duration
 	bounce_duration = collision_duration / 2.0
 
-func _init(initial_position: Vector2, main: Node, texture: Texture, name: String, speed: float, initial_health: int, friendly_fire: int, max_alpha: float) \
+func _init(initial_position: Vector2, maze: Maze, main: Node, texture: Texture, name: String, speed: float, initial_health: int, friendly_fire: int, max_alpha: float) \
 .(initial_position, main, texture, max_alpha) -> void:
+	self.maze = maze
 	self.char_name = name
 	set_durations(speed)
 	health = initial_health
@@ -66,7 +68,11 @@ func append_to_previous_positions(previous_position: Vector2) -> void:
 	previous_positions.append(previous_position)
 
 func snap(vector2: Vector2) -> Vector2:
-	return vector2.snapped(Vector2.ONE * Maze.TILE_SIZE)
+	# To ensure that characters can only move from one valid position to another (i.e. the centre of a square within the maze), even if they are deviated during a move
+	if is_instance_valid(maze) and is_instance_valid(maze.astar):
+		return maze.astar.get_point_position(maze.astar.get_closest_point(vector2))
+	else:
+		return vector2
 
 func move_tween_to(target_position: Vector2, movement_type: int, invisible_transition: bool = false) -> bool:
 	# This only checks the outer walls of the maze. The returned boolean indicates if the movement has happened
