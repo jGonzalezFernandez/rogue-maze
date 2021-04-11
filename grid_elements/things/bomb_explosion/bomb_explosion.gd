@@ -12,6 +12,9 @@ func _init(position: Vector2, main: Node).(position, main, TEXTURE, [Layer.EXPLO
 	collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES])
 
 func _ready() -> void:
+	light.texture_scale = 0.6
+	light.enabled = true
+	
 	timer = Timer.new()
 	timer.one_shot = true
 	add_child(timer)

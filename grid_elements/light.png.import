@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/light.png-b4f56eb5960cc293fb49e02d94893125.stex"
+path="res://.import/light.png-4a9246c185387b539a602f73226c4bdd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://grid_elements/characters/non_player/allies/fairy/light.png"
-dest_files=[ "res://.import/light.png-b4f56eb5960cc293fb49e02d94893125.stex" ]
+source_file="res://grid_elements/light.png"
+dest_files=[ "res://.import/light.png-4a9246c185387b539a602f73226c4bdd.stex" ]
 
 [params]
 

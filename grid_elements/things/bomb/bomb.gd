@@ -19,6 +19,9 @@ func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
 func _ready() -> void:
 	audio_player.stream = SOUND
 	
+	light.texture_scale = 0.2
+	light.enabled = true
+	
 	timer = Timer.new()
 	timer.one_shot = true
 	add_child(timer)

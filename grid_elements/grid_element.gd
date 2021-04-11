@@ -5,6 +5,9 @@ extends Area2D
 # the Player, the walls, and any other node unless otherwise specified
 enum Layer {DEFAULT, CORPOREAL_ENEMIES, INCORPOREAL_ENEMIES, ALLIES, EXPLOSIONS}
 
+const LIGHT_TEXTURE_PATH = ResourcePath.GRID_ELEMENTS + "/light.png"
+const LIGHT_TEXTURE = preload(LIGHT_TEXTURE_PATH)
+
 const BOMB_TIMER_DURATION = 1.5
 const ORTHOGONAL_DIRECTIONS = [Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT]
 const DIAGONALS = [Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(-1, -1)]
@@ -19,6 +22,7 @@ var collision_shape: CollisionShape2D
 var tween: Tween
 var ray: RayCast2D
 var audio_player: AudioStreamPlayer2D
+var light: Light2D
 
 func _init(position: Vector2, main: Node, texture: Texture, max_alpha: float) -> void:
 	self.position = position
@@ -46,6 +50,12 @@ func _ready() -> void:
 	
 	audio_player = AudioStreamPlayer2D.new()
 	add_child(audio_player)
+	
+	light = Light2D.new()
+	light.texture = LIGHT_TEXTURE
+	light.mode = Light2D.MODE_MIX
+	light.enabled = false # ideally all grid elements should emit a dim light, but this is bad for perf
+	add_child(light)
 
 func cast_ray_to(target: Vector2) -> void:
 	ray.cast_to = target

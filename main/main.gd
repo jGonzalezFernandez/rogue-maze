@@ -416,7 +416,8 @@ func on_bomb_explosion_requested(bomb: Bomb, explosion_positions: Array) -> void
 	for pos in explosion_positions:
 		add_element(BombExplosion.new(pos, self))
 	for enemy in enemies:
-		enemy.run_to_explosion_if_audible(explosion_positions.front())
+		if is_instance_valid(enemy):
+			enemy.run_to_explosion_if_audible(explosion_positions.front())
 
 func _get_enemy_status_bar(character: Character):
 	for status_bar in enemy_status_bars:
