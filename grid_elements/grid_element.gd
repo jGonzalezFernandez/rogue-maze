@@ -64,11 +64,20 @@ func stand_forward() -> void:
 	modulate.a = max_alpha
 
 func disable() -> void:
-	hide()
 	collision_shape.set_deferred("disabled", true)
 	set_process(false)
+
+func disable_and_hide() -> void:
+	disable()
+	hide()
 
 func enable() -> void:
 	show()
 	collision_shape.set_deferred("disabled", false)
 	set_process(true)
+
+func fade() -> void:
+	disable()
+	tween.interpolate_property(self, "scale", scale, Vector2(2.0, 2.0), 0.1)
+	tween.interpolate_property(self, "modulate:a", modulate.a, 0, 0.1)
+	tween.start()

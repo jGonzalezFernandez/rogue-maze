@@ -245,7 +245,7 @@ func set_enemy_status_bars():
 func remove(instance: Object) -> void:
 	if is_instance_valid(instance):
 		if instance is GridElement and instance.audio_player.playing:
-			instance.disable()
+			instance.disable_and_hide()
 			yield(instance.audio_player, "finished")
 		instance.queue_free()
 
@@ -437,13 +437,15 @@ func on_character_died(character: Character) -> void:
 		menu_popup.show_game_over()
 		change_track(GAME_OVER_TRACK, 0)
 	elif character is EvilTwin:
-		character.disable()
+		character.disable_and_hide()
 		yield(get_tree().create_timer(character.RESPAWN), "timeout")
 		var enemy_status_bar_opt = _get_enemy_status_bar(character)
 		if is_instance_valid(enemy_status_bar_opt) and is_instance_valid(character):
 			add_heart_container(character.max_health + 2, character, enemy_status_bar_opt)
 			character.enable()
 	else:
+		character.fade()
+		yield(character.tween, "tween_all_completed")
 		remove(_get_enemy_status_bar(character))
 		remove(character)
 
