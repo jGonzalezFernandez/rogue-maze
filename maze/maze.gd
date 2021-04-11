@@ -8,15 +8,16 @@ enum Walls {NONE, W, S, SW, E, EW, ES, ESW, N, NW, NS, NSW, NE, NEW, NES, ALL}
 const TILE_MAP_SCENE_PATH = ResourcePath.MAZE + "tile_map/tile_map.tscn"
 const TILE_MAP_SCENE = preload(TILE_MAP_SCENE_PATH)
 
-const TILE_SIZE = 20
+const HALF_TILE = 10
+const TILE_SIZE = HALF_TILE * 2 # should be equal to the size of the tiles
 const ROWS = 28
 const COLUMNS = 51
 const X_OFFSET = 0
 const Y_OFFSET = 1
-const MIN_X = X_OFFSET * TILE_SIZE
-const MAX_X = (COLUMNS + X_OFFSET - 1) * TILE_SIZE
-const MIN_Y = Y_OFFSET * TILE_SIZE
-const MAX_Y = (ROWS + Y_OFFSET - 1) * TILE_SIZE
+const MIN_X = X_OFFSET * TILE_SIZE + HALF_TILE
+const MAX_X = (COLUMNS + X_OFFSET - 1) * TILE_SIZE + HALF_TILE
+const MIN_Y = Y_OFFSET * TILE_SIZE + HALF_TILE
+const MAX_Y = (ROWS + Y_OFFSET - 1) * TILE_SIZE + HALF_TILE
 const BOTTOM_LEFT_CORNER = Vector2(MIN_X, MAX_Y)
 const TOP_RIGHT_CORNER = Vector2(MAX_X, MIN_Y)
 # We will divide the maze into 9 areas to balance a little the random distribution
@@ -42,7 +43,7 @@ func set_cells() -> void:
 		for column in COLUMNS:
 			var cell_id = astar.get_available_point_id()
 			indexed_cells[row][column] = Cell.new(cell_id, row, column)
-			astar.add_point(cell_id, Vector2((column + X_OFFSET) * TILE_SIZE, (row + Y_OFFSET) * TILE_SIZE))
+			astar.add_point(cell_id, Vector2((column + X_OFFSET) * TILE_SIZE + HALF_TILE, (row + Y_OFFSET) * TILE_SIZE + HALF_TILE))
 
 func sort_cells_by_link_count_asc(cell1: Cell, cell2: Cell) -> bool:
 	return cell1.link_count < cell2.link_count
@@ -180,11 +181,12 @@ func draw_walls() -> void:
 				{"N": true, "E": true, "S": true, "W": true}:
 					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ALL)
 
+# TODO: To avoid having to calculate all coordinates by hand, investigate whether the TileMap functions map_to_world and world_to_map can be used instead
 func _random_point(factor: int, length: int, offset: int):
-	return Utils.random_int(factor * length + offset, (factor - 1) * length + offset) * TILE_SIZE
+	return Utils.random_int(factor * length + offset, (factor - 1) * length + offset) * TILE_SIZE + HALF_TILE
 
 func _recursion_until_valid_position(candidate_position: Vector2, excluded_positions: Array, func_ref: FuncRef) -> Vector2:
-	if excluded_positions.has(candidate_position):
+	if excluded_positions.has(candidate_position) or target_is_outside_boundaries(candidate_position): # could happen if rows or columns are not a multiple of 3
 		return func_ref.call_func(excluded_positions)
 	else:
 		return candidate_position
