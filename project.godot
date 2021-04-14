@@ -418,6 +418,7 @@ _global_script_class_icons={
 
 config/name="Rogue-Maze"
 run/main_scene="res://main/main.tscn"
+config/windows_native_icon="res://icon.ico"
 
 [debug]
 
