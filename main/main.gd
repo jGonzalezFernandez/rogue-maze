@@ -33,6 +33,8 @@ const SIXTH_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "06_aggressive_lightning.ogg
 const SIXTH_LEVEL_TRACK = preload(SIXTH_LEVEL_TRACK_PATH)
 const SEVENTH_LEVEL_TRACK_PATH = ResourcePath.MUSIC + "07_maelstrom.ogg"
 const SEVENTH_LEVEL_TRACK = preload(SEVENTH_LEVEL_TRACK_PATH)
+const BONUS_TRACK_PATH = ResourcePath.MUSIC + "bonus_nightmare.ogg"
+const BONUS_TRACK = preload(BONUS_TRACK_PATH)
 const AMBIENCE_TRACK_PATH = ResourcePath.MAIN + "horror_ambience_loop.ogg" # TODO: Find a better one?
 const AMBIENCE_TRACK = preload(AMBIENCE_TRACK_PATH)
 const GAME_OVER_TRACK_PATH = ResourcePath.MAIN + "game_over.wav"
@@ -171,7 +173,10 @@ func new_level() -> void:
 	match level_number:
 		1:
 			maze = Maze.new(GenerationAlgorithm.BINARY_TREE, true)
-			change_track(FIRST_LEVEL_TRACK)
+			if is_new_game_plus:
+				change_track(BONUS_TRACK)
+			else:
+				change_track(FIRST_LEVEL_TRACK)
 			add_enemy(Crocodile.new(maze.random_center_position(), player, maze, self))
 			add_enemy(CarnivorousPlant.new(maze.TOP_RIGHT_CORNER, player, maze, self))
 			add_element(Apple.new(maze.random_center_right_position(), self))

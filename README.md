@@ -14,7 +14,7 @@ Finally, some things (like that ugly carnivorous plant, or the coins) were drawn
 
 https://www.zapsplat.com (standard license with gold account, no attribution required): Ghosts Walk Here, Hallowdream, Maelstrom...
 
-https://freepd.com (CC0 1.0): Creepy Hallow and Asking Questions.
+https://freepd.com (CC0 1.0): Creepy Hallow, Asking Questions and Nightmare.
 
 Jordan Irwin (CC0 1.0): thwack.
 

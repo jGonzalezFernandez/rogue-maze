@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bonus_nightmare.ogg-2e2397888aaad81c66bdc8272e5234a4.oggstr"
+
+[deps]
+
+source_file="res://main/music/bonus_nightmare.ogg"
+dest_files=[ "res://.import/bonus_nightmare.ogg-2e2397888aaad81c66bdc8272e5234a4.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
