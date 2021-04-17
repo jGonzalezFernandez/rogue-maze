@@ -1,5 +1,19 @@
 # rogue-maze
 
+A simple video game I made with Godot 3 to avoid having to print the mazes generated with [mazes-scala](https://github.com/jGonzalezFernandez/mazes-scala).
+
+I found GDScript a very easy language to learn, but maybe too easy: it has inheritance but no traits or interfaces, so the only way to reuse code is to extend classes, which complicated the final design of the project.
+
+On the bright side, there are many possible workflows, so it's easy to find one you're comfortable with. For instance, I didn't like how the GUI works, so in the end I did everything by code (only scripts, no scenes).
+
+Some screenshots:
+
+![recursive_division_img](recursive_division.png)
+
+![event_img](event.png)
+
+## Credits
+
 **Textures** (slightly modified):
 
 https://www.kenney.nl/assets/bit-pack (CC0 1.0): most of the characters, inventory items...
