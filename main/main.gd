@@ -195,7 +195,7 @@ func new_level() -> void:
 			change_track(THIRD_LEVEL_TRACK)
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze, self))
 			var excluded_positions: Array = []
-			for i in 4:
+			for i in 8:
 				var web_position = maze.random_center_right_position(excluded_positions)
 				excluded_positions.append(web_position)
 				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze, self))
