@@ -2,7 +2,7 @@ extends ColorRect
 
 const STARTING_POSITION = Maze.BOTTOM_LEFT_CORNER
 var is_new_game_plus: bool = false
-const HELMET_PRICE = 4
+const HELMET_PRICE = 3
 const MIN_ITEMS_TO_WIN = 10
 const MAX_MINOR_ENEMIES_PER_LEVEL = 9
 
@@ -113,17 +113,19 @@ func on_new_game_button_pressed() -> void:
 	if is_new_game_plus:
 		player_status_bar.inventory.add_child(Gem.new())
 		player.ignore_walls = true
-		player.change_transparency(0.85)
+		var new_alpha = 0.85
+		player.initial_alpha = new_alpha
+		player.change_transparency(new_alpha)
 	
 	new_level()
 	set_enemy_status_bars()
 	
 	first_items = [StatusBar.Item.SWORD, StatusBar.Item.MACE, StatusBar.Item.WOODEN_SHIELD, StatusBar.Item.LENS]
-	second_items = [StatusBar.Item.CHAINMAIL, StatusBar.Item.BOOTS, StatusBar.Item.AMULET, StatusBar.Item.HEART_CONTAINER]
-	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.CLOAK, StatusBar.Item.BOMB_BAG]
+	second_items = [StatusBar.Item.CHAINMAIL, StatusBar.Item.BOOTS, StatusBar.Item.CLOAK, StatusBar.Item.AMULET, StatusBar.Item.HEART_CONTAINER]
+	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.BOMB_BAG]
 	
-	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.LOOSE_TILE, EventPopup.EventName.RED_FOUNTAIN]
-	second_events = [EventPopup.EventName.GOOD_LEVER, EventPopup.EventName.BLUE_FOUNTAIN]
+	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.RED_FOUNTAIN, EventPopup.EventName.LOOSE_TILE, EventPopup.EventName.BRAZALET]
+	second_events = [EventPopup.EventName.GOOD_LEVER, EventPopup.EventName.BLUE_FOUNTAIN] # book event is added if the cloak is found
 	third_events = [EventPopup.EventName.PAINTING, EventPopup.EventName.SELLER]
 
 func play_track(track: AudioStream, volume: float = 0) -> void:
@@ -197,6 +199,7 @@ func new_level() -> void:
 				var web_position = maze.random_center_right_position(excluded_positions)
 				excluded_positions.append(web_position)
 				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze, self))
+			add_element(Event.new(maze.random_center_right_position(excluded_positions), self))
 			add_enemy(Spider.new(maze.random_center_right_position(excluded_positions), player, maze, self))
 			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze, self))
 			add_element(Ham.new(maze.random_top_right_position(), self))
@@ -214,7 +217,7 @@ func new_level() -> void:
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze, self))
 			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze, self))
 			add_ally(Fairy.new(maze.random_center_left_position(), player, maze, self))
-			add_element(Coin.new(maze.random_center_right_position(), self))
+			add_element(Event.new(maze.random_center_right_position(), self))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
 			canvas_modulate.color = Color.gray
@@ -361,6 +364,12 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				player_status_bar.inventory.add_child(boots)
 				player.set_durations(Player.INITIAL_SPEED + 0.5)
 				player.dash_ability = true
+			StatusBar.Item.CLOAK:
+				cloak = Cloak.new()
+				player_status_bar.inventory.add_child(cloak)
+				player.invisible = true
+				player.change_transparency(IncorporealEnemy.MAX_ALPHA)
+				second_events.append(EventPopup.EventName.BOOK)
 			StatusBar.Item.AMULET:
 				amulet = Amulet.new()
 				player_status_bar.inventory.add_child(amulet)
@@ -382,11 +391,6 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				ring = Ring.new()
 				player_status_bar.inventory.add_child(ring)
 				player.magic_atk += 2
-			StatusBar.Item.CLOAK:
-				cloak = Cloak.new()
-				player_status_bar.inventory.add_child(cloak)
-				player.invisible = true
-				player.change_transparency(IncorporealEnemy.MAX_ALPHA)
 			StatusBar.Item.BOMB_BAG:
 				bomb_bag = BombBag.new()
 				player_status_bar.inventory.add_child(bomb_bag)
@@ -496,17 +500,24 @@ func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
 	match [event_popup.event_name, event_popup.success]:
 		[EventPopup.EventName.BAD_LEVER, _]:
 			set_health(1)
+		[EventPopup.EventName.RED_FOUNTAIN, _]:
+			player.def -= 1
+			player_status_bar.stats_label.text = player.get_stats()
 		[EventPopup.EventName.LOOSE_TILE, _]:
 			set_health(1)
 			call_deferred("next_level")
-		[EventPopup.EventName.RED_FOUNTAIN, _]:
-			player.def -= 1
+		[EventPopup.EventName.BRAZALET, _]:
+			player_status_bar.inventory.add_child(Bracelet.new())
+			player.def += 1
 			player_status_bar.stats_label.text = player.get_stats()
 		[EventPopup.EventName.GOOD_LEVER, _]:
 			add_heart_container(player.max_health + 2)
 		[EventPopup.EventName.BLUE_FOUNTAIN, _]:
 			player.magic_atk += 1
 			player_status_bar.stats_label.text = player.get_stats()
+		[EventPopup.EventName.BOOK, _]:
+			player.invisible = false
+			player.change_transparency(player.initial_alpha)
 		[EventPopup.EventName.PAINTING, _]:
 			player.perception -= 1
 			player_status_bar.stats_label.text = player.get_stats()

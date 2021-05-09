@@ -12,7 +12,7 @@ const TEXTURE = preload(TEXTURE_PATH)
 const INITIAL_SPEED = 3.5
 const INITIAL_HEALTH = 6
 const FRIENDLY_FIRE = 0
-const INITIAL_ALPHA = 1.0
+var initial_alpha = 1.0
 
 var slashing_atk = 0
 var blunt_atk = 2
@@ -29,7 +29,7 @@ var ignore_walls = false
 var bomb_timer: Timer
 
 func _init(initial_position: Vector2, maze: Maze, main: Node) \
-.(initial_position, maze, main, TEXTURE, PLAYER_NAME, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, INITIAL_ALPHA) -> void:
+.(initial_position, maze, main, TEXTURE, PLAYER_NAME, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, initial_alpha) -> void:
 	pass
 
 func _ready() -> void:

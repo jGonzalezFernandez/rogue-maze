@@ -14,7 +14,7 @@ const ATK = 8
 const SLASHING_DEF = 4
 const BLUNT_DEF = 6
 const STOPS_BEFORE_UNICORNS = false
-const RESPAWN = 90.0
+const RESPAWN = 120.0
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
 .(initial_position, player, maze, main, TEXTURE, EVIL_TWIN_NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, STOPS_BEFORE_UNICORNS) -> void:

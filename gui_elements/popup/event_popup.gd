@@ -1,19 +1,23 @@
 class_name EventPopup
 extends PopupExt
 
-enum EventName {BAD_LEVER, LOOSE_TILE, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN, PAINTING, SELLER, STATUES}
+enum EventName {BAD_LEVER, RED_FOUNTAIN, LOOSE_TILE, BRAZALET, GOOD_LEVER, BLUE_FOUNTAIN, BOOK, PAINTING, SELLER, STATUES}
 
 const BAD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small circle engraved on it.\nDo you move the lever?"
 const BAD_LEVER_HINT = "\nPERCEPTION: in fact, the circle looks like some kind of skull."
 const BAD_LEVER_RESULT_MSG = "It was a trap!\nA secret trapdoor opens in the ceiling and a stone falls on your head.\nYour life is reduced to half a heart."
 
+const RED_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural red light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
+const RED_FOUNTAIN_HINT = "\nPERCEPTION: even in the depths of this dungeon, it seems strange to you that there is no trace of life around a water source."
+const RED_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey're ruined! DEF -0.5"
+
 const LOOSE_TILE_INTRO_MSG = "You notice a loose tile in the corner of the hallway that looks like a switch.\nUnder normal circumstances you would think it's a trap, but it's strange that it's not right in the middle of the path.\nDo you press it?"
 const LOOSE_TILE_HINT = "\nPERCEPTION: the floor sounds hollow in this area."
 const LOOSE_TILE_RESULT_MSG = "The floor opens and you fall to the next level!\nYour life is reduced to half a heart."
 
-const RED_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural red light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
-const RED_FOUNTAIN_HINT = "\nPERCEPTION: even in the depths of this dungeon, it seems strange to you that there is no trace of life around a water source."
-const RED_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey're ruined! DEF -0.5"
+const BRAZALET_INTRO_MSG = "You find a sword and a bracelet among some cobwebs. If these objects belonged to a person, not even the bones are left.\nThe sword is in very bad shape, but the bracelet seems sturdy and in perfect condition.\nDo you take it?"
+const BRAZALET_HINT = "\nPERCEPTION: the webs could be dangerous, but you think you will be able to retrieve the item without touching them."
+const BRAZALET_RESULT_MSG = "With great care, you manage to recover the bracelet without incident. DEF +0.5"
 
 const GOOD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small X engraved on it.\nDo you move the lever?"
 const GOOD_LEVER_HINT = "\nPERCEPTION: in fact, the X looks like a crossed fork and knife."
@@ -22,6 +26,10 @@ const GOOD_LEVER_RESULT_MSG = "A secret compartment opens in the wall. Under the
 const BLUE_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural blue light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
 const BLUE_FOUNTAIN_HINT = "\nPERCEPTION: silver flowers grow beside the water."
 const BLUE_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey've been enchanted! Magic ATK +0.5\nAfter that, the water loses its shine."
+
+const BOOK_INTRO_MSG = "In a room full of candles you find a book on a lectern.\nIt tells the story of a long-haired warrior who one day finds a spell capable of enchanting capes. You don't know what happens next, because the last pages are half burned.\nDo you pronounce the incantation?"
+const BOOK_HINT = "\nPERCEPTION: judging by the pictures, the warrior's cloak is exactly like your invisibility cloak. There is no discernible difference."
+const BOOK_RESULT_MSG = "After casting the spell, your invisibility cloak loses its power. It seems that you have reversed the original enchantment! You speak the magic words again, even backwards, but nothing happens."
 
 const PAINTING_INTRO_MSG = "You find a dusty cloth that seems to be hiding something human-sized.\nDo you remove it to see what's underneath?"
 const PAINTING_HINT = "\nPERCEPTION: you feel an evil aura."
@@ -57,14 +65,18 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 			self.intro_msg = BAD_LEVER_INTRO_MSG
 			self.hint = BAD_LEVER_HINT
 			self.result_msg = BAD_LEVER_RESULT_MSG
-		[EventName.LOOSE_TILE, _]:
-			self.intro_msg = LOOSE_TILE_INTRO_MSG
-			self.hint = LOOSE_TILE_HINT
-			self.result_msg = LOOSE_TILE_RESULT_MSG
 		[EventName.RED_FOUNTAIN, _]:
 			self.intro_msg = RED_FOUNTAIN_INTRO_MSG
 			self.hint = RED_FOUNTAIN_HINT
 			self.result_msg = RED_FOUNTAIN_RESULT_MSG
+		[EventName.LOOSE_TILE, _]:
+			self.intro_msg = LOOSE_TILE_INTRO_MSG
+			self.hint = LOOSE_TILE_HINT
+			self.result_msg = LOOSE_TILE_RESULT_MSG
+		[EventName.BRAZALET, _]:
+			self.intro_msg = BRAZALET_INTRO_MSG
+			self.hint = BRAZALET_HINT
+			self.result_msg = BRAZALET_RESULT_MSG
 		[EventName.GOOD_LEVER, _]:
 			self.intro_msg = GOOD_LEVER_INTRO_MSG
 			self.hint = GOOD_LEVER_HINT
@@ -73,6 +85,10 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 			self.intro_msg = BLUE_FOUNTAIN_INTRO_MSG
 			self.hint = BLUE_FOUNTAIN_HINT
 			self.result_msg = BLUE_FOUNTAIN_RESULT_MSG
+		[EventName.BOOK, _]:
+			self.intro_msg = BOOK_INTRO_MSG
+			self.hint = BOOK_HINT
+			self.result_msg = BOOK_RESULT_MSG
 		[EventName.PAINTING, _]:
 			self.intro_msg = PAINTING_INTRO_MSG
 			self.hint = PAINTING_HINT
