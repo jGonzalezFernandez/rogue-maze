@@ -179,6 +179,7 @@ func new_level() -> void:
 				change_track(BONUS_TRACK)
 			else:
 				change_track(FIRST_LEVEL_TRACK)
+			add_element(Event.new(maze.random_center_position(), self))
 			add_enemy(Crocodile.new(maze.random_center_position(), player, maze, self))
 			add_enemy(CarnivorousPlant.new(maze.TOP_RIGHT_CORNER, player, maze, self))
 			add_element(Apple.new(maze.random_center_right_position(), self))
@@ -195,21 +196,22 @@ func new_level() -> void:
 			change_track(THIRD_LEVEL_TRACK)
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze, self))
 			var excluded_positions: Array = []
-			for i in 8:
+			for i in 6:
 				var web_position = maze.random_center_right_position(excluded_positions)
 				excluded_positions.append(web_position)
 				add_minor_enemy_if_possible(SpiderWeb.new(web_position, player, maze, self))
 			add_element(Event.new(maze.random_center_right_position(excluded_positions), self))
 			add_enemy(Spider.new(maze.random_center_right_position(excluded_positions), player, maze, self))
 			add_ally(Unicorn.new(maze.random_center_left_position(), player, maze, self))
-			add_element(Ham.new(maze.random_top_right_position(), self))
+			add_element(Fish.new(maze.random_top_right_position(), self))
 		4:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION_WITH_ROOMS)
 			change_track(FOURTH_LEVEL_TRACK)
+			add_element(Event.new(maze.random_center_position(), self))
 			add_enemy(SkeletonKnight.new(maze.random_center_position(), player, maze, self))
 			add_enemy(HumanGhost.new(maze.random_top_right_position(), player, maze, self))
-			add_element(Event.new(maze.random_center_right_position(), self))
-			add_element(Coin.new(maze.random_center_left_position(), self))
+			add_element(Ham.new(maze.random_center_left_position(), self))
+			add_element(Coin.new(maze.random_center_right_position(), self))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
 			canvas_modulate.color = Color.lightgray
@@ -251,11 +253,13 @@ func set_enemy_status_bars():
 		enemy_status_bars.append(status_bar)
 
 func remove(instance: Object) -> void:
+	# WARNING: in a release without debug, is_instance_valid could return a false positive if the variable (or Array index)
+	# points to a memory address that has been freed and subsequently occupied by another object (Godot 3.3)
 	if is_instance_valid(instance):
 		if instance is GridElement and instance.audio_player.playing:
 			instance.disable_and_hide()
 			yield(instance.audio_player, "finished")
-		instance.queue_free()
+		instance.queue_free() # wrong object will be deleted if the dangling pointers bug occurs
 
 func clean_array(array: Array) -> void:
 	for element in array:

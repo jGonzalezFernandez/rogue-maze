@@ -4,7 +4,7 @@ A simple video game I made with Godot 3 to avoid having to print the mazes gener
 
 You can download it from the releases folder.
 
-Some screenshots:
+Some screenshots of the first version:
 
 ![recursive_division_img](recursive_division.png)
 

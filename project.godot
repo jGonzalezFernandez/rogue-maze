@@ -149,6 +149,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://grid_elements/characters/non_player/allies/fairy/fairy.gd"
 }, {
+"base": "Food",
+"class": "Fish",
+"language": "GDScript",
+"path": "res://grid_elements/things/food/fish/fish.gd"
+}, {
 "base": "Thing",
 "class": "Food",
 "language": "GDScript",
@@ -378,6 +383,7 @@ _global_script_class_icons={
 "EventPopup": "",
 "EvilTwin": "",
 "Fairy": "",
+"Fish": "",
 "Food": "",
 "Gauntlets": "",
 "Gem": "",
@@ -516,3 +522,4 @@ menu={
 [rendering]
 
 environment/default_environment="res://default_env.tres"
+quality/dynamic_fonts/use_oversampling=false
