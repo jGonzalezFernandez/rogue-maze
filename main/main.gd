@@ -457,11 +457,12 @@ func on_character_died(character: Character) -> void:
 		change_track(GAME_OVER_TRACK, 0)
 	elif character is EvilTwin:
 		character.disable_and_hide()
-		yield(get_tree().create_timer(character.RESPAWN), "timeout")
+		yield(get_tree().create_timer(character.respawn), "timeout")
 		var enemy_status_bar_opt = _get_enemy_status_bar(character)
 		if is_instance_valid(enemy_status_bar_opt) and is_instance_valid(character):
 			add_heart_container(character.max_health + 2, character, enemy_status_bar_opt)
 			character.enable()
+			character.double_respawn_time()
 	else:
 		character.fade()
 		yield(character.tween, "tween_all_completed")

@@ -14,7 +14,7 @@ const ATK = 8
 const SLASHING_DEF = 4
 const BLUNT_DEF = 6
 const STOPS_BEFORE_UNICORNS = false
-const RESPAWN = 120.0
+var respawn = 90.0
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
 .(initial_position, player, maze, main, TEXTURE, EVIL_TWIN_NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, STOPS_BEFORE_UNICORNS) -> void:
@@ -25,3 +25,6 @@ func special_movement() -> void:
 		teleport_to(player.previous_positions.front())
 	else:
 		walk_through_walls(Utils.get_random_elem(DIAGONALS), half_walk_length)
+
+func double_respawn_time() -> void:
+	respawn *= 2
