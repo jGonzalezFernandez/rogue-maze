@@ -1,15 +1,15 @@
 class_name EventPopup
 extends PopupExt
 
-enum EventName {BAD_LEVER, RED_FOUNTAIN, LOOSE_TILE, BRAZALET, GOOD_LEVER, BLUE_FOUNTAIN, BOOK, PAINTING, SELLER, STATUES}
+enum EventName {BAD_LEVER, INVISIBLE_CHEST, LOOSE_TILE, BRAZALET, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN, BOOK, PAINTING, SELLER, STATUES}
 
 const BAD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small circle engraved on it.\nDo you move the lever?"
 const BAD_LEVER_HINT = "\nPERCEPTION: in fact, the circle looks like some kind of skull."
 const BAD_LEVER_RESULT_MSG = "It was a trap!\nA secret trapdoor opens in the ceiling and a stone falls on your head.\nYour life is reduced to half a heart."
 
-const RED_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural red light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
-const RED_FOUNTAIN_HINT = "\nPERCEPTION: even in the depths of this dungeon, it seems strange to you that there is no trace of life around a water source."
-const RED_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey're ruined! DEF -0.5"
+const INVISIBLE_CHEST_INTRO_MSG = "You feel that something strange is happening with the lighting of the environment, as if the shadows were not where they should be.\nDo you investigate the area?"
+const INVISIBLE_CHEST_HINT = "\nPERCEPTION: actually, it seems that something is bending the light above your head, on a ledge."
+const INVISIBLE_CHEST_RESULT_MSG = "You discover a small invisible chest on a shelf, which contains a single gold coin. Gold coins are rare, so you decide to keep it with care. It could be useful later!"
 
 const LOOSE_TILE_INTRO_MSG = "You notice a loose tile in the corner of the hallway that looks like a switch.\nUnder normal circumstances you would think it's a trap, but it's strange that it's not right in the middle of the path.\nDo you press it?"
 const LOOSE_TILE_HINT = "\nPERCEPTION: the floor sounds hollow in this area."
@@ -18,6 +18,10 @@ const LOOSE_TILE_RESULT_MSG = "The floor opens and you fall to the next level!\n
 const BRAZALET_INTRO_MSG = "You find a sword and a bracelet among some cobwebs. If these objects belonged to a person, not even the bones are left.\nThe sword is in very bad shape, but the bracelet seems sturdy and in perfect condition.\nDo you take it?"
 const BRAZALET_HINT = "\nPERCEPTION: the webs could be dangerous, but you think you will be able to retrieve the item without touching them."
 const BRAZALET_RESULT_MSG = "With great care, you manage to recover the bracelet without incident. DEF +0.5"
+
+const RED_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural red light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
+const RED_FOUNTAIN_HINT = "\nPERCEPTION: even in the depths of this dungeon, it seems strange to you that there is no trace of life around a water source."
+const RED_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey're ruined! DEF -0.5"
 
 const GOOD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small X engraved on it.\nDo you move the lever?"
 const GOOD_LEVER_HINT = "\nPERCEPTION: in fact, the X looks like a crossed fork and knife."
@@ -65,10 +69,10 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 			self.intro_msg = BAD_LEVER_INTRO_MSG
 			self.hint = BAD_LEVER_HINT
 			self.result_msg = BAD_LEVER_RESULT_MSG
-		[EventName.RED_FOUNTAIN, _]:
-			self.intro_msg = RED_FOUNTAIN_INTRO_MSG
-			self.hint = RED_FOUNTAIN_HINT
-			self.result_msg = RED_FOUNTAIN_RESULT_MSG
+		[EventName.INVISIBLE_CHEST, _]:
+			self.intro_msg = INVISIBLE_CHEST_INTRO_MSG
+			self.hint = INVISIBLE_CHEST_HINT
+			self.result_msg = INVISIBLE_CHEST_RESULT_MSG
 		[EventName.LOOSE_TILE, _]:
 			self.intro_msg = LOOSE_TILE_INTRO_MSG
 			self.hint = LOOSE_TILE_HINT
@@ -77,6 +81,10 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 			self.intro_msg = BRAZALET_INTRO_MSG
 			self.hint = BRAZALET_HINT
 			self.result_msg = BRAZALET_RESULT_MSG
+		[EventName.RED_FOUNTAIN, _]:
+			self.intro_msg = RED_FOUNTAIN_INTRO_MSG
+			self.hint = RED_FOUNTAIN_HINT
+			self.result_msg = RED_FOUNTAIN_RESULT_MSG
 		[EventName.GOOD_LEVER, _]:
 			self.intro_msg = GOOD_LEVER_INTRO_MSG
 			self.hint = GOOD_LEVER_HINT

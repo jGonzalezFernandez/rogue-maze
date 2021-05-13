@@ -2,7 +2,7 @@ extends ColorRect
 
 const STARTING_POSITION = Maze.BOTTOM_LEFT_CORNER
 var is_new_game_plus: bool = false
-const HELMET_PRICE = 3
+const HELMET_PRICE = 4
 const MIN_ITEMS_TO_WIN = 10
 const MAX_MINOR_ENEMIES_PER_LEVEL = 9
 
@@ -72,6 +72,7 @@ var bomb_bag: BombBag
 var first_events: Array
 var second_events: Array
 var third_events: Array
+var fourth_events: Array
 
 func _ready() -> void:
 	randomize()
@@ -124,9 +125,10 @@ func on_new_game_button_pressed() -> void:
 	second_items = [StatusBar.Item.CHAINMAIL, StatusBar.Item.BOOTS, StatusBar.Item.CLOAK, StatusBar.Item.AMULET, StatusBar.Item.HEART_CONTAINER]
 	third_items = [StatusBar.Item.CHAOS_SWORD, StatusBar.Item.HAMMER, StatusBar.Item.SHIELD, StatusBar.Item.RING, StatusBar.Item.BOMB_BAG]
 	
-	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.RED_FOUNTAIN, EventPopup.EventName.LOOSE_TILE, EventPopup.EventName.BRAZALET]
-	second_events = [EventPopup.EventName.GOOD_LEVER, EventPopup.EventName.BLUE_FOUNTAIN] # book event is added if the cloak is found
-	third_events = [EventPopup.EventName.PAINTING, EventPopup.EventName.SELLER]
+	first_events = [EventPopup.EventName.BAD_LEVER, EventPopup.EventName.INVISIBLE_CHEST, EventPopup.EventName.LOOSE_TILE]
+	second_events = [EventPopup.EventName.BRAZALET, EventPopup.EventName.RED_FOUNTAIN]
+	third_events = [EventPopup.EventName.GOOD_LEVER, EventPopup.EventName.BLUE_FOUNTAIN] # book event is added if the cloak is found
+	fourth_events = [EventPopup.EventName.PAINTING, EventPopup.EventName.SELLER]
 
 func play_track(track: AudioStream, volume: float = 0) -> void:
 	audio_player.stream = track
@@ -187,6 +189,7 @@ func new_level() -> void:
 		2:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
 			change_track(SECOND_LEVEL_TRACK)
+			add_element(Event.new(maze.random_center_position(), self))
 			add_enemy(Bear.new(maze.random_center_position(), player, maze, self))
 			add_enemy(Bat.new(maze.random_top_right_position(), player, maze, self))
 			add_element(Event.new(maze.random_center_left_position(), self))
@@ -194,6 +197,7 @@ func new_level() -> void:
 		3:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
 			change_track(THIRD_LEVEL_TRACK)
+			add_element(Event.new(maze.random_center_position(), self))
 			add_enemy(Scorpion.new(maze.random_center_position(), player, maze, self))
 			var excluded_positions: Array = []
 			for i in 6:
@@ -283,6 +287,7 @@ func clean(everything: bool = false) -> void:
 		first_events.clear()
 		second_events.clear()
 		third_events.clear()
+		fourth_events.clear()
 	else:
 		# We want the allies to follow the Player to the next level, so we don't delete
 		# them to continue their treatment later (in the update_allies() function).
@@ -373,7 +378,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				player_status_bar.inventory.add_child(cloak)
 				player.invisible = true
 				player.change_transparency(IncorporealEnemy.MAX_ALPHA)
-				second_events.append(EventPopup.EventName.BOOK)
+				third_events.append(EventPopup.EventName.BOOK)
 			StatusBar.Item.AMULET:
 				amulet = Amulet.new()
 				player_status_bar.inventory.add_child(amulet)
@@ -475,13 +480,15 @@ func on_food_area_exited(_area, food: Food) -> void:
 
 func on_event_area_entered(_area, event: Event) -> void:
 	var event_popup: EventPopup
-	
-	if level_number < 4 and !first_events.empty():
+
+	if level_number < 3 and !first_events.empty():
 		event_popup = EventPopup.new(Utils.pop_random_elem(first_events), player, menu_popup, self)
-	elif level_number < 6 and !second_events.empty():
+	elif level_number == 3 and !second_events.empty():
 		event_popup = EventPopup.new(Utils.pop_random_elem(second_events), player, menu_popup, self)
-	elif level_number == 6 and !third_events.empty():
-		match Utils.pop_random_elem(third_events):
+	elif level_number < 6 and !third_events.empty():
+		event_popup = EventPopup.new(Utils.pop_random_elem(third_events), player, menu_popup, self)
+	elif level_number == 6 and !fourth_events.empty():
+		match Utils.pop_random_elem(fourth_events):
 			EventPopup.EventName.SELLER:
 				if player.coins >= HELMET_PRICE:
 					event_popup = EventPopup.new(EventPopup.EventName.SELLER, player, menu_popup, self, true, [player.coins])
@@ -504,8 +511,8 @@ func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
 	match [event_popup.event_name, event_popup.success]:
 		[EventPopup.EventName.BAD_LEVER, _]:
 			set_health(1)
-		[EventPopup.EventName.RED_FOUNTAIN, _]:
-			player.def -= 1
+		[EventPopup.EventName.INVISIBLE_CHEST, _]:
+			player.coins += 1
 			player_status_bar.stats_label.text = player.get_stats()
 		[EventPopup.EventName.LOOSE_TILE, _]:
 			set_health(1)
@@ -513,6 +520,9 @@ func on_event_popup_continue_button_pressed(event_popup: EventPopup) -> void:
 		[EventPopup.EventName.BRAZALET, _]:
 			player_status_bar.inventory.add_child(Bracelet.new())
 			player.def += 1
+			player_status_bar.stats_label.text = player.get_stats()
+		[EventPopup.EventName.RED_FOUNTAIN, _]:
+			player.def -= 1
 			player_status_bar.stats_label.text = player.get_stats()
 		[EventPopup.EventName.GOOD_LEVER, _]:
 			add_heart_container(player.max_health + 2)
