@@ -8,4 +8,4 @@ const PERCEPTION = 3
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
 .(initial_position, player, maze, main, TEXTURE, UNICORN_NAME, PERCEPTION) -> void:
-	pass
+	collision_layer = compute_layers([Layer.UNICORNS])

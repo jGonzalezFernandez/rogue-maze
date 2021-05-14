@@ -12,7 +12,6 @@ var knows_player = false
 func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: Texture, name: String, perception: int) \
 .(initial_position, player, maze, main, texture, name, perception, perception, SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, MAX_ALPHA) -> void:
 	teleport_threshold = perception + MAX_DASH_LENGTH
-	collision_layer = compute_layers([Layer.ALLIES])
 
 func _ready() -> void:
 	connect("area_entered", self, "on_area_entered")

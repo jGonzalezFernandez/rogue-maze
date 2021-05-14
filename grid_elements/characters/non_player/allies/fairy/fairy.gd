@@ -12,7 +12,7 @@ var timer: Timer
 
 func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
 .(initial_position, player, maze, main, TEXTURE, NAME, PERCEPTION) -> void:
-	pass
+	collision_layer = compute_layers([])
 
 func _ready() -> void:
 	light.shadow_enabled = true

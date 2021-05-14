@@ -151,6 +151,13 @@ func collide(dir: Vector2, slight_recoil: bool) -> void:
 	yield(tween, "tween_all_completed")
 	ongoing_collision = false
 
+func apply_damage(damage: int) -> void:
+	if damage > 0:
+		health -= damage
+		emit_signal("health_changed", self, health)
+	if health <= 0:
+		emit_signal("died", self)
+
 func manage_collision(character: Area2D, damage: int, slight_recoil: bool) -> void:
 	if phasing:
 		damage = Utils.rounded_half(damage)
@@ -163,8 +170,4 @@ func manage_collision(character: Area2D, damage: int, slight_recoil: bool) -> vo
 			collide(Vector2.UP, slight_recoil)
 		else:
 			collide(Vector2.DOWN, slight_recoil)
-	if damage > 0:
-		health -= damage
-		emit_signal("health_changed", self, health)
-	if health <= 0:
-		emit_signal("died", self)
+	apply_damage(damage)

@@ -3,7 +3,7 @@ extends Area2D
 
 # The RayCast node points by default to the first layer, which is also used by
 # the Player, the walls, and any other node unless otherwise specified
-enum Layer {DEFAULT, CORPOREAL_ENEMIES, INCORPOREAL_ENEMIES, ALLIES, EXPLOSIONS}
+enum Layer {DEFAULT, CORPOREAL_ENEMIES, INCORPOREAL_ENEMIES, UNICORNS, EXPLOSIONS}
 
 const LIGHT_TEXTURE_PATH = ResourcePath.GRID_ELEMENTS + "/light.png"
 const LIGHT_TEXTURE = preload(LIGHT_TEXTURE_PATH)

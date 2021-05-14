@@ -30,9 +30,9 @@ func _ready() -> void:
 	connect("explosion_requested", main, "on_bomb_explosion_requested")
 
 func on_timer_timeout() -> void:
-	var explosion_positions = []
+	var explosion_positions = [position]
 	for dir in ALL_DIRECTIONS:
-		for i in range(EXPLOSION_LENGTH):
+		for i in range(1, EXPLOSION_LENGTH):
 			var target_cell = dir * Maze.TILE_SIZE * i
 			cast_ray_to(target_cell)
 			if ray.is_colliding():

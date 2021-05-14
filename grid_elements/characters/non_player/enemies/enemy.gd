@@ -37,8 +37,9 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: T
 	add_to_group(ENEMY_GROUP)
 
 func _ready() -> void:
-	# enemies should be able to see everything in order to avoid unnecessary collisions on their paths
-	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES, Layer.ALLIES, Layer.EXPLOSIONS])
+	# Enemies should be able to see everything in order to avoid unnecessary collisions on their paths.
+	# The exception to the rule: those elements that should be completely ignored: treasures, stairs, fairy...
+	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES, Layer.UNICORNS, Layer.EXPLOSIONS])
 	connect("area_entered", self, "on_area_entered")
 	connect("minor_enemy_addition_requested", main, "add_minor_enemy_if_possible")
 	
@@ -105,7 +106,7 @@ func is_collision_exception(obj: Object) -> bool:
 
 func on_area_entered(area) -> void:
 	if area is BombExplosion:
-		emit_signal("died", self)
+		apply_damage(max_health)
 		get_tree().call_group(ENEMY_GROUP, "collision_received", char_name, area.position)
 	elif !is_collision_exception(area):
 		var damage = area.friendly_fire
