@@ -77,7 +77,7 @@ func get_keybinds(input_event_action_name: String) -> String:
 	var keybinds = []
 	for input_event in InputMap.get_action_list(input_event_action_name):
 		if input_event is InputEventKey:
-			keybinds.append(input_event.as_text())
+			keybinds.append(input_event.as_text()) # Bug for physical keys here (3.4.4), already fixed in 3.x
 		elif input_event is InputEventJoypadButton:
 			keybinds.append(Input.get_joy_button_string(input_event.button_index))
 	return PoolStringArray(keybinds).join(", ")

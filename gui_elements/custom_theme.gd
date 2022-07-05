@@ -32,3 +32,7 @@ func _init(custom_font: CustomFont, background_color: Color) -> void:
 	set_stylebox("normal", "Button", style_box)
 	set_stylebox("hover", "Button", style_box_inverted)
 	set_stylebox("pressed", "Button", style_box_inverted)
+
+	# 3.4.4:
+	# set_color("font_color_focus", "Button", font_color.inverted())
+	# set_stylebox("focus", "Button", style_box_inverted)
