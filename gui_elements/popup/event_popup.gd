@@ -131,11 +131,11 @@ func _ready() -> void:
 	message.text = full_message
 	message.theme = small_font_theme
 	
-	yes_button = Button.new()
+	yes_button = PopupButton.new()
 	yes_button.text = "yes"
 	yes_button.theme = normal_font_theme
 	
-	no_button = Button.new()
+	no_button = PopupButton.new()
 	no_button.text = "no"
 	no_button.theme = normal_font_theme
 	

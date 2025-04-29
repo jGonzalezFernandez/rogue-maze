@@ -17,11 +17,11 @@ func _ready() -> void:
 	message.text = GAME_NAME
 	message.theme = large_font_theme
 	
-	new_game_button = Button.new()
+	new_game_button = PopupButton.new()
 	new_game_button.text = "new game"
 	new_game_button.theme = normal_font_theme
 	
-	exit_button = Button.new()
+	exit_button = PopupButton.new()
 	exit_button.text = "exit"
 	exit_button.theme = normal_font_theme
 	
@@ -77,7 +77,7 @@ func get_keybinds(input_event_action_name: String) -> String:
 	var keybinds = []
 	for input_event in InputMap.get_action_list(input_event_action_name):
 		if input_event is InputEventKey:
-			keybinds.append(input_event.as_text()) # Bug for physical keys here (3.4.4), already fixed in 3.x
+			keybinds.append(input_event.as_text()) # Bug for physical keys here (3.4.4), fixed in 3.5
 		elif input_event is InputEventJoypadButton:
 			keybinds.append(Input.get_joy_button_string(input_event.button_index))
 	return PoolStringArray(keybinds).join(", ")

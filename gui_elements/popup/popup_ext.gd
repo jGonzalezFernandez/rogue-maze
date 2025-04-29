@@ -36,7 +36,7 @@ func _ready() -> void:
 	v_container = VBoxContainer.new()
 	add_child(v_container)
 	
-	continue_button = Button.new()
+	continue_button = PopupButton.new()
 	continue_button.text = "continue"
 	continue_button.focus_mode = FOCUS_ALL
 	continue_button.theme = normal_font_theme

@@ -23,16 +23,12 @@ func _init(custom_font: CustomFont, background_color: Color) -> void:
 	
 	var style_box_inverted = style_box.duplicate()
 	style_box_inverted.bg_color = style_box.bg_color.inverted()
-	style_box_inverted.border_color = style_box.border_color
+	# style_box_inverted.border_color = style_box.border_color
 	
 	set_font("font", "Button", custom_font)
 	set_color("font_color", "Button", font_color)
-	set_color("font_color_hover", "Button", font_color.inverted())
+	set_color("font_color_focus", "Button", font_color.inverted())
 	set_color("font_color_pressed", "Button", font_color.inverted())
 	set_stylebox("normal", "Button", style_box)
-	set_stylebox("hover", "Button", style_box_inverted)
+	set_stylebox("focus", "Button", style_box_inverted)
 	set_stylebox("pressed", "Button", style_box_inverted)
-
-	# 3.4.4:
-	# set_color("font_color_focus", "Button", font_color.inverted())
-	# set_stylebox("focus", "Button", style_box_inverted)
