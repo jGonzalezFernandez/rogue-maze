@@ -52,11 +52,13 @@ func _process(_delta) -> void:
 					move_tween_to(position + target_cell, MovementType.RUN)
 				else:
 					move_tween_if_possible_to(target_cell, MovementType.RUN)
-			elif teleport_ability and Input.is_action_pressed("teleport"):
-				emit_signal("teleport_requested")
-			elif bomb_ability and Input.is_action_pressed("bomb") and bomb_timer.is_stopped():
-				emit_signal("bomb_requested")
-				bomb_timer.start(BOMB_TIMER_DURATION)
+
+func _unhandled_input(_event) -> void:
+	if teleport_ability and Input.is_action_pressed("teleport"):
+		emit_signal("teleport_requested")
+	elif bomb_ability and Input.is_action_pressed("bomb") and bomb_timer.is_stopped():
+		emit_signal("bomb_requested")
+		bomb_timer.start(BOMB_TIMER_DURATION)
 
 func change_transparency(new_max_alpha: float) -> void:
 	max_alpha = new_max_alpha
