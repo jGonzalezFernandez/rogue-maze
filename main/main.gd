@@ -74,6 +74,11 @@ var second_events: Array
 var third_events: Array
 var fourth_events: Array
 
+func _input(_event):
+	if Input.is_action_just_pressed("toggle_fullscreen"):
+		OS.window_fullscreen = !OS.window_fullscreen
+		get_tree().set_input_as_handled() # To prevent Alt + Enter from also executing the actions associated to Enter
+
 func _ready() -> void:
 	randomize()
 #	seed(255) # for testing
