@@ -38,7 +38,7 @@ func _ready() -> void:
 	add_keybind("LEFT", "ui_left")
 	add_keybind("DASH (requires boots)", "dash")
 	add_keybind("TELEPORT TO START (requires amulet)", "teleport")
-	add_keybind("ACCEPT / BOMB (requires bomb bag)", "ui_accept")
+	add_keybind("ACCEPT / BOMB (requires bomb bag, not moving)", "ui_accept")
 	add_child(keybinds_container)
 	keybinds_container.set_anchors_and_margins_preset(Control.PRESET_BOTTOM_RIGHT, 0, MIN_MARGIN)
 	

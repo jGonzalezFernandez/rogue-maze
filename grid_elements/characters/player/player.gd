@@ -56,7 +56,7 @@ func _process(_delta) -> void:
 func _unhandled_input(_event) -> void:
 	if teleport_ability and Input.is_action_pressed("teleport"):
 		emit_signal("teleport_requested")
-	elif bomb_ability and Input.is_action_pressed("bomb") and bomb_timer.is_stopped():
+	elif bomb_ability and Input.is_action_pressed("bomb") and bomb_timer.is_stopped() and !tween.is_active(): # We require the player to be stationary to prevent bombs from being placed between two tiles
 		emit_signal("bomb_requested")
 		bomb_timer.start(BOMB_TIMER_DURATION)
 
