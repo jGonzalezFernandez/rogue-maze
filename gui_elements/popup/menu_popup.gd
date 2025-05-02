@@ -32,13 +32,13 @@ func _ready() -> void:
 	continue_button.hide()
 	
 	keybinds_container = VBoxContainer.new()
-	add_keybind("UP", "ui_up")
-	add_keybind("DOWN", "ui_down")
-	add_keybind("RIGHT", "ui_right")
-	add_keybind("LEFT", "ui_left")
+	# add_keybind("UP", "ui_up") too obvious!
+	# add_keybind("DOWN", "ui_down")
+	# add_keybind("RIGHT", "ui_right")
+	# add_keybind("LEFT", "ui_left")
 	add_keybind("DASH (requires boots)", "dash")
 	add_keybind("TELEPORT TO START (requires amulet)", "teleport")
-	add_keybind("ACCEPT / BOMB (requires bomb bag, not moving)", "ui_accept")
+	add_keybind("PLACE BOMB (requires bomb bag & no movement)", "ui_accept")
 	add_child(keybinds_container)
 	keybinds_container.set_anchors_and_margins_preset(Control.PRESET_BOTTOM_RIGHT, 0, MIN_MARGIN)
 	
