@@ -17,11 +17,11 @@ func _ready() -> void:
 	message.text = GAME_NAME
 	message.theme = large_font_theme
 	
-	new_game_button = PopupButton.new()
+	new_game_button = Button.new()
 	new_game_button.text = "new game"
 	new_game_button.theme = normal_font_theme
 	
-	exit_button = PopupButton.new()
+	exit_button = Button.new()
 	exit_button.text = "exit"
 	exit_button.theme = normal_font_theme
 	

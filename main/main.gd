@@ -41,6 +41,7 @@ const GAME_OVER_TRACK_PATH = ResourcePath.MAIN + "game_over.wav"
 const GAME_OVER_TRACK = preload(GAME_OVER_TRACK_PATH)
 
 var canvas_modulate: CanvasModulate
+var mouse_blocker: MouseBlocker
 var gui_layer: CanvasLayer
 var menu_popup: MenuPopup
 var tween: Tween
@@ -74,11 +75,6 @@ var second_events: Array
 var third_events: Array
 var fourth_events: Array
 
-func _input(_event):
-	if Input.is_action_just_pressed("toggle_fullscreen"):
-		OS.window_fullscreen = !OS.window_fullscreen
-		get_tree().set_input_as_handled() # To prevent the "Enter" of the "Alt + Enter" combo from triggering the "pressed" signal on UI buttons
-
 func _ready() -> void:
 	randomize()
 #	seed(255) # for testing
@@ -88,6 +84,9 @@ func _ready() -> void:
 	
 	canvas_modulate = CanvasModulate.new()
 	add_child(canvas_modulate)
+	
+	mouse_blocker = MouseBlocker.new()
+	add_child(mouse_blocker)
 	
 	gui_layer = CanvasLayer.new()
 	add_child(gui_layer)
