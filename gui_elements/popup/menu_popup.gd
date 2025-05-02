@@ -73,13 +73,34 @@ func on_exit_button_pressed() -> void:
 func on_continue_button_pressed() -> void:
 	 hide_and_reset_buttons()
 
+func input_event_to_string(input_event: InputEvent) -> String:
+	if input_event is InputEventJoypadButton:
+		return Input.get_joy_button_string(input_event.button_index)
+	elif input_event is InputEventJoypadMotion:
+		return joy_motion_to_string(input_event.axis, input_event.axis_value)
+	else:
+		return input_event.as_text()
+
+func joy_motion_to_string(axis: int, value: float) -> String:
+	match axis:
+		JOY_AXIS_0:
+			if value > 0:
+				return "Joystick Right"
+			else:
+				return "Joystick Left"
+		JOY_AXIS_1:
+			if value > 0:
+				return "Joystick Down"
+			else:
+				return "Joystick Up"
+		_:
+			return "Unsupported Axis" # In this game we'll only use the left stick
+
 func get_keybinds(input_event_action_name: String) -> String:
+	var input_events = InputMap.get_action_list(input_event_action_name)
 	var keybinds = []
-	for input_event in InputMap.get_action_list(input_event_action_name):
-		if input_event is InputEventKey:
-			keybinds.append(input_event.as_text())
-		elif input_event is InputEventJoypadButton:
-			keybinds.append(Input.get_joy_button_string(input_event.button_index))
+	for ev in input_events:
+		keybinds.append(input_event_to_string(ev))
 	return PoolStringArray(keybinds).join(", ")
 
 func add_keybind(keybind_desc: String, input_event_action_name: String) -> void:
