@@ -44,7 +44,6 @@ var canvas_modulate: CanvasModulate
 var mouse_blocker: MouseBlocker
 var gui_layer: CanvasLayer
 var menu_popup: MenuPopup
-var tween: Tween
 var audio_player: AudioStreamPlayer
 var player: Player
 var player_status_bar: StatusBar
@@ -95,9 +94,6 @@ func _ready() -> void:
 	gui_layer.add_child(menu_popup)
 	menu_popup.popup_centered()
 	
-	tween = Tween.new()
-	add_child(tween)
-	
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
 	play_track(MAIN_MENU_TRACK)
@@ -139,14 +135,15 @@ func play_track(track: AudioStream, volume: float = 0) -> void:
 	audio_player.volume_db = volume
 	audio_player.play()
 
-func change_volume(target_volume: float, duration: float) -> void:
-	tween.interpolate_property(audio_player, "volume_db", audio_player.volume_db, target_volume, duration)
-	tween.start()
+func change_volume(target_volume: float, duration: float) -> SceneTreeTween:
+	var tween = create_tween()
+	tween.tween_property(audio_player, "volume_db", target_volume, duration)
+	return tween
 
 func change_track(new_track: AudioStream, duration = 0.5) -> void:
 	if audio_player.playing:
-		change_volume(NO_SOUND_VOLUME, duration)
-		yield(tween, "tween_all_completed")
+		var tween = change_volume(NO_SOUND_VOLUME, duration)
+		yield(tween, "finished")
 	play_track(new_track, MUSIC_VOLUME)
 
 func on_audio_player_finished() -> void:
@@ -302,7 +299,6 @@ func clean(everything: bool = false) -> void:
 	remove(maze)
 
 func set_char_position(character: Character, position: Vector2) -> void:
-	character.tween.remove_all()
 	character.modulate.a = character.max_alpha
 	character.position = position
 
@@ -426,7 +422,7 @@ func on_player_teleport_requested() -> void:
 		for ally in allies:
 			if ally.knows_player:
 				ally.teleport_to(STARTING_POSITION)
-				yield(ally.tween, "tween_all_completed")
+				yield(ally, "mov_tween_finished")
 				ally.stand_behind()
 
 func on_player_bomb_requested() -> void:
@@ -469,7 +465,7 @@ func on_character_died(character: Character) -> void:
 			character.double_respawn_time()
 	else:
 		character.fade()
-		yield(character.tween, "tween_all_completed")
+		yield(character, "mov_tween_finished")
 		remove(_get_enemy_status_bar(character))
 		remove(character)
 

@@ -60,7 +60,7 @@ func hunt(path: PoolVector2Array) -> void:
 	follow_path(path, MovementType.RUN, path.size())
 
 func _process(_delta) -> void:
-	if !tween.is_active(): # if the enemy is already doing something, we skip to try again in the next frame. Another solution? Probably with a bool
+	if !is_moving: # if the enemy is already doing something, we skip to try again in the next frame. Another solution? Probably with a bool
 		# TODO: Check distances before calling get_point_path_to?
 		var path = get_point_path_to(player.position)
 		if player_is_visible():
@@ -83,14 +83,14 @@ func choose_walk_length() -> int:
 		return max_walk_length
 
 func on_movement_timer_timeout() -> void:
-	if !tween.is_active():
+	if !is_moving:
 		if Utils.fifty_percent_chance(): # to make the mob more unpredictable, we don't want it to move with every timeout
 			follow_path(get_point_path_to(maze.random_position()), MovementType.WALK, choose_walk_length()) # random walk
 		elif Utils.fifty_percent_chance():
 			special_movement()
 
 func run_to_explosion_if_audible(target: Vector2) -> void:
-	if !tween.is_active():
+	if !is_moving:
 		var path = get_point_path_to(target)
 		if path.size() <= hearing_loud_sounds:
 			follow_path(path, MovementType.RUN, path.size())

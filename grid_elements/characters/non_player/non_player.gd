@@ -59,6 +59,6 @@ func follow_path(path: PoolVector2Array, movement_type: int, maximum_path_length
 		if ongoing_collision or (stop_before_obstacles and obstacle_is_ahead(point)):
 			break
 		move_tween_to(point, movement_type)
-		yield(tween, "tween_all_completed")
+		yield(self, "mov_tween_finished")
 		if advance_while_searching_player and player_is_visible():
 			break # we exit the loop to allow the method consumer to decide what to do (e.g. update the path)
