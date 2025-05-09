@@ -174,9 +174,12 @@ func manage_collision(character: Area2D, damage: int, slight_recoil: bool) -> vo
 	apply_damage(damage)
 
 # Workaround because the classic Tween node has been deprecated in Godot 3.5 in favor of SceneTreeTween
+var tween: SceneTreeTween
 func create_mov_tween() -> SceneTreeTween:
 	is_moving = true
-	var tween = create_tween()
+	if tween:
+		tween.kill() # Abort the previous animation to avoid concurrency issues
+	tween = create_tween()
 	tween.connect("finished", self, "on_mov_tween_finished")
 	return tween
 
