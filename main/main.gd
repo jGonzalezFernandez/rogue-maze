@@ -299,6 +299,7 @@ func clean(everything: bool = false) -> void:
 	remove(maze)
 
 func set_char_position(character: Character, position: Vector2) -> void:
+	character.kill_mov_tween()
 	character.modulate.a = character.max_alpha
 	character.position = position
 
