@@ -82,8 +82,10 @@ func enable() -> void:
 	collision_shape.set_deferred("disabled", false)
 	set_process(true)
 
-func fade() -> void:
+func fade() -> SceneTreeTween:
 	disable()
 	var tween = create_tween()
+	tween.set_parallel(true)
 	tween.tween_property(self, "scale", Vector2(2.0, 2.0), 0.1)
 	tween.tween_property(self, "modulate:a", 0, 0.1)
+	return tween

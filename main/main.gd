@@ -465,8 +465,8 @@ func on_character_died(character: Character) -> void:
 			character.enable()
 			character.double_respawn_time()
 	else:
-		character.fade()
-		yield(character, "mov_tween_finished")
+		var tween = character.fade()
+		yield(tween, "finished")
 		remove(_get_enemy_status_bar(character))
 		remove(character)
 

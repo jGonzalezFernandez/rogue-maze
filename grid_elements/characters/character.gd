@@ -96,6 +96,7 @@ func move_tween_to(target_position: Vector2, movement_type: int, invisible_trans
 				ease_type = Tween.EASE_OUT
 
 		var tween = create_mov_tween()
+		tween.set_parallel(true)
 		tween.tween_property(self, "position", snap(target_position), duration).set_trans(transition_type).set_ease(ease_type)
 		if invisible_transition: # we remove the alpha component of the color to make the node transparent and we put it back
 			tween.tween_property(self, "modulate:a", max_alpha, duration).from(0.0).set_trans(transition_type).set_ease(ease_type)
