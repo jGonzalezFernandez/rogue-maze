@@ -1,6 +1,7 @@
 class_name Character
 extends GridElement
 
+signal mov_tween_finished
 signal health_changed
 signal died
 
@@ -29,6 +30,7 @@ var maze: Maze
 # more than one instance exists at the same time, but we don't want to display @ and numbers in the GUI
 var char_name: String
 var previous_positions = []
+var is_moving = false
 var running_duration: float
 var walking_duration: float
 var collision_duration: float
@@ -92,13 +94,14 @@ func move_tween_to(target_position: Vector2, movement_type: int, invisible_trans
 				duration = collision_duration
 				transition_type = Tween.TRANS_BOUNCE
 				ease_type = Tween.EASE_OUT
-		
-		tween.interpolate_property(self, "position", position, snap(target_position), duration, transition_type, ease_type)
+
+		var tween = create_mov_tween()
+		tween.set_parallel(true)
+		tween.tween_property(self, "position", snap(target_position), duration).set_trans(transition_type).set_ease(ease_type)
 		if invisible_transition: # we remove the alpha component of the color to make the node transparent and we put it back
-			tween.interpolate_property(self, "modulate:a", 0.0, max_alpha, duration, transition_type, ease_type)
-		
+			tween.tween_property(self, "modulate:a", max_alpha, duration).from(0.0).set_trans(transition_type).set_ease(ease_type)
+
 		append_to_previous_positions(position)
-		tween.start()
 		return true
 
 func move_tween_if_possible_to(target_cell: Vector2, movement_type: int, invisible_transition: bool = false) -> bool:
@@ -116,13 +119,13 @@ func dash_to(target_cell: Vector2) -> void:
 			audio_player.stream = Utils.get_random_elem([DASH_01_SOUND, DASH_02_SOUND])
 			audio_player.play()
 			break
-	yield(tween, "tween_all_completed")
+	yield(self, "mov_tween_finished")
 	phasing = false
 
 func teleport_to(target_position: Vector2) -> void:
 	phasing = true
 	move_tween_to(target_position, MovementType.RUN, true)
-	yield(tween, "tween_all_completed")
+	yield(self, "mov_tween_finished")
 	phasing = false
 
 func increase_health_if_possible(increment: int) -> bool:
@@ -141,14 +144,13 @@ func teleport_while_healing_to(target_position: Vector2) -> void:
 	increase_health_if_possible(Utils.rounded_half(max_health))
 
 func bounce_tween(dir: Vector2) -> void: # two pixels
-	tween.interpolate_property(self, "position", position + 2 * dir, snap(position), bounce_duration, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
-	tween.start()
+  create_mov_tween().tween_property(self, "position", snap(position), bounce_duration).from(position + 2 * dir).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
 func collide(dir: Vector2, slight_recoil: bool) -> void:
 	ongoing_collision = true
 	if slight_recoil or !move_tween_if_possible_to(dir * Maze.TILE_SIZE, MovementType.COLLISION):
 		bounce_tween(dir)
-	yield(tween, "tween_all_completed")
+	yield(self, "mov_tween_finished")
 	ongoing_collision = false
 
 func apply_damage(damage: int) -> void:
@@ -171,3 +173,21 @@ func manage_collision(character: Area2D, damage: int, slight_recoil: bool) -> vo
 		else:
 			collide(Vector2.DOWN, slight_recoil)
 	apply_damage(damage)
+
+# Workaround because the classic Tween node has been deprecated in Godot 3.5 in favor of SceneTreeTween
+var mov_tween: SceneTreeTween
+func create_mov_tween() -> SceneTreeTween:
+	kill_mov_tween()
+	is_moving = true
+	mov_tween = create_tween()
+	mov_tween.connect("finished", self, "on_mov_tween_finished")
+	return mov_tween
+
+func kill_mov_tween() -> void:
+	if mov_tween:
+		mov_tween.kill() # Abort the previous animation to avoid concurrency issues
+		is_moving = false
+
+func on_mov_tween_finished() -> void:
+	is_moving = false
+	emit_signal("mov_tween_finished", self)

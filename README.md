@@ -1,4 +1,4 @@
-# rogue-maze
+# rogue-maze 1.0.5-beta
 
 A simple video game I made with Godot 3 to avoid having to print the mazes generated with [mazes-scala](https://github.com/jGonzalezFernandez/mazes-scala). It should give you about 20 minutes of fun... if you like mazes.
 
@@ -18,7 +18,7 @@ On the bright side, there are many possible workflows, so it's easy to find one 
 
 **Textures** (slightly modified):
 
-https://www.kenney.nl/assets/bit-pack (CC0 1.0): most of the characters, inventory items...
+https://www.kenney.nl/assets/1-bit-pack (CC0 1.0): most of the characters, inventory items...
 
 Also, a bit of:
 

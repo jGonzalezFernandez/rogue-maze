@@ -20,7 +20,7 @@ func _ready() -> void:
 func _process(_delta):
 	if !knows_player and player_is_visible():
 		knows_player = true
-	if !tween.is_active() and knows_player:
+	if !is_moving and knows_player:
 		var path = get_point_path_to(player.position)
 		if path.size() > teleport_threshold: # to follow the player while dashing
 			teleport_to(player.position)

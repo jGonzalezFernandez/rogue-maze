@@ -19,7 +19,6 @@ var main: Node
 var texture: Texture
 var sprite: Sprite
 var collision_shape: CollisionShape2D
-var tween: Tween
 var ray: RayCast2D
 var audio_player: AudioStreamPlayer2D
 var light: Light2D
@@ -35,22 +34,19 @@ func _ready() -> void:
 	sprite = Sprite.new()
 	sprite.texture = texture
 	add_child(sprite)
-	
+
 	var rectangle_shape = RectangleShape2D.new()
 	rectangle_shape.extents = Vector2(7.50361, 7.37397)
 	collision_shape = CollisionShape2D.new()
 	collision_shape.shape = rectangle_shape
 	add_child(collision_shape)
-	
-	tween = Tween.new()
-	add_child(tween)
-	
+
 	ray = RayCast2D.new()
 	add_child(ray)
-	
+
 	audio_player = AudioStreamPlayer2D.new()
 	add_child(audio_player)
-	
+
 	light = Light2D.new()
 	light.texture = LIGHT_TEXTURE
 	light.mode = Light2D.MODE_MIX
@@ -86,8 +82,10 @@ func enable() -> void:
 	collision_shape.set_deferred("disabled", false)
 	set_process(true)
 
-func fade() -> void:
+func fade() -> SceneTreeTween:
 	disable()
-	tween.interpolate_property(self, "scale", scale, Vector2(2.0, 2.0), 0.1)
-	tween.interpolate_property(self, "modulate:a", modulate.a, 0, 0.1)
-	tween.start()
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(self, "scale", Vector2(2.0, 2.0), 0.1)
+	tween.tween_property(self, "modulate:a", 0, 0.1)
+	return tween

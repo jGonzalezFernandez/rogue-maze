@@ -13,14 +13,11 @@ func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
 func _ready() -> void:
 	pause_mode = PAUSE_MODE_PROCESS
 	audio_player.stream = SOUND
-	
+
 	connect("area_entered", main, "on_event_area_entered", [self])
-	tween.connect("tween_all_completed", self, "on_tween_all_completed")
-	reverse_transparency()
+	start_blinking()
 
-func reverse_transparency() -> void:
-	tween.interpolate_property(self, "modulate:a", modulate.a, max_alpha - modulate.a, 1.0)
-	tween.start()
-
-func on_tween_all_completed() -> void:
-	reverse_transparency()
+func start_blinking() -> void:
+	var tween = create_tween()
+	tween.tween_property(self, "modulate:a", max_alpha - modulate.a, 1.0)
+	tween.tween_callback(self, "start_blinking")

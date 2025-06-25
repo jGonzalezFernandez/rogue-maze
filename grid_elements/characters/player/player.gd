@@ -43,7 +43,7 @@ func _ready() -> void:
 
 func _process(_delta) -> void:
 	for dir_key in MOTION_INPUTS.keys():
-		if !tween.is_active(): # we check this 4 times per frame to improve the responsiveness in the corners
+		if !is_moving: # we check this 4 times per frame to improve the responsiveness in the corners
 			if Input.is_action_pressed(dir_key):
 				var target_cell = MOTION_INPUTS[dir_key] * Maze.TILE_SIZE
 				if dash_ability and Input.is_action_pressed("dash"):
@@ -52,11 +52,13 @@ func _process(_delta) -> void:
 					move_tween_to(position + target_cell, MovementType.RUN)
 				else:
 					move_tween_if_possible_to(target_cell, MovementType.RUN)
-			elif teleport_ability and Input.is_action_pressed("teleport"):
-				emit_signal("teleport_requested")
-			elif bomb_ability and Input.is_action_pressed("bomb") and bomb_timer.is_stopped():
-				emit_signal("bomb_requested")
-				bomb_timer.start(BOMB_TIMER_DURATION)
+
+func _unhandled_input(_event) -> void:
+	if teleport_ability and Input.is_action_pressed("teleport"):
+		emit_signal("teleport_requested")
+	elif bomb_ability and Input.is_action_pressed("bomb") and bomb_timer.is_stopped() and !is_moving: # We require the player to be stationary to prevent bombs from being placed between tiles
+		emit_signal("bomb_requested")
+		bomb_timer.start(BOMB_TIMER_DURATION)
 
 func change_transparency(new_max_alpha: float) -> void:
 	max_alpha = new_max_alpha

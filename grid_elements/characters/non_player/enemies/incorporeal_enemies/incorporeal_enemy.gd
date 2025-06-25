@@ -16,5 +16,5 @@ func walk_through_walls(dir: Vector2, maximum_path_length: int) -> void:
 		if player_is_visible():
 			break
 		move_tween_to(target, MovementType.WALK, true)
-		yield(tween, "tween_all_completed")
+		yield(self, "mov_tween_finished")
 	phasing = false
