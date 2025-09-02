@@ -199,7 +199,10 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER, true)
 			change_track(THIRD_LEVEL_TRACK)
 			add_element(Event.new(maze.random_center_position(), self))
-			add_enemy(Scorpion.new(maze.random_center_position(), player, maze, self))
+			if Utils.twenty_five_percent_chance():
+				add_enemy(Minotaur.new(maze.random_center_position(), player, maze, self))
+			else:
+				add_enemy(Scorpion.new(maze.random_center_position(), player, maze, self))
 			var excluded_positions: Array = []
 			for i in 6:
 				var web_position = maze.random_center_right_position(excluded_positions)
