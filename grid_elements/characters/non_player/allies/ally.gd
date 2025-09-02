@@ -17,7 +17,7 @@ func _ready() -> void:
 	connect("area_entered", self, "on_area_entered")
 	connect("area_exited", self, "on_area_exited")
 
-func _process(_delta):
+func _process(_delta) -> void:
 	if !knows_player and player_is_visible():
 		knows_player = true
 	if !is_moving and knows_player:
