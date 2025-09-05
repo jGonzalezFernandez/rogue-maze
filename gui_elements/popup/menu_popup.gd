@@ -2,15 +2,18 @@ class_name MenuPopup
 extends PopupExt
 
 const GAME_NAME = "ROGUE-MAZE"
-const PAUSE_MESSAGE = "PAUSE"
 const GAME_OVER_MESSAGE = "GAME OVER"
+
+const SUPPORTED_LOCALES = ["en", "es", "fr"]
 
 var large_font_theme: CustomTheme
 var new_game_button: Button
+var language_button: Button
 var exit_button: Button
 var keybinds_container: VBoxContainer
 
 func _init(main: ColorRect).(main) -> void:
+	TranslationServer.set_locale(SUPPORTED_LOCALES[0])
 	large_font_theme = CustomTheme.new(CustomFont.new(CustomFont.LARGE_FONT_SIZE), main.color)
 
 func _ready() -> void:
@@ -18,14 +21,22 @@ func _ready() -> void:
 	message.theme = large_font_theme
 	
 	new_game_button = Button.new()
-	new_game_button.text = "new game"
+	new_game_button.text = "NEW_GAME_BUTTON_MSG"
 	new_game_button.theme = normal_font_theme
+	new_game_button.rect_min_size.x = BUTTON_MIN_WIDTH
+
+	language_button = Button.new()
+	language_button.text = "LANGUAGE_BUTTON_MSG"
+	language_button.theme = normal_font_theme
+	language_button.rect_min_size.x = BUTTON_MIN_WIDTH
 	
 	exit_button = Button.new()
-	exit_button.text = "exit"
+	exit_button.text = "EXIT_MSG"
 	exit_button.theme = normal_font_theme
+	exit_button.rect_min_size.x = BUTTON_MIN_WIDTH
 	
 	v_container.add_child(new_game_button)
+	v_container.add_child(language_button)
 	v_container.add_child(exit_button)
 	v_container.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM, 0, MARGIN)
 	
@@ -41,8 +52,9 @@ func _ready() -> void:
 	add_keybind("PLACE BOMB (requires bomb bag & no movement)", "ui_accept")
 	add_child(keybinds_container)
 	keybinds_container.set_anchors_and_margins_preset(Control.PRESET_BOTTOM_RIGHT, 0, MIN_MARGIN)
-	
+
 	new_game_button.connect("pressed", main, "on_new_game_button_pressed")
+	language_button.connect("pressed", self, "on_language_button_pressed")
 	exit_button.connect("pressed", self, "on_exit_button_pressed")
 	continue_button.connect("pressed", self, "on_continue_button_pressed")
 
@@ -57,7 +69,7 @@ func _input(_event):
 		if get_tree().paused:
 			 hide_and_reset_buttons()
 		elif not visible:
-			message.text = PAUSE_MESSAGE
+			message.text = "PAUSE_MSG"
 			new_game_button.hide()
 			continue_button.show()
 			get_tree().paused = true
@@ -66,6 +78,11 @@ func _input(_event):
 func show_game_over() -> void:
 	message.text = GAME_OVER_MESSAGE
 	popup()
+
+func on_language_button_pressed() -> void:
+	var current_index = SUPPORTED_LOCALES.find(TranslationServer.get_locale())
+	var new_index = (current_index + 1) % SUPPORTED_LOCALES.size()
+	TranslationServer.set_locale(SUPPORTED_LOCALES[new_index])
 
 func on_exit_button_pressed() -> void:
 	get_tree().quit()

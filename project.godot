@@ -538,6 +538,10 @@ toggle_fullscreen={
  ]
 }
 
+[locale]
+
+translations=PoolStringArray( "res://gui_elements/translations.en.translation", "res://gui_elements/translations.es.translation", "res://gui_elements/translations.fr.translation" )
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
