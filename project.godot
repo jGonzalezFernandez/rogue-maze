@@ -540,7 +540,7 @@ toggle_fullscreen={
 
 [locale]
 
-translations=PoolStringArray( "res://gui_elements/translations.en.translation", "res://gui_elements/translations.es.translation", "res://gui_elements/translations.fr.translation" )
+translations=PoolStringArray( "res://gui_elements/translations/translations.en.translation", "res://gui_elements/translations/translations.es.translation", "res://gui_elements/translations/translations.fr.translation" )
 
 [rendering]
 

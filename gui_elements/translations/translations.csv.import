@@ -1,0 +1,16 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+
+[deps]
+
+files=[ "res://gui_elements/translations/translations.en.translation", "res://gui_elements/translations/translations.es.translation", "res://gui_elements/translations/translations.fr.translation" ]
+
+source_file="res://gui_elements/translations/translations.csv"
+dest_files=[ "res://gui_elements/translations/translations.en.translation", "res://gui_elements/translations/translations.es.translation", "res://gui_elements/translations/translations.fr.translation" ]
+
+[params]
+
+compress=true
+delimiter=0
