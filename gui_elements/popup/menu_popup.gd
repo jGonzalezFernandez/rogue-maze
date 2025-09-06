@@ -51,16 +51,11 @@ func _ready() -> void:
 	add_keybind("TELEPORT TO START (requires amulet)", "teleport")
 	add_keybind("PLACE BOMB (requires bomb bag & no movement)", "ui_accept")
 	add_child(keybinds_container)
-	var unicorn_desc = Label.new()
-	unicorn_desc.text = "UNICORN: Blocks enemies"
-	unicorn_desc.align = Label.ALIGN_RIGHT
-	unicorn_desc.theme = small_font_theme
-	keybinds_container.add_child(unicorn_desc)
-	var fairy_desc = Label.new()
-	fairy_desc.text = "FAIRY: Heals and shines"
-	fairy_desc.align = Label.ALIGN_RIGHT
-	fairy_desc.theme = small_font_theme
-	keybinds_container.add_child(fairy_desc)
+	var allies_desc = Label.new()
+	allies_desc.text = "ALLIES: Unicorn blocks enemies, Fairy heals & shines"
+	allies_desc.align = Label.ALIGN_RIGHT
+	allies_desc.theme = small_font_theme
+	keybinds_container.add_child(allies_desc)
 	keybinds_container.set_anchors_and_margins_preset(Control.PRESET_BOTTOM_RIGHT, 0, MIN_MARGIN)
 
 	new_game_button.connect("pressed", main, "on_new_game_button_pressed")
