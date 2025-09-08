@@ -3,52 +3,6 @@ extends PopupExt
 
 enum EventName {BAD_LEVER, INVISIBLE_CHEST, LOOSE_TILE, BRAZALET, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN, BOOK, PAINTING, SELLER, STATUES}
 
-const BAD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small circle engraved on it.\nDo you move the lever?"
-const BAD_LEVER_HINT = "\nPERCEPTION: in fact, the circle looks like some kind of skull."
-const BAD_LEVER_RESULT_MSG = "It was a trap!\nA secret trapdoor opens in the ceiling and a stone falls on your head.\nYour life is reduced to half a heart."
-
-const INVISIBLE_CHEST_INTRO_MSG = "You feel that something strange is happening with the lighting of the environment, as if the shadows were not where they should be.\nDo you investigate the area?"
-const INVISIBLE_CHEST_HINT = "\nPERCEPTION: actually, it seems that something is bending the light above your head, on a ledge."
-const INVISIBLE_CHEST_RESULT_MSG = "You discover a small invisible chest on a shelf, which contains a single gold coin. Gold coins are rare, so you decide to keep it with care. It could be useful later!"
-
-const LOOSE_TILE_INTRO_MSG = "You notice a loose tile in the corner of the hallway that looks like a switch.\nUnder normal circumstances you would think it's a trap, but it's strange that it's not right in the middle of the path.\nDo you press it?"
-const LOOSE_TILE_HINT = "\nPERCEPTION: the floor sounds hollow in this area."
-const LOOSE_TILE_RESULT_MSG = "The floor opens and you fall to the next level!\nYour life is reduced to half a heart."
-
-const BRAZALET_INTRO_MSG = "You find a sword and a bracelet among some cobwebs. If these objects belonged to a person, not even the bones are left.\nThe sword is in very bad shape, but the bracelet seems sturdy and in perfect condition.\nDo you take it?"
-const BRAZALET_HINT = "\nPERCEPTION: the webs could be dangerous, but you think you will be able to retrieve the item without touching them."
-const BRAZALET_RESULT_MSG = "With great care, you manage to recover the bracelet without incident. DEF +0.5"
-
-const RED_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural red light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
-const RED_FOUNTAIN_HINT = "\nPERCEPTION: even in the depths of this dungeon, it seems strange to you that there is no trace of life around a water source."
-const RED_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey're ruined! DEF -0.5"
-
-const GOOD_LEVER_INTRO_MSG = "You notice a lever on the wall hidden in the shadows.\nIt has a small X engraved on it.\nDo you move the lever?"
-const GOOD_LEVER_HINT = "\nPERCEPTION: in fact, the X looks like a crossed fork and knife."
-const GOOD_LEVER_RESULT_MSG = "A secret compartment opens in the wall. Under the light of a candelabra, the most wonderful food awaits you. What a delicious surprise!\nYou feel better than ever, and you regain all your life plus an extra heart."
-
-const BLUE_FOUNTAIN_INTRO_MSG = "You come across a fountain, its water glowing with a faint, unnatural blue light.\nAn inscription reads: \"Immerse an object to give it power\".\nDo you give it a try?"
-const BLUE_FOUNTAIN_HINT = "\nPERCEPTION: silver flowers grow beside the water."
-const BLUE_FOUNTAIN_RESULT_MSG = "You don't want to risk losing something essential for survival, so you start by dipping your old, but trusty, gauntlets.\nThey've been enchanted! Magic ATK +0.5\nAfter that, the water loses its shine."
-
-const BOOK_INTRO_MSG = "In a room full of candles you find a book on a lectern.\nIt tells the story of a long-haired warrior who one day finds a spell capable of enchanting capes. You don't know what happens next, because the last pages are half burned.\nDo you pronounce the incantation?"
-const BOOK_HINT = "\nPERCEPTION: judging by the pictures, the warrior's cloak is exactly like your invisibility cloak. There is no discernible difference."
-const BOOK_RESULT_MSG = "After casting the spell, your invisibility cloak loses its power. It seems that you have reversed the original enchantment! You speak the magic words again, even backwards, but nothing happens."
-
-const PAINTING_INTRO_MSG = "You find a dusty cloth that seems to be hiding something human-sized.\nDo you remove it to see what's underneath?"
-const PAINTING_HINT = "\nPERCEPTION: you feel an evil aura."
-const PAINTING_RESULT_MSG = "After removing the fabric, you discover a picture stand with an old painting of yourself, but no face.\nThis vision deeply disturbs you. Perception -1"
-
-const SELLER_INTRO_MSG = "You meet a small, suspicious-looking humanoid.\nHe says: \"I'll sell you the helmet I found for %s gold coins\".\nHe doesn't seem to be carrying the item with him, but perhaps it is hidden somewhere.\nDo you give him the coins you have?"
-const SELLER_HINT = "\nPERCEPTION: you notice that he has looked out of the corner of his eye at some vines."
-const SELLER_RESULT_MSG = "The little humanoid takes the money and moves some vines, revealing a hole in the wall, from which he pulls out the helmet.\nAfter giving it to you, he says: \"No refunds!\"."
-const SELLER_RESULT_MSG_ALT = "You don't have enough money to make the purchase!"
-
-const STATUES_INTRO_MSG = "You find a room full of statues in grotesque poses.\nThe room, rather large, seems even more so because one of the walls is a mirror.\nAfter examining the sculptures, you realize that each of them is missing an object.\nVoices echo in your head: \"You will never be able to leave this cursed maze, unless you restore the stolen treasures. Give them to us, and we will give you what you seek\".\nDo you trust the voices and put the inventory items you have in place?"
-const STATUES_HINT = "\nPERCEPTION: one of the voices sounds familiar and comforting."
-const STATUES_RESULT_MSG = "After putting the last of the items in place, you are startled to see that... your reflection has disappeared from the mirror!\nHowever, you soon realize the truth: the mirror is no longer there and what looks like a reflection is a completely identical adjacent room.\nUpon inspecting this new room, you discover a treasure chest hidden behind one of the statues, which contains a gem... but not just any gem!\nYou have found the lost family gemstone! Your twin sister can finally rest in peace.\nPress continue to start a new game."
-const STATUES_RESULT_MSG_ALT = "You put the items you have in place, but nothing happens.\nIt seems you are missing %s treasures."
-
 var event_name: int
 var success: bool
 var intro_msg: String
@@ -66,57 +20,57 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 	
 	match [event_name, success]:
 		[EventName.BAD_LEVER, _]:
-			self.intro_msg = BAD_LEVER_INTRO_MSG
-			self.hint = BAD_LEVER_HINT
-			self.result_msg = BAD_LEVER_RESULT_MSG
+			self.intro_msg = tr("BAD_LEVER_INTRO_MSG")
+			self.hint = tr("BAD_LEVER_HINT")
+			self.result_msg = tr("BAD_LEVER_RESULT_MSG")
 		[EventName.INVISIBLE_CHEST, _]:
-			self.intro_msg = INVISIBLE_CHEST_INTRO_MSG
-			self.hint = INVISIBLE_CHEST_HINT
-			self.result_msg = INVISIBLE_CHEST_RESULT_MSG
+			self.intro_msg = tr("INVISIBLE_CHEST_INTRO_MSG")
+			self.hint = tr("INVISIBLE_CHEST_HINT")
+			self.result_msg = tr("INVISIBLE_CHEST_RESULT_MSG")
 		[EventName.LOOSE_TILE, _]:
-			self.intro_msg = LOOSE_TILE_INTRO_MSG
-			self.hint = LOOSE_TILE_HINT
-			self.result_msg = LOOSE_TILE_RESULT_MSG
+			self.intro_msg = tr("LOOSE_TILE_INTRO_MSG")
+			self.hint = tr("LOOSE_TILE_HINT")
+			self.result_msg = tr("LOOSE_TILE_RESULT_MSG")
 		[EventName.BRAZALET, _]:
-			self.intro_msg = BRAZALET_INTRO_MSG
-			self.hint = BRAZALET_HINT
-			self.result_msg = BRAZALET_RESULT_MSG
+			self.intro_msg = tr("BRAZALET_INTRO_MSG")
+			self.hint = tr("BRAZALET_HINT")
+			self.result_msg = tr("BRAZALET_RESULT_MSG")
 		[EventName.RED_FOUNTAIN, _]:
-			self.intro_msg = RED_FOUNTAIN_INTRO_MSG
-			self.hint = RED_FOUNTAIN_HINT
-			self.result_msg = RED_FOUNTAIN_RESULT_MSG
+			self.intro_msg = tr("RED_FOUNTAIN_INTRO_MSG")
+			self.hint = tr("RED_FOUNTAIN_HINT")
+			self.result_msg = tr("RED_FOUNTAIN_RESULT_MSG")
 		[EventName.GOOD_LEVER, _]:
-			self.intro_msg = GOOD_LEVER_INTRO_MSG
-			self.hint = GOOD_LEVER_HINT
-			self.result_msg = GOOD_LEVER_RESULT_MSG
+			self.intro_msg = tr("GOOD_LEVER_INTRO_MSG")
+			self.hint = tr("GOOD_LEVER_HINT")
+			self.result_msg = tr("GOOD_LEVER_RESULT_MSG")
 		[EventName.BLUE_FOUNTAIN, _]:
-			self.intro_msg = BLUE_FOUNTAIN_INTRO_MSG
-			self.hint = BLUE_FOUNTAIN_HINT
-			self.result_msg = BLUE_FOUNTAIN_RESULT_MSG
+			self.intro_msg = tr("BLUE_FOUNTAIN_INTRO_MSG")
+			self.hint = tr("BLUE_FOUNTAIN_HINT")
+			self.result_msg = tr("BLUE_FOUNTAIN_RESULT_MSG")
 		[EventName.BOOK, _]:
-			self.intro_msg = BOOK_INTRO_MSG
-			self.hint = BOOK_HINT
-			self.result_msg = BOOK_RESULT_MSG
+			self.intro_msg = tr("BOOK_INTRO_MSG")
+			self.hint = tr("BOOK_HINT")
+			self.result_msg = tr("BOOK_RESULT_MSG")
 		[EventName.PAINTING, _]:
-			self.intro_msg = PAINTING_INTRO_MSG
-			self.hint = PAINTING_HINT
-			self.result_msg = PAINTING_RESULT_MSG
+			self.intro_msg = tr("PAINTING_INTRO_MSG")
+			self.hint = tr("PAINTING_HINT")
+			self.result_msg = tr("PAINTING_RESULT_MSG")
 		[EventName.SELLER, true]:
-			self.intro_msg = SELLER_INTRO_MSG % intro_placeholders_content
-			self.hint = SELLER_HINT
-			self.result_msg = SELLER_RESULT_MSG
+			self.intro_msg = tr("SELLER_INTRO_MSG % intro_placeholders_content")
+			self.hint = tr("SELLER_HINT")
+			self.result_msg = tr("SELLER_RESULT_MSG")
 		[EventName.SELLER, false]:
-			self.intro_msg = SELLER_INTRO_MSG % intro_placeholders_content
-			self.hint = SELLER_HINT
-			self.result_msg = SELLER_RESULT_MSG_ALT
+			self.intro_msg = tr("SELLER_INTRO_MSG") % intro_placeholders_content
+			self.hint = tr("SELLER_HINT")
+			self.result_msg = tr("SELLER_RESULT_MSG_ALT")
 		[EventName.STATUES, true]:
-			self.intro_msg = STATUES_INTRO_MSG
-			self.hint = STATUES_HINT
-			self.result_msg = STATUES_RESULT_MSG
+			self.intro_msg = tr("STATUES_INTRO_MSG")
+			self.hint = tr("STATUES_HINT")
+			self.result_msg = tr("STATUES_RESULT_MSG")
 		[EventName.STATUES, false]:
-			self.intro_msg = STATUES_INTRO_MSG
-			self.hint = STATUES_HINT
-			self.result_msg = STATUES_RESULT_MSG_ALT % result_placeholders_content
+			self.intro_msg = tr("STATUES_INTRO_MSG")
+			self.hint = tr("STATUES_HINT")
+			self.result_msg = tr("STATUES_RESULT_MSG_ALT") % result_placeholders_content
 	
 	self.player = player
 	self.menu_popup = menu_popup
@@ -132,11 +86,11 @@ func _ready() -> void:
 	message.theme = small_font_theme
 	
 	yes_button = Button.new()
-	yes_button.text = "yes"
+	yes_button.text = "YES_MSG"
 	yes_button.theme = normal_font_theme
 	
 	no_button = Button.new()
-	no_button.text = "no"
+	no_button.text = "NO_MSG"
 	no_button.theme = normal_font_theme
 	
 	v_container.add_child(yes_button)
