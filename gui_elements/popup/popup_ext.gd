@@ -4,6 +4,7 @@ extends Popup
 const MIN_MARGIN = 10
 const MARGIN = MIN_MARGIN + 50
 const RECT_SIZE_DIVISOR = 1.2
+const BUTTON_MIN_WIDTH = 200
 
 var main: ColorRect
 var normal_font_theme: CustomTheme
@@ -37,8 +38,9 @@ func _ready() -> void:
 	add_child(v_container)
 	
 	continue_button = Button.new()
-	continue_button.text = "continue"
+	continue_button.text = "CONTINUE_MSG"
 	continue_button.focus_mode = FOCUS_ALL
 	continue_button.theme = normal_font_theme
+	continue_button.rect_min_size.x = BUTTON_MIN_WIDTH
 	v_container.add_child(continue_button)
 	

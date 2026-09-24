@@ -191,7 +191,10 @@ func new_level() -> void:
 			maze = Maze.new(GenerationAlgorithm.SIDEWINDER, true)
 			change_track(SECOND_LEVEL_TRACK)
 			add_element(Event.new(maze.random_center_position(), self))
-			add_enemy(Bear.new(maze.random_center_position(), player, maze, self))
+			if is_new_game_plus:
+				add_enemy(Minotaur.new(maze.random_center_position(), player, maze, self))
+			else:
+				add_enemy(Bear.new(maze.random_center_position(), player, maze, self))
 			add_enemy(Bat.new(maze.random_top_right_position(), player, maze, self))
 			add_element(Event.new(maze.random_center_left_position(), self))
 			add_element(Coin.new(maze.random_center_right_position(), self))
