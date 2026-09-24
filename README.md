@@ -1,4 +1,4 @@
-# rogue-maze 1.1.0
+# rogue-maze 1.1.0-beta
 
 A simple video game I made with Godot 3 to avoid having to print the mazes generated with [mazes-scala](https://github.com/jGonzalezFernandez/mazes-scala). It should give you about 20 minutes of fun... if you like mazes.
 
@@ -24,7 +24,7 @@ Also, a bit of:
 
 https://kz.itch.io/1-bit-fantasy-items by kcaze (CC BY 4.0): the chainmail.
 
-Finally, some things (like that ugly carnivorous plant, or the coins) were drawn by me.
+Finally, some things (like that ugly carnivorous plant, or the coins, the Minotaur...) were drawn by me.
 
 **Music and sound effects**:
 
