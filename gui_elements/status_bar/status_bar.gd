@@ -22,7 +22,6 @@ func _init(character: Character, layout_preset: int, offset: Vector2, main: Colo
 	add_theme_constant_override("separation", 6)
 
 func _ready() -> void:
-	super._ready()
 	name_label = Label.new()
 	name_label.text = character.char_name.to_upper() + "  |" # vertical bar to separate the name from the hearts
 	name_label.theme = custom_theme

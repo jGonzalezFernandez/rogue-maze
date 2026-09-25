@@ -8,6 +8,7 @@ func _init(custom_font: CustomFont, background_color: Color) -> void:
 	var font_color = background_color.inverted()
 	
 	set_font("font", "Label", custom_font)
+	set_font_size("font_size", "Label", custom_font.font_size)
 	set_color("font_color", "Label", font_color)
 	
 	var style_box = StyleBoxFlat.new()
@@ -26,6 +27,7 @@ func _init(custom_font: CustomFont, background_color: Color) -> void:
 	# style_box_inverted.border_color = style_box.border_color
 	
 	set_font("font", "Button", custom_font)
+	set_font_size("font_size", "Button", custom_font.font_size)
 	set_color("font_color", "Button", font_color)
 	set_color("font_color_focus", "Button", font_color.inverted())
 	set_color("font_color_pressed", "Button", font_color.inverted())

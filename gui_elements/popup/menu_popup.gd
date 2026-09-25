@@ -18,6 +18,7 @@ func _init(main: ColorRect) -> void:
 	large_font_theme = CustomTheme.new(CustomFont.new(CustomFont.LARGE_FONT_SIZE), main.color)
 
 func _ready() -> void:
+	super._ready()
 	message.text = GAME_NAME
 	message.theme = large_font_theme
 	
@@ -54,7 +55,7 @@ func _ready() -> void:
 	add_child(keybinds_container)
 	var allies_desc = Label.new()
 	allies_desc.text = "ALLIES: Unicorn blocks enemies, Fairy heals & shines"
-	allies_desc.align = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT
+	allies_desc.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT
 	allies_desc.theme = small_font_theme
 	keybinds_container.add_child(allies_desc)
 	keybinds_container.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT, 0, MIN_MARGIN)
@@ -142,6 +143,6 @@ func get_keybinds(input_event_action_name: String) -> String:
 func add_keybind(keybind_desc: String, input_event_action_name: String) -> void:
 	var label = Label.new()
 	label.text = keybind_desc + ":  " + get_keybinds(input_event_action_name)
-	label.align = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT
+	label.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT
 	label.theme = small_font_theme
 	keybinds_container.add_child(label)

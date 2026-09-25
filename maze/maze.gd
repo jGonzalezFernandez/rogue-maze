@@ -49,7 +49,6 @@ func sort_cells_by_link_count_asc(cell1: Cell, cell2: Cell) -> bool:
 	return cell1.link_count < cell2.link_count
 
 func _ready() -> void:
-	super._ready()
 	astar = AStar2D.new()
 	set_cells()
 	match generation_algorithm:

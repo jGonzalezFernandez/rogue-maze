@@ -23,7 +23,6 @@ func _init(main: ColorRect) -> void:
 	process_mode = PROCESS_MODE_ALWAYS
 
 func _ready() -> void:
-	super._ready()
 	panel = Panel.new()
 	panel.size = size
 	panel.theme = normal_font_theme
@@ -31,8 +30,8 @@ func _ready() -> void:
 	
 	message = Label.new()
 	message.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, 0, MARGIN)
-	message.align = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER 
-	message.autowrap = true
+	message.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER 
+	message.autowrap_mode = TextServer.AutowrapMode.AUTOWRAP_WORD_SMART
 	add_child(message)
 	
 	v_container = VBoxContainer.new()

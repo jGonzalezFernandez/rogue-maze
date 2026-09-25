@@ -31,7 +31,6 @@ func _init(position: Vector2, main: Node, texture: Texture2D, max_alpha: float) 
 	modulate.a = max_alpha
 
 func _ready() -> void:
-	super._ready()
 	sprite = Sprite2D.new()
 	sprite.texture = texture
 	add_child(sprite)
