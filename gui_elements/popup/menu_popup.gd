@@ -54,7 +54,7 @@ func _ready() -> void:
 	add_child(keybinds_container)
 	var allies_desc = Label.new()
 	allies_desc.text = "ALLIES: Unicorn blocks enemies, Fairy heals & shines"
-	allies_desc.align = Label.ALIGN_RIGHT
+	allies_desc.align = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT
 	allies_desc.theme = small_font_theme
 	keybinds_container.add_child(allies_desc)
 	keybinds_container.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT, 0, MIN_MARGIN)
@@ -98,20 +98,33 @@ func on_continue_button_pressed() -> void:
 
 func input_event_to_string(input_event: InputEvent) -> String:
 	if input_event is InputEventJoypadButton:
-		return Input.get_joy_button_string(input_event.button_index)
+		return joy_button_to_string(input_event.button_index)
 	elif input_event is InputEventJoypadMotion:
 		return joy_motion_to_string(input_event.axis, input_event.axis_value)
 	else:
 		return input_event.as_text()
 
+func joy_button_to_string(button_index: JoyButton) -> String:
+	match button_index:
+		JoyButton.JOY_BUTTON_A:
+			return "Bottom Button"
+		JoyButton.JOY_BUTTON_B:
+			return "Right Button"
+		JoyButton.JOY_BUTTON_X:
+			return "Left Button"
+		JoyButton.JOY_BUTTON_Y:
+			return "Top Button"
+		_:
+			return "Unsupported JoyButton"
+
 func joy_motion_to_string(axis: int, value: float) -> String:
 	match axis:
-		JOY_AXIS_0:
+		JoyAxis.JOY_AXIS_LEFT_X:
 			if value > 0:
 				return "Joystick Right"
 			else:
 				return "Joystick Left"
-		JOY_AXIS_1:
+		JoyAxis.JOY_AXIS_LEFT_Y:
 			if value > 0:
 				return "Joystick Down"
 			else:
@@ -129,6 +142,6 @@ func get_keybinds(input_event_action_name: String) -> String:
 func add_keybind(keybind_desc: String, input_event_action_name: String) -> void:
 	var label = Label.new()
 	label.text = keybind_desc + ":  " + get_keybinds(input_event_action_name)
-	label.align = Label.ALIGN_RIGHT
+	label.align = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT
 	label.theme = small_font_theme
 	keybinds_container.add_child(label)

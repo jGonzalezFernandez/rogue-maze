@@ -159,7 +159,7 @@ func add_enemy(enemy: Enemy) -> void:
 func add_minor_enemy_if_possible(minor_enemy: Enemy) -> void:
 	for i in range(minor_enemies.size() - 1, -1, -1):
 		if !is_instance_valid(minor_enemies[i]): # this can happen if the object has been deleted, but not its reference
-			minor_enemies.remove(i)
+			minor_enemies.remove_at(i)
 	if minor_enemies.size() < MAX_MINOR_ENEMIES_PER_LEVEL:
 		add_child(minor_enemy)
 		minor_enemies.append(minor_enemy)
@@ -316,7 +316,7 @@ func update_allies() -> void:
 			add_child(ally)
 		elif !is_ancestor_of(ally):
 			remove(ally)
-			allies.remove(i)
+			allies.remove_at(i)
 
 func next_level() -> void:
 	clean()

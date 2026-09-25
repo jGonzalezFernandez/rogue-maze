@@ -30,8 +30,8 @@ func _ready() -> void:
 	add_child(panel)
 	
 	message = Label.new()
-	message.set_anchors_and_offsets_preset(Control.PRESET_WIDE, 0, MARGIN)
-	message.align = Label.ALIGNMENT_CENTER
+	message.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, 0, MARGIN)
+	message.align = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER 
 	message.autowrap = true
 	add_child(message)
 	
@@ -40,7 +40,7 @@ func _ready() -> void:
 	
 	continue_button = Button.new()
 	continue_button.text = "CONTINUE_MSG"
-	continue_button.focus_mode = FOCUS_ALL
+	continue_button.focus_mode = Control.FocusMode.FOCUS_ALL
 	continue_button.theme = normal_font_theme
 	continue_button.custom_minimum_size.x = BUTTON_MIN_WIDTH
 	v_container.add_child(continue_button)
