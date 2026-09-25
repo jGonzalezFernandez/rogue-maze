@@ -13,10 +13,11 @@ const EXPLOSION_LENGTH = 2
 
 var timer: Timer
 
-func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
-	pass
+func _init(position: Vector2, main: Node) -> void:
+	super._init(position, main, TEXTURE)
 
 func _ready() -> void:
+	super._ready()
 	audio_player.stream = SOUND
 	
 	light.texture_scale = 0.2
@@ -25,9 +26,9 @@ func _ready() -> void:
 	timer = Timer.new()
 	timer.one_shot = true
 	add_child(timer)
-	timer.connect("timeout", self, "on_timer_timeout")
+	timer.connect("timeout",Callable(self,"on_timer_timeout"))
 	timer.start(BOMB_TIMER_DURATION)
-	connect("explosion_requested", main, "on_bomb_explosion_requested")
+	connect("explosion_requested",Callable(main,"on_bomb_explosion_requested"))
 
 func on_timer_timeout() -> void:
 	var explosion_positions = [position]

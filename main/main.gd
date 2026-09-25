@@ -6,7 +6,7 @@ const HELMET_PRICE = 4
 const MIN_ITEMS_TO_WIN = 10
 const MAX_MINOR_ENEMIES_PER_LEVEL = 9
 
-const BACKGROUND_COLOR = Color.black
+const BACKGROUND_COLOR = Color.BLACK
 const STATUS_BAR_X_OFFSET = 4
 const STATUS_BAR_Y_OFFSET = 2
 const BOTTOM_Y_OFFSET = 0 - STATUS_BAR_Y_OFFSET
@@ -75,11 +75,12 @@ var third_events: Array
 var fourth_events: Array
 
 func _ready() -> void:
+	super._ready()
 	randomize()
 #	seed(255) # for testing
 	
 	color = BACKGROUND_COLOR
-	rect_size = OS.get_window_size()
+	size = get_window().get_size()
 	
 	canvas_modulate = CanvasModulate.new()
 	add_child(canvas_modulate)
@@ -98,10 +99,10 @@ func _ready() -> void:
 	add_child(audio_player)
 	play_track(MAIN_MENU_TRACK)
 	
-	audio_player.connect("finished", self, "on_audio_player_finished")
+	audio_player.connect("finished",Callable(self,"on_audio_player_finished"))
 
 func on_new_game_button_pressed() -> void:
-	canvas_modulate.color = Color.white
+	canvas_modulate.color = Color.WHITE
 	menu_popup.hide()
 	
 	player = Player.new(STARTING_POSITION, maze, self)
@@ -135,7 +136,7 @@ func play_track(track: AudioStream, volume: float = 0) -> void:
 	audio_player.volume_db = volume
 	audio_player.play()
 
-func change_volume(target_volume: float, duration: float) -> SceneTreeTween:
+func change_volume(target_volume: float, duration: float) -> Tween:
 	var tween = create_tween()
 	tween.tween_property(audio_player, "volume_db", target_volume, duration)
 	return tween
@@ -143,7 +144,7 @@ func change_volume(target_volume: float, duration: float) -> SceneTreeTween:
 func change_track(new_track: AudioStream, duration = 0.5) -> void:
 	if audio_player.playing:
 		var tween = change_volume(NO_SOUND_VOLUME, duration)
-		yield(tween, "finished")
+		await tween.finished
 	play_track(new_track, MUSIC_VOLUME)
 
 func on_audio_player_finished() -> void:
@@ -222,7 +223,7 @@ func new_level() -> void:
 			add_element(Coin.new(maze.random_center_right_position(), self))
 		5:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_DIVISION)
-			canvas_modulate.color = Color.lightgray
+			canvas_modulate.color = Color.LIGHT_GRAY
 			change_track(FIFTH_LEVEL_TRACK)
 			add_enemy(SkeletonWizard.new(maze.random_center_position(), player, maze, self))
 			add_enemy(MonsterGhost.new(maze.random_top_right_position(), player, maze, self))
@@ -230,7 +231,7 @@ func new_level() -> void:
 			add_element(Event.new(maze.random_center_right_position(), self))
 		6:
 			maze = Maze.new(GenerationAlgorithm.RECURSIVE_BACKTRACKER)
-			canvas_modulate.color = Color.gray
+			canvas_modulate.color = Color.GRAY
 			change_track(SIXTH_LEVEL_TRACK)
 			add_enemy(Shadow.new(maze.random_center_position(), player, maze, self))
 			add_element(Event.new(maze.random_top_right_position(), self))
@@ -266,7 +267,7 @@ func remove(instance: Object) -> void:
 	if is_instance_valid(instance):
 		if instance is GridElement and instance.audio_player.playing:
 			instance.disable_and_hide()
-			yield(instance.audio_player, "finished")
+			await instance.audio_player.finished
 		instance.queue_free() # wrong object will be deleted if the dangling pointers bug occurs
 
 func clean_array(array: Array) -> void:
@@ -313,7 +314,7 @@ func update_allies() -> void:
 			ally.maze = maze
 			set_char_position(ally, STARTING_POSITION)
 			add_child(ally)
-		elif !is_a_parent_of(ally):
+		elif !is_ancestor_of(ally):
 			remove(ally)
 			allies.remove(i)
 
@@ -325,7 +326,7 @@ func next_level() -> void:
 	update_allies()
 
 func on_key_area_entered(_area) -> void:
-	stairs.unlock()
+	false # stairs.unlock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	key.audio_player.play()
 	remove(key)
 
@@ -348,7 +349,7 @@ func add_heart_container(new_health: int, character: Character = player, status_
 	set_health(new_health, character, status_bar)
 
 func on_treasure_area_entered(_area, treasure: Treasure) -> void:
-	if !first_items.empty():
+	if !first_items.is_empty():
 		match Utils.pop_random_elem(first_items):
 			StatusBar.Item.SWORD:
 				edged_weapon = Edgedweapon.new()
@@ -366,7 +367,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				lens = Lens.new()
 				player_status_bar.inventory.add_child(lens)
 				player.perception += 1
-	elif !second_items.empty():
+	elif !second_items.is_empty():
 		match Utils.pop_random_elem(second_items):
 			StatusBar.Item.CHAINMAIL:
 				armor = Armor.new()
@@ -389,7 +390,7 @@ func on_treasure_area_entered(_area, treasure: Treasure) -> void:
 				player.teleport_ability = true
 			StatusBar.Item.HEART_CONTAINER:
 				add_heart_container(player.health + 2)
-	elif !third_items.empty():
+	elif !third_items.is_empty():
 		match Utils.pop_random_elem(third_items):
 			StatusBar.Item.CHAOS_SWORD:
 				edged_weapon.texture = Edgedweapon.CHAOS_SWORD_TEXTURE
@@ -426,7 +427,7 @@ func on_player_teleport_requested() -> void:
 		for ally in allies:
 			if ally.knows_player:
 				ally.teleport_to(STARTING_POSITION)
-				yield(ally, "mov_tween_finished")
+				await ally.mov_tween_finished
 				ally.stand_behind()
 
 func on_player_bomb_requested() -> void:
@@ -461,7 +462,7 @@ func on_character_died(character: Character) -> void:
 		change_track(GAME_OVER_TRACK, 0)
 	elif character is EvilTwin:
 		character.disable_and_hide()
-		yield(get_tree().create_timer(character.respawn), "timeout")
+		await get_tree().create_timer(character.respawn).timeout
 		var enemy_status_bar_opt = _get_enemy_status_bar(character)
 		if is_instance_valid(enemy_status_bar_opt) and is_instance_valid(character):
 			add_heart_container(character.max_health + 2, character, enemy_status_bar_opt)
@@ -469,7 +470,7 @@ func on_character_died(character: Character) -> void:
 			character.double_respawn_time()
 	else:
 		var tween = character.fade()
-		yield(tween, "finished")
+		await tween.finished
 		remove(_get_enemy_status_bar(character))
 		remove(character)
 
@@ -486,13 +487,13 @@ func on_food_area_exited(_area, food: Food) -> void:
 func on_event_area_entered(_area, event: Event) -> void:
 	var event_popup: EventPopup
 
-	if level_number < 3 and !first_events.empty():
+	if level_number < 3 and !first_events.is_empty():
 		event_popup = EventPopup.new(Utils.pop_random_elem(first_events), player, menu_popup, self)
-	elif level_number == 3 and !second_events.empty():
+	elif level_number == 3 and !second_events.is_empty():
 		event_popup = EventPopup.new(Utils.pop_random_elem(second_events), player, menu_popup, self)
-	elif level_number < 6 and !third_events.empty():
+	elif level_number < 6 and !third_events.is_empty():
 		event_popup = EventPopup.new(Utils.pop_random_elem(third_events), player, menu_popup, self)
-	elif level_number == 6 and !fourth_events.empty():
+	elif level_number == 6 and !fourth_events.is_empty():
 		match Utils.pop_random_elem(fourth_events):
 			EventPopup.EventName.SELLER:
 				if player.coins >= HELMET_PRICE:

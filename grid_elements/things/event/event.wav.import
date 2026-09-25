@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/event.wav-53f8442e82bf6388da89e3ad41960868.sample"
+type="AudioStreamWAV"
+uid="uid://cfp1trdrdwam2"
+path="res://.godot/imported/event.wav-53f8442e82bf6388da89e3ad41960868.sample"
 
 [deps]
 
 source_file="res://grid_elements/things/event/event.wav"
-dest_files=[ "res://.import/event.wav-53f8442e82bf6388da89e3ad41960868.sample" ]
+dest_files=["res://.godot/imported/event.wav-53f8442e82bf6388da89e3ad41960868.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

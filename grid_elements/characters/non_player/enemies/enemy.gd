@@ -24,8 +24,8 @@ var blunt_def: int
 var group_call_timer: Timer
 var movement_timer: Timer
 
-func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: Texture, name: String, vision: int, hearing: int, min_time_between_walks: float, max_walk_length: int, speed: float, initial_health: int, atk: int, slashing_def: int, blunt_def: int, friendly_fire: int, is_immobile: bool, stops_before_unicorns: bool, max_alpha: float) \
-.(initial_position, player, maze, main, texture, name, vision, hearing, speed, initial_health, friendly_fire, max_alpha) -> void:
+func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: Texture, name: String, vision: int, hearing: int, min_time_between_walks: float, max_walk_length: int, speed: float, initial_health: int, atk: int, slashing_def: int, blunt_def: int, friendly_fire: int, is_immobile: bool, stops_before_unicorns: bool, max_alpha: float) -> void:
+	super._init(initial_position, player, maze, main, texture, name, vision, hearing, speed, initial_health, friendly_fire, max_alpha)
 	self.is_immobile = is_immobile
 	self.min_time_between_walks = min_time_between_walks
 	self.max_walk_length = max_walk_length
@@ -37,11 +37,12 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: T
 	add_to_group(ENEMY_GROUP)
 
 func _ready() -> void:
+	super._ready()
 	# Enemies should be able to see everything in order to avoid unnecessary collisions on their paths.
 	# The exception to the rule: those elements that should be completely ignored: treasures, stairs, fairy...
 	ray.collision_mask = compute_layers([Layer.DEFAULT, Layer.CORPOREAL_ENEMIES, Layer.INCORPOREAL_ENEMIES, Layer.UNICORNS, Layer.EXPLOSIONS])
-	connect("area_entered", self, "on_area_entered")
-	connect("minor_enemy_addition_requested", main, "add_minor_enemy_if_possible")
+	connect("area_entered",Callable(self,"on_area_entered"))
+	connect("minor_enemy_addition_requested",Callable(main,"add_minor_enemy_if_possible"))
 	
 	group_call_timer = Timer.new()
 	group_call_timer.one_shot = true
@@ -50,16 +51,17 @@ func _ready() -> void:
 	if !is_immobile:
 		movement_timer = Timer.new()
 		add_child(movement_timer)
-		movement_timer.connect("timeout", self, "on_movement_timer_timeout")
+		movement_timer.connect("timeout",Callable(self,"on_movement_timer_timeout"))
 		movement_timer.start(min_time_between_walks)
 
-func hunt(path: PoolVector2Array) -> void:
+func hunt(path: PackedVector2Array) -> void:
 	if group_call_timer.is_stopped(): # too many calls to the group can cause a message queue overflow
 		get_tree().call_group(ENEMY_GROUP, "player_found", char_name)
 		group_call_timer.start(MIN_TIME_BETWEEN_GROUP_CALLS)
 	follow_path(path, MovementType.RUN, path.size())
 
 func _process(_delta) -> void:
+	super._process(delta)
 	if !is_moving: # if the enemy is already doing something, we skip to try again in the next frame. Another solution? Probably with a bool
 		# TODO: Check distances before calling get_point_path_to?
 		var path = get_point_path_to(player.position)
@@ -125,11 +127,11 @@ func on_area_entered(area) -> void:
 		get_tree().call_group(ENEMY_GROUP, "collision_received", char_name, area.position)
 
 func disable() -> void:
-	.disable()
-	if is_instance_valid(movement_timer) and movement_timer.is_connected("timeout", self, "on_movement_timer_timeout"):
-		movement_timer.disconnect("timeout", self, "on_movement_timer_timeout")
+	super.disable()
+	if is_instance_valid(movement_timer) and movement_timer.is_connected("timeout",Callable(self,"on_movement_timer_timeout")):
+		movement_timer.disconnect("timeout",Callable(self,"on_movement_timer_timeout"))
 
 func enable() -> void:
-	.enable()
-	if is_instance_valid(movement_timer) and !movement_timer.is_connected("timeout", self, "on_movement_timer_timeout"):
-		movement_timer.connect("timeout", self, "on_movement_timer_timeout")
+	super.enable()
+	if is_instance_valid(movement_timer) and !movement_timer.is_connected("timeout",Callable(self,"on_movement_timer_timeout")):
+		movement_timer.connect("timeout",Callable(self,"on_movement_timer_timeout"))

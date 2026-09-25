@@ -47,8 +47,8 @@ func set_durations(speed: float) -> void:
 	collision_duration = 1.5 * walking_duration
 	bounce_duration = collision_duration / 2.0
 
-func _init(initial_position: Vector2, maze: Maze, main: Node, texture: Texture, name: String, speed: float, initial_health: int, friendly_fire: int, max_alpha: float) \
-.(initial_position, main, texture, max_alpha) -> void:
+func _init(initial_position: Vector2, maze: Maze, main: Node, texture: Texture, name: String, speed: float, initial_health: int, friendly_fire: int, max_alpha: float) -> void:
+	super._init(initial_position, main, texture, max_alpha)
 	self.maze = maze
 	self.char_name = name
 	set_durations(speed)
@@ -57,8 +57,9 @@ func _init(initial_position: Vector2, maze: Maze, main: Node, texture: Texture, 
 	self.friendly_fire = friendly_fire
 
 func _ready() -> void:
-	connect("health_changed", main, "on_character_health_changed")
-	connect("died", main, "on_character_died")
+	super._ready()
+	connect("health_changed",Callable(main,"on_character_health_changed"))
+	connect("died",Callable(main,"on_character_died"))
 	ray.collide_with_areas = true
 
 func get_stats() -> String:
@@ -119,13 +120,13 @@ func dash_to(target_cell: Vector2) -> void:
 			audio_player.stream = Utils.get_random_elem([DASH_01_SOUND, DASH_02_SOUND])
 			audio_player.play()
 			break
-	yield(self, "mov_tween_finished")
+	await self.mov_tween_finished
 	phasing = false
 
 func teleport_to(target_position: Vector2) -> void:
 	phasing = true
 	move_tween_to(target_position, MovementType.RUN, true)
-	yield(self, "mov_tween_finished")
+	await self.mov_tween_finished
 	phasing = false
 
 func increase_health_if_possible(increment: int) -> bool:
@@ -144,13 +145,13 @@ func teleport_while_healing_to(target_position: Vector2) -> void:
 	increase_health_if_possible(Utils.rounded_half(max_health))
 
 func bounce_tween(dir: Vector2) -> void: # two pixels
-  create_mov_tween().tween_property(self, "position", snap(position), bounce_duration).from(position + 2 * dir).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	create_mov_tween().tween_property(self, "position", snap(position), bounce_duration).from(position + 2 * dir).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
 func collide(dir: Vector2, slight_recoil: bool) -> void:
 	ongoing_collision = true
 	if slight_recoil or !move_tween_if_possible_to(dir * Maze.TILE_SIZE, MovementType.COLLISION):
 		bounce_tween(dir)
-	yield(self, "mov_tween_finished")
+	await self.mov_tween_finished
 	ongoing_collision = false
 
 func apply_damage(damage: int) -> void:
@@ -174,13 +175,13 @@ func manage_collision(character: Area2D, damage: int, slight_recoil: bool) -> vo
 			collide(Vector2.DOWN, slight_recoil)
 	apply_damage(damage)
 
-# Workaround because the classic Tween node has been deprecated in Godot 3.5 in favor of SceneTreeTween
-var mov_tween: SceneTreeTween
-func create_mov_tween() -> SceneTreeTween:
+# Workaround because the classic Tween node has been deprecated in Godot 3.5 in favor of Tween
+var mov_tween: Tween
+func create_mov_tween() -> Tween:
 	kill_mov_tween()
 	is_moving = true
 	mov_tween = create_tween()
-	mov_tween.connect("finished", self, "on_mov_tween_finished")
+	mov_tween.connect("finished",Callable(self,"on_mov_tween_finished"))
 	return mov_tween
 
 func kill_mov_tween() -> void:

@@ -16,14 +16,14 @@ const ALPHA_BEHIND = 0.25
 
 var max_alpha: float
 var main: Node
-var texture: Texture
-var sprite: Sprite
+var texture: Texture2D
+var sprite: Sprite2D
 var collision_shape: CollisionShape2D
 var ray: RayCast2D
 var audio_player: AudioStreamPlayer2D
-var light: Light2D
+var light: PointLight2D
 
-func _init(position: Vector2, main: Node, texture: Texture, max_alpha: float) -> void:
+func _init(position: Vector2, main: Node, texture: Texture2D, max_alpha: float) -> void:
 	self.position = position
 	self.main = main
 	self.texture = texture
@@ -31,12 +31,13 @@ func _init(position: Vector2, main: Node, texture: Texture, max_alpha: float) ->
 	modulate.a = max_alpha
 
 func _ready() -> void:
-	sprite = Sprite.new()
+	super._ready()
+	sprite = Sprite2D.new()
 	sprite.texture = texture
 	add_child(sprite)
 
 	var rectangle_shape = RectangleShape2D.new()
-	rectangle_shape.extents = Vector2(7.50361, 7.37397)
+	rectangle_shape.size = Vector2(7.50361, 7.37397)
 	collision_shape = CollisionShape2D.new()
 	collision_shape.shape = rectangle_shape
 	add_child(collision_shape)
@@ -47,14 +48,14 @@ func _ready() -> void:
 	audio_player = AudioStreamPlayer2D.new()
 	add_child(audio_player)
 
-	light = Light2D.new()
+	light = PointLight2D.new()
 	light.texture = LIGHT_TEXTURE
-	light.mode = Light2D.MODE_MIX
+	light.mode = PointLight2D.MODE_MIX
 	light.enabled = false # ideally all grid elements should emit a dim light, but this is bad for perf
 	add_child(light)
 
 func cast_ray_to(target: Vector2) -> void:
-	ray.cast_to = target
+	ray.target_position = target
 	ray.force_raycast_update()
 
 func compute_layers(layers: Array) -> int:
@@ -82,7 +83,7 @@ func enable() -> void:
 	collision_shape.set_deferred("disabled", false)
 	set_process(true)
 
-func fade() -> SceneTreeTween:
+func fade() -> Tween:
 	disable()
 	var tween = create_tween()
 	tween.set_parallel(true)

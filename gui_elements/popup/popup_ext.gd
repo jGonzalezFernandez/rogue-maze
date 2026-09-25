@@ -18,19 +18,20 @@ func _init(main: ColorRect) -> void:
 	self.main = main
 	normal_font_theme = CustomTheme.new(CustomFont.new(), main.color)
 	small_font_theme = CustomTheme.new(CustomFont.new(CustomFont.SMALL_FONT_SIZE), main.color)
-	rect_size = Vector2(main.rect_size.x / RECT_SIZE_DIVISOR, main.rect_size.y / RECT_SIZE_DIVISOR)
-	popup_exclusive = true
-	pause_mode = PAUSE_MODE_PROCESS
+	size = Vector2(main.size.x / RECT_SIZE_DIVISOR, main.size.y / RECT_SIZE_DIVISOR)
+	exclusive = true
+	process_mode = PROCESS_MODE_ALWAYS
 
 func _ready() -> void:
+	super._ready()
 	panel = Panel.new()
-	panel.rect_size = rect_size
+	panel.size = size
 	panel.theme = normal_font_theme
 	add_child(panel)
 	
 	message = Label.new()
-	message.set_anchors_and_margins_preset(Control.PRESET_WIDE, 0, MARGIN)
-	message.align = Label.ALIGN_CENTER
+	message.set_anchors_and_offsets_preset(Control.PRESET_WIDE, 0, MARGIN)
+	message.align = Label.ALIGNMENT_CENTER
 	message.autowrap = true
 	add_child(message)
 	
@@ -41,6 +42,6 @@ func _ready() -> void:
 	continue_button.text = "CONTINUE_MSG"
 	continue_button.focus_mode = FOCUS_ALL
 	continue_button.theme = normal_font_theme
-	continue_button.rect_min_size.x = BUTTON_MIN_WIDTH
+	continue_button.custom_minimum_size.x = BUTTON_MIN_WIDTH
 	v_container.add_child(continue_button)
 	

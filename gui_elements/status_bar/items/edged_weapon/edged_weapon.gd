@@ -7,5 +7,5 @@ const SWORD_TEXTURE = preload(SWORD_TEXTURE_PATH)
 const CHAOS_SWORD_TEXTURE_PATH = ResourcePath.ITEMS + "/edged_weapon/chaos_sword.png"
 const CHAOS_SWORD_TEXTURE = preload(CHAOS_SWORD_TEXTURE_PATH)
 
-func _init().(SWORD_TEXTURE) -> void:
-	pass
+func _init() -> void:
+	super._init(SWORD_TEXTURE)

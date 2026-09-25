@@ -9,12 +9,12 @@ extends Node
 
 func _init():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-	set_pause_mode(PAUSE_MODE_PROCESS) # Allow input processing of this node even when the game is paused (so mouse actions keep being ignored)
+	set_process_mode(PROCESS_MODE_ALWAYS) # Allow input processing of this node even when the game is paused (so mouse actions keep being ignored)
 
 func _input(event):
 	if event is InputEventMouse:
-		get_tree().set_input_as_handled() # So we do nothing except prevent the event from propagating
+		get_viewport().set_input_as_handled() # So we do nothing except prevent the event from propagating
 
 	if Input.is_action_just_pressed("toggle_fullscreen"):
-		OS.window_fullscreen = !OS.window_fullscreen
-		get_tree().set_input_as_handled() # To prevent the "Enter" of the "Alt + Enter" combo from triggering the "pressed" signal on UI buttons
+		get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (!((get_window().mode == Window.MODE_EXCLUSIVE_FULLSCREEN) or (get_window().mode == Window.MODE_FULLSCREEN))) else Window.MODE_WINDOWED
+		get_viewport().set_input_as_handled() # To prevent the "Enter" of the "Alt + Enter" combo from triggering the "pressed" signal on UI buttons

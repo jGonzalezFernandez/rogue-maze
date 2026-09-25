@@ -19,9 +19,10 @@ func _init(character: Character, layout_preset: int, offset: Vector2, main: Colo
 	self.offset = offset
 	
 	custom_theme = CustomTheme.new(CustomFont.new(CustomFont.SMALL_FONT_SIZE, CustomFont.EXTRA_SPACING, 0), main.color)
-	add_constant_override("separation", 6)
+	add_theme_constant_override("separation", 6)
 
 func _ready() -> void:
+	super._ready()
 	name_label = Label.new()
 	name_label.text = character.char_name.to_upper() + "  |" # vertical bar to separate the name from the hearts
 	name_label.theme = custom_theme
@@ -41,8 +42,8 @@ func _ready() -> void:
 	add_child(heart_bar)
 	add_child(stats_label)
 	add_child(inventory)
-	set_anchors_and_margins_preset(layout_preset)
-	set_begin(Vector2(margin_left + offset.x, margin_top + offset.y))
+	set_anchors_and_offsets_preset(layout_preset)
+	set_begin(Vector2(offset_left + offset.x, offset_top + offset.y))
 
 func set_hearts(health) -> void:
 	for i in heart_bar.get_child_count():

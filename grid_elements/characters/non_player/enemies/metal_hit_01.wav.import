@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/metal_hit_01.wav-e0e45efe5145c8265e70eadde7485eff.sample"
+type="AudioStreamWAV"
+uid="uid://bxd7kynp2chxv"
+path="res://.godot/imported/metal_hit_01.wav-e0e45efe5145c8265e70eadde7485eff.sample"
 
 [deps]
 
 source_file="res://grid_elements/characters/non_player/enemies/metal_hit_01.wav"
-dest_files=[ "res://.import/metal_hit_01.wav-e0e45efe5145c8265e70eadde7485eff.sample" ]
+dest_files=["res://.godot/imported/metal_hit_01.wav-e0e45efe5145c8265e70eadde7485eff.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

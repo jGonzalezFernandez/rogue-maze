@@ -15,9 +15,8 @@ const SLASHING_DEF = 4
 const BLUNT_DEF = 5
 const STOPS_BEFORE_UNICORNS = true
 
-func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
-.(initial_position, player, maze, main, TEXTURE, SHADOW_NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, STOPS_BEFORE_UNICORNS) -> void:
-	pass
+func _init(initial_position: Vector2, player, maze: Maze, main: Node) -> void:
+	super._init(initial_position, player, maze, main, TEXTURE, SHADOW_NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, STOPS_BEFORE_UNICORNS)
 
 func special_movement() -> void:
 	if Utils.twenty_five_percent_chance():

@@ -16,12 +16,11 @@ const BLUNT_DEF = 6
 const STOPS_BEFORE_UNICORNS = false
 var respawn = 90.0
 
-func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
-.(initial_position, player, maze, main, TEXTURE, EVIL_TWIN_NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, STOPS_BEFORE_UNICORNS) -> void:
-	pass
+func _init(initial_position: Vector2, player, maze: Maze, main: Node) -> void:
+	super._init(initial_position, player, maze, main, TEXTURE, EVIL_TWIN_NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, STOPS_BEFORE_UNICORNS)
 
 func special_movement() -> void:
-	if Utils.fifty_percent_chance() and !player.previous_positions.empty():
+	if Utils.fifty_percent_chance() and !player.previous_positions.is_empty():
 		teleport_to(player.previous_positions.front())
 	else:
 		walk_through_walls(Utils.get_random_elem(DIAGONALS), half_walk_length)

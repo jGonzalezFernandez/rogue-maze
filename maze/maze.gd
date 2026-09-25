@@ -32,7 +32,7 @@ var indexed_cells: Array
 var astar: AStar2D
 var tile_map: TileMap
 
-func _init(generation_algorithm: int, add_loops: bool = false) -> void:
+func _init(generation_algorithm: int,add_loops: bool = false):
 	self.generation_algorithm = generation_algorithm
 	self.add_loops = add_loops
 
@@ -49,6 +49,7 @@ func sort_cells_by_link_count_asc(cell1: Cell, cell2: Cell) -> bool:
 	return cell1.link_count < cell2.link_count
 
 func _ready() -> void:
+	super._ready()
 	astar = AStar2D.new()
 	set_cells()
 	match generation_algorithm:
@@ -70,10 +71,10 @@ func _ready() -> void:
 				# TODO: Add an enum to select the braiding level (instead of using a hard-coded probability)?
 				if current_cell.link_count <= 1 and Utils.seventy_five_percent_chance():
 					var neighbours = get_neighbours_of(current_cell)
-					neighbours.sort_custom(self, "sort_cells_by_link_count_asc")
+					neighbours.sort_custom(Callable(self,"sort_cells_by_link_count_asc"))
 					link_cells(current_cell, neighbours.front())
 	
-	tile_map = TILE_MAP_SCENE.instance()
+	tile_map = TILE_MAP_SCENE.instantiate()
 	add_child(tile_map)
 	draw_walls()
 
@@ -181,7 +182,7 @@ func draw_walls() -> void:
 				{"N": true, "E": true, "S": true, "W": true}:
 					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ALL)
 
-# TODO: To avoid having to calculate all coordinates by hand, investigate whether the TileMap functions map_to_world and world_to_map can be used instead
+# TODO: To avoid having to calculate all coordinates by hand, investigate whether the TileMap functions map_to_world and local_to_map can be used instead
 func _random_point(factor: int, length: int, offset: int):
 	return Utils.random_int(factor * length + offset, (factor - 1) * length + offset) * TILE_SIZE + HALF_TILE
 
