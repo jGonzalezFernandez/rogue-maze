@@ -19,7 +19,7 @@ func _ready() -> void:
 	connect("area_exited",Callable(self,"on_area_exited"))
 
 func _process(_delta) -> void:
-	super._process(delta)
+	super._process(_delta)
 	if !knows_player and player_is_visible():
 		knows_player = true
 	if !is_moving and knows_player:

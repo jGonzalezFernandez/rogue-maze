@@ -61,7 +61,7 @@ func hunt(path: PackedVector2Array) -> void:
 	follow_path(path, MovementType.RUN, path.size())
 
 func _process(_delta) -> void:
-	super._process(delta)
+	super._process(_delta)
 	if !is_moving: # if the enemy is already doing something, we skip to try again in the next frame. Another solution? Probably with a bool
 		# TODO: Check distances before calling get_point_path_to?
 		var path = get_point_path_to(player.position)

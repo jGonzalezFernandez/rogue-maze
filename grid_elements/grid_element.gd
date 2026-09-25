@@ -50,7 +50,7 @@ func _ready() -> void:
 
 	light = PointLight2D.new()
 	light.texture = LIGHT_TEXTURE
-	light.mode = PointLight2D.MODE_MIX
+	light.blend_mode = PointLight2D.BLEND_MODE_MIX
 	light.enabled = false # ideally all grid elements should emit a dim light, but this is bad for perf
 	add_child(light)
 

@@ -75,7 +75,6 @@ var third_events: Array
 var fourth_events: Array
 
 func _ready() -> void:
-	super._ready()
 	randomize()
 #	seed(255) # for testing
 	
