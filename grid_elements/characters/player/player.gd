@@ -42,7 +42,6 @@ func _ready() -> void:
 	add_child(bomb_timer)
 
 func _process(_delta) -> void:
-	super._process(_delta)
 	for dir_key in MOTION_INPUTS.keys():
 		if !is_moving: # we check this 4 times per frame to improve the responsiveness in the corners
 			if Input.is_action_pressed(dir_key):

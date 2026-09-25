@@ -17,7 +17,7 @@ func _init(initial_position: Vector2, player, maze: Maze, main: Node, texture: T
 func get_point_path_to(target: Vector2) -> PackedVector2Array:
 	var path = maze.astar.get_point_path(maze.astar.get_closest_point(position), maze.astar.get_closest_point(target))
 	if !path.is_empty():
-		path.remove(0)
+		path.remove_at(0)
 	return path
 
 func player_is_visible() -> bool:

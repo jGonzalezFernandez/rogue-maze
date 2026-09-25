@@ -149,37 +149,37 @@ func draw_walls() -> void:
 			# TODO: Use the really necessary tiles and rotate them according to the match?
 			match current_cell.walls:
 				{"N": false, "E": false, "S": false, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NONE)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NONE, Vector2i(0, 0))
 				{"N": false, "E": false, "S": false, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.W)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.W, Vector2i(0, 0))
 				{"N": false, "E": false, "S": true, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.S)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.S, Vector2i(0, 0))
 				{"N": false, "E": false, "S": true, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.SW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.SW, Vector2i(0, 0))
 				{"N": false, "E": true, "S": false, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.E)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.E, Vector2i(0, 0))
 				{"N": false, "E": true, "S": false, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.EW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.EW, Vector2i(0, 0))
 				{"N": false, "E": true, "S": true, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ES)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.ES, Vector2i(0, 0))
 				{"N": false, "E": true, "S": true, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ESW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.ESW, Vector2i(0, 0))
 				{"N": true, "E": false, "S": false, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.N)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.N, Vector2i(0, 0))
 				{"N": true, "E": false, "S": false, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NW, Vector2i(0, 0))
 				{"N": true, "E": false, "S": true, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NS)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NS, Vector2i(0, 0))
 				{"N": true, "E": false, "S": true, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NSW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NSW, Vector2i(0, 0))
 				{"N": true, "E": true, "S": false, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NE)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NE, Vector2i(0, 0))
 				{"N": true, "E": true, "S": false, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NEW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NEW, Vector2i(0, 0))
 				{"N": true, "E": true, "S": true, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NES)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NES, Vector2i(0, 0))
 				{"N": true, "E": true, "S": true, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ALL)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.ALL, Vector2i(0, 0))
 
 # TODO: To avoid having to calculate all coordinates by hand, investigate whether the TileMap functions map_to_world and local_to_map can be used instead
 func _random_point(factor: int, length: int, offset: int):
