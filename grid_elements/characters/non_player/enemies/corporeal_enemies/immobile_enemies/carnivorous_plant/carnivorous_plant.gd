@@ -11,6 +11,5 @@ const SLASHING_DEF = 0
 const BLUNT_DEF = 1
 const FRIENDLY_FIRE = 2
 
-func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
-.(initial_position, player, maze, main, TEXTURE, NAME, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, FRIENDLY_FIRE) -> void:
-	pass
+func _init(initial_position: Vector2, player, maze: Maze, main: Node) -> void:
+	super._init(initial_position, player, maze, main, TEXTURE, NAME, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF, FRIENDLY_FIRE)

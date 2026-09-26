@@ -10,17 +10,18 @@ const TIME_BETWEEN_HEALINGS = 13.0
 
 var timer: Timer
 
-func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
-.(initial_position, player, maze, main, TEXTURE, NAME, PERCEPTION) -> void:
+func _init(initial_position: Vector2, player, maze: Maze, main: Node) -> void:
+	super._init(initial_position, player, maze, main, TEXTURE, NAME, PERCEPTION)
 	collision_layer = compute_layers([])
 
 func _ready() -> void:
+	super._ready()
 	light.shadow_enabled = true
 	light.enabled = true
 	
 	timer = Timer.new()
 	add_child(timer)
-	timer.connect("timeout", self, "on_timer_timeout")
+	timer.connect("timeout",Callable(self,"on_timer_timeout"))
 	timer.start(TIME_BETWEEN_HEALINGS)
 
 func on_timer_timeout() -> void:

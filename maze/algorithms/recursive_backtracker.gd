@@ -11,11 +11,11 @@ static func apply_algorithm(maze) -> void:
 	var visited_cells = []
 	var stack = [maze.get_random_cell()]
 	
-	while !stack.empty():
+	while !stack.is_empty():
 		var current_cell = stack.back()
 		visited_cells.append(current_cell)
 		var candidate_neighbours = filter_unvisited_neighbours(maze.get_neighbours_of(current_cell), visited_cells)
-		if !candidate_neighbours.empty():
+		if !candidate_neighbours.is_empty():
 			var random_candidate = Utils.get_random_elem(candidate_neighbours)
 			maze.link_cells(current_cell, random_candidate)
 			stack.push_back(random_candidate)

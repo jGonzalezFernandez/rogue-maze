@@ -7,9 +7,10 @@ const TEXTURE = preload(TEXTURE_PATH)
 const SOUND_PATH = ResourcePath.THINGS + "key/key.wav"
 const SOUND = preload(SOUND_PATH)
 
-func _init(position: Vector2, main: Node).(position, main, TEXTURE) -> void:
-	pass
+func _init(position: Vector2, main: Node) -> void:
+	super._init(position, main, TEXTURE)
 
 func _ready() -> void:
+	super._ready()
 	audio_player.stream = SOUND
-	connect("area_entered", main, "on_key_area_entered")
+	connect("area_entered",Callable(main,"on_key_area_entered"))

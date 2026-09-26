@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/bonus_nightmare.ogg-2e2397888aaad81c66bdc8272e5234a4.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://da1wext1t6fr6"
+path="res://.godot/imported/bonus_nightmare.ogg-2e2397888aaad81c66bdc8272e5234a4.oggvorbisstr"
 
 [deps]
 
 source_file="res://main/music/bonus_nightmare.ogg"
-dest_files=[ "res://.import/bonus_nightmare.ogg-2e2397888aaad81c66bdc8272e5234a4.oggstr" ]
+dest_files=["res://.godot/imported/bonus_nightmare.ogg-2e2397888aaad81c66bdc8272e5234a4.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

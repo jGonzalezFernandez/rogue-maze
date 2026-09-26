@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/04_asking_questions.ogg-f2e9071aace01e2e3363e17817b36313.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://7m4ymarjqxbm"
+path="res://.godot/imported/04_asking_questions.ogg-f2e9071aace01e2e3363e17817b36313.oggvorbisstr"
 
 [deps]
 
 source_file="res://main/music/04_asking_questions.ogg"
-dest_files=[ "res://.import/04_asking_questions.ogg-f2e9071aace01e2e3363e17817b36313.oggstr" ]
+dest_files=["res://.godot/imported/04_asking_questions.ogg-f2e9071aace01e2e3363e17817b36313.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/02_ghosts_walk_here.ogg-4a8ebe67c9d64eb015a48f86d3c52876.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cclpkn3kuyq6g"
+path="res://.godot/imported/02_ghosts_walk_here.ogg-4a8ebe67c9d64eb015a48f86d3c52876.oggvorbisstr"
 
 [deps]
 
 source_file="res://main/music/02_ghosts_walk_here.ogg"
-dest_files=[ "res://.import/02_ghosts_walk_here.ogg-4a8ebe67c9d64eb015a48f86d3c52876.oggstr" ]
+dest_files=["res://.godot/imported/02_ghosts_walk_here.ogg-4a8ebe67c9d64eb015a48f86d3c52876.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

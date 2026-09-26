@@ -8,6 +8,6 @@ static func apply_algorithm(maze) -> void:
 				candidate_neighbours.append(maze.get_north_cell_of(cell))
 			if maze.east_exists(cell):
 				candidate_neighbours.append(maze.get_east_cell_of(cell))
-			if !candidate_neighbours.empty():
+			if !candidate_neighbours.is_empty():
 				var random_candidate = Utils.get_random_elem(candidate_neighbours)
 				maze.link_cells(cell, random_candidate)

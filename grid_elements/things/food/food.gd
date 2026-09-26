@@ -6,10 +6,12 @@ const SOUND = preload(SOUND_PATH)
 
 var health_refill: int  
 
-func _init(position: Vector2, main: Node, texture: Texture, health_refill: int).(position, main, texture) -> void:
+func _init(position: Vector2, main: Node, texture: Texture, health_refill: int) -> void:
+	super._init(position, main, texture)
 	self.health_refill = health_refill
 
 func _ready() -> void:
+	super._ready()
 	audio_player.stream = SOUND
-	connect("area_entered", main, "on_food_area_entered", [self])
-	connect("area_exited", main, "on_food_area_exited", [self])
+	connect("area_entered",Callable(main,"on_food_area_entered").bind(self))
+	connect("area_exited",Callable(main,"on_food_area_exited").bind(self))

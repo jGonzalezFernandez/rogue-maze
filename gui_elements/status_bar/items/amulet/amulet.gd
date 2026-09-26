@@ -4,5 +4,5 @@ extends Item
 const AMULET_TEXTURE_PATH = ResourcePath.ITEMS + "/amulet/amulet.png"
 const AMULET_TEXTURE = preload(AMULET_TEXTURE_PATH)
 
-func _init().(AMULET_TEXTURE) -> void:
-	pass
+func _init() -> void:
+	super._init(AMULET_TEXTURE)

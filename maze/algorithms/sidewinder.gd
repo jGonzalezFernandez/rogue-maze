@@ -1,7 +1,7 @@
 class_name Sidewinder
 
 static func close_run(run: Array, maze) -> void:
-	if !run.empty():
+	if !run.is_empty():
 		var random_candidate = Utils.get_random_elem(run)
 		maze.link_cells(random_candidate, maze.get_north_cell_of(random_candidate))
 		run.clear()

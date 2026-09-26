@@ -15,9 +15,8 @@ const ATK = 6
 const SLASHING_DEF = 4
 const BLUNT_DEF = 0
 
-func _init(initial_position: Vector2, player, maze: Maze, main: Node) \
-.(initial_position, player, maze, main, TEXTURE, NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF) -> void:
-	pass
+func _init(initial_position: Vector2, player, maze: Maze, main: Node) -> void:
+	super._init(initial_position, player, maze, main, TEXTURE, NAME, VISION, HEARING, MIN_TIME_BETWEEN_WALKS, MAX_WALK_LENGTH, SPEED, INITIAL_HEALTH, ATK, SLASHING_DEF, BLUNT_DEF)
 
 func special_movement() -> void:
 	teleport_while_healing_to(maze.random_position())

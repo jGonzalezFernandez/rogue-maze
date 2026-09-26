@@ -1,6 +1,6 @@
-# rogue-maze 1.1.0-beta
+# rogue-maze 2.0.0-beta
 
-A simple video game I made with Godot 3 to avoid having to print the mazes generated with [mazes-scala](https://github.com/jGonzalezFernandez/mazes-scala). It should give you about 20 minutes of fun... if you like mazes.
+A simple video game I made with Godot 3 (and, later, ported to Godot 4) to avoid having to print the mazes generated with [mazes-scala](https://github.com/jGonzalezFernandez/mazes-scala). It should give you about 20 minutes of fun... if you like mazes.
 
 You can download it from the releases folder.
 

@@ -32,7 +32,7 @@ var indexed_cells: Array
 var astar: AStar2D
 var tile_map: TileMap
 
-func _init(generation_algorithm: int, add_loops: bool = false) -> void:
+func _init(generation_algorithm: int,add_loops: bool = false):
 	self.generation_algorithm = generation_algorithm
 	self.add_loops = add_loops
 
@@ -70,10 +70,10 @@ func _ready() -> void:
 				# TODO: Add an enum to select the braiding level (instead of using a hard-coded probability)?
 				if current_cell.link_count <= 1 and Utils.seventy_five_percent_chance():
 					var neighbours = get_neighbours_of(current_cell)
-					neighbours.sort_custom(self, "sort_cells_by_link_count_asc")
+					neighbours.sort_custom(Callable(self,"sort_cells_by_link_count_asc"))
 					link_cells(current_cell, neighbours.front())
 	
-	tile_map = TILE_MAP_SCENE.instance()
+	tile_map = TILE_MAP_SCENE.instantiate()
 	add_child(tile_map)
 	draw_walls()
 
@@ -149,74 +149,74 @@ func draw_walls() -> void:
 			# TODO: Use the really necessary tiles and rotate them according to the match?
 			match current_cell.walls:
 				{"N": false, "E": false, "S": false, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NONE)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NONE, Vector2i(0, 0))
 				{"N": false, "E": false, "S": false, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.W)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.W, Vector2i(0, 0))
 				{"N": false, "E": false, "S": true, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.S)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.S, Vector2i(0, 0))
 				{"N": false, "E": false, "S": true, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.SW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.SW, Vector2i(0, 0))
 				{"N": false, "E": true, "S": false, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.E)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.E, Vector2i(0, 0))
 				{"N": false, "E": true, "S": false, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.EW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.EW, Vector2i(0, 0))
 				{"N": false, "E": true, "S": true, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ES)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.ES, Vector2i(0, 0))
 				{"N": false, "E": true, "S": true, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ESW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.ESW, Vector2i(0, 0))
 				{"N": true, "E": false, "S": false, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.N)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.N, Vector2i(0, 0))
 				{"N": true, "E": false, "S": false, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NW, Vector2i(0, 0))
 				{"N": true, "E": false, "S": true, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NS)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NS, Vector2i(0, 0))
 				{"N": true, "E": false, "S": true, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NSW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NSW, Vector2i(0, 0))
 				{"N": true, "E": true, "S": false, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NE)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NE, Vector2i(0, 0))
 				{"N": true, "E": true, "S": false, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NEW)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NEW, Vector2i(0, 0))
 				{"N": true, "E": true, "S": true, "W": false}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.NES)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.NES, Vector2i(0, 0))
 				{"N": true, "E": true, "S": true, "W": true}:
-					tile_map.set_cell(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET, Walls.ALL)
+					tile_map.set_cell(0, Vector2i(current_cell.column + X_OFFSET, current_cell.row + Y_OFFSET), Walls.ALL, Vector2i(0, 0))
 
-# TODO: To avoid having to calculate all coordinates by hand, investigate whether the TileMap functions map_to_world and world_to_map can be used instead
+# TODO: To avoid having to calculate all coordinates by hand, investigate whether the TileMap functions map_to_world and local_to_map can be used instead
 func _random_point(factor: int, length: int, offset: int):
 	return Utils.random_int(factor * length + offset, (factor - 1) * length + offset) * TILE_SIZE + HALF_TILE
 
-func _recursion_until_valid_position(candidate_position: Vector2, excluded_positions: Array, func_ref: FuncRef) -> Vector2:
+func _recursion_until_valid_position(candidate_position: Vector2, excluded_positions: Array, func_ref: Callable) -> Vector2:
 	if excluded_positions.has(candidate_position) or target_is_outside_boundaries(candidate_position): # could happen if rows or columns are not a multiple of 3
-		return func_ref.call_func(excluded_positions)
+		return func_ref.call(excluded_positions)
 	else:
 		return candidate_position
 
 func random_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(1, COLUMNS, X_OFFSET), _random_point(1, ROWS, Y_OFFSET)), excluded_positions, funcref(self, "random_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(1, COLUMNS, X_OFFSET), _random_point(1, ROWS, Y_OFFSET)), excluded_positions, self.random_position)
 
 func random_top_left_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(1, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_top_left_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(1, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, self.random_top_left_position)
 
 func random_top_center_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_top_center_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, self.random_top_center_position)
 
 func random_top_right_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_top_right_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(1, area_height, Y_OFFSET)), excluded_positions, self.random_top_right_position)
 
 func random_center_left_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(1, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_center_left_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(1, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, self.random_center_left_position)
 
 func random_center_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_center_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, self.random_center_position)
 
 func random_center_right_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_center_right_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(2, area_height, Y_OFFSET)), excluded_positions, self.random_center_right_position)
 
 func random_bottom_center_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_bottom_center_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(2, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET)), excluded_positions, self.random_bottom_center_position)
 
 func random_bottom_right_position(excluded_positions: Array = []) -> Vector2:
-	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET)), excluded_positions, funcref(self, "random_bottom_right_position"))
+	return _recursion_until_valid_position(Vector2(_random_point(3, area_width, X_OFFSET), _random_point(3, area_height, Y_OFFSET)), excluded_positions, self.random_bottom_right_position)
 
 static func target_is_outside_boundaries(target: Vector2) -> bool:
 	return target.x < MIN_X or target.x > MAX_X or target.y < MIN_Y or target.y > MAX_Y

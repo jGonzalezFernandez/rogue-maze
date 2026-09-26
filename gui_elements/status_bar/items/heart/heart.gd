@@ -10,5 +10,5 @@ const HALF_TEXTURE = preload(HALF_TEXTURE_PATH)
 const EMPTY_TEXTURE_PATH = ResourcePath.ITEMS + "/heart/heart_empty.png"
 const EMPTY_TEXTURE = preload(EMPTY_TEXTURE_PATH)
 
-func _init().(EMPTY_TEXTURE) -> void:
-	pass
+func _init() -> void:
+	super._init(EMPTY_TEXTURE)

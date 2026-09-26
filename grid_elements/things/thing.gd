@@ -3,5 +3,6 @@ extends GridElement
 
 const MAX_ALPHA = 1.0
 
-func _init(position: Vector2, main: Node, texture: Texture, layers: Array = []).(position, main, texture, MAX_ALPHA) -> void:
+func _init(position: Vector2, main: Node, texture: Texture, layers: Array = []) -> void:
+	super._init(position, main, texture, MAX_ALPHA)
 	collision_layer = compute_layers(layers)

@@ -2,13 +2,14 @@
 
 importer="csv_translation"
 type="Translation"
+uid="uid://bnsnqnwyl6gnm"
 
 [deps]
 
-files=[ "res://gui_elements/translations/translations.en.translation", "res://gui_elements/translations/translations.es.translation", "res://gui_elements/translations/translations.fr.translation" ]
+files=["res://gui_elements/translations/translations.en.translation", "res://gui_elements/translations/translations.es.translation", "res://gui_elements/translations/translations.fr.translation"]
 
 source_file="res://gui_elements/translations/translations.csv"
-dest_files=[ "res://gui_elements/translations/translations.en.translation", "res://gui_elements/translations/translations.es.translation", "res://gui_elements/translations/translations.fr.translation" ]
+dest_files=["res://gui_elements/translations/translations.en.translation", "res://gui_elements/translations/translations.es.translation", "res://gui_elements/translations/translations.fr.translation"]
 
 [params]
 

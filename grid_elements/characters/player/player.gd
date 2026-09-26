@@ -28,14 +28,14 @@ var ignore_walls = false
 
 var bomb_timer: Timer
 
-func _init(initial_position: Vector2, maze: Maze, main: Node) \
-.(initial_position, maze, main, TEXTURE, PLAYER_NAME, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, initial_alpha) -> void:
-	pass
+func _init(initial_position: Vector2, maze: Maze, main: Node) -> void:
+	super._init(initial_position, maze, main, TEXTURE, PLAYER_NAME, INITIAL_SPEED, INITIAL_HEALTH, FRIENDLY_FIRE, initial_alpha)
 
 func _ready() -> void:
-	connect("area_entered", self, "on_area_entered")
-	connect("teleport_requested", main, "on_player_teleport_requested")
-	connect("bomb_requested", main, "on_player_bomb_requested")
+	super._ready()
+	connect("area_entered",Callable(self,"on_area_entered"))
+	connect("teleport_requested",Callable(main,"on_player_teleport_requested"))
+	connect("bomb_requested",Callable(main,"on_player_bomb_requested"))
 	
 	bomb_timer = Timer.new()
 	bomb_timer.one_shot = true

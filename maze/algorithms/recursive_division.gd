@@ -31,9 +31,9 @@ static func vertical_cut(maze, row: int, column: int, height: int, width: int, w
 
 static func divide(maze, row: int, column: int, height: int, width: int, with_rooms: bool) -> void:
 	if height <= 1 or width <= 1 or (with_rooms and randomly_build_room(height, width)):
-		 pass
+		pass
 	elif height > width:
-		 horizontal_cut(maze, row, column, height, width, with_rooms)
+		horizontal_cut(maze, row, column, height, width, with_rooms)
 	else:
 		vertical_cut(maze, row, column, height, width, with_rooms)
 

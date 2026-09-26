@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/bite.wav-90bb886eca91f3cf0f534b303fd2a9d9.sample"
+type="AudioStreamWAV"
+uid="uid://ceb1vp5ef2t7j"
+path="res://.godot/imported/bite.wav-90bb886eca91f3cf0f534b303fd2a9d9.sample"
 
 [deps]
 
 source_file="res://grid_elements/things/food/bite.wav"
-dest_files=[ "res://.import/bite.wav-90bb886eca91f3cf0f534b303fd2a9d9.sample" ]
+dest_files=["res://.godot/imported/bite.wav-90bb886eca91f3cf0f534b303fd2a9d9.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

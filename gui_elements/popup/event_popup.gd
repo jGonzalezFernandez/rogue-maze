@@ -1,5 +1,5 @@
 class_name EventPopup
-extends PopupExt
+extends ModalPopup
 
 enum EventName {BAD_LEVER, INVISIBLE_CHEST, LOOSE_TILE, BRAZALET, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN, BOOK, PAINTING, SELLER, STATUES}
 
@@ -14,7 +14,8 @@ var menu_popup: MenuPopup
 var yes_button: Button
 var no_button: Button
 
-func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRect, success: bool = true, intro_placeholders_content: Array = [], result_placeholders_content: Array = []).(main) -> void:
+func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRect, success: bool = true, intro_placeholders_content: Array = [], result_placeholders_content: Array = []) -> void:
+	super._init(main)
 	self.event_name = event_name
 	self.success = success
 	
@@ -76,6 +77,7 @@ func _init(event_name: int, player: Player, menu_popup: MenuPopup, main: ColorRe
 	self.menu_popup = menu_popup
 
 func _ready() -> void:
+	super._ready()
 	menu_popup.set_process_input(false)
 	get_tree().paused = true
 	
@@ -95,13 +97,13 @@ func _ready() -> void:
 	
 	v_container.add_child(yes_button)
 	v_container.add_child(no_button)
-	v_container.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM, 0, MARGIN)
+	v_container.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM, 0, MARGIN)
 	
 	continue_button.hide()
 	
-	yes_button.connect("pressed", self, "on_yes_button_pressed")
-	no_button.connect("pressed", self, "on_no_button_pressed")
-	continue_button.connect("pressed", main, "on_event_popup_continue_button_pressed", [self])
+	yes_button.connect("pressed",Callable(self,"on_yes_button_pressed"))
+	no_button.connect("pressed",Callable(self,"on_no_button_pressed"))
+	continue_button.connect("pressed",Callable(main,"on_event_popup_continue_button_pressed").bind(self))
 
 func on_yes_button_pressed() -> void:
 	yes_button.hide()
