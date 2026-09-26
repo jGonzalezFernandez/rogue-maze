@@ -57,17 +57,14 @@ func popup_centered() -> void:
 	var rect: Rect2 = Rect2()
 	rect.size = size
 	rect.position = ((window_size - rect.size * scale) / 2.0).floor()
-	_do_popup(rect, true)
+	_do_popup(rect)
 
-func _do_popup(bounds: Rect2 = Rect2(), centered: bool = false) -> void:
+func _do_popup(bounds: Rect2 = Rect2()) -> void:
 	show()
 
 	if bounds.has_area():
 		size = bounds.size
-		if centered and bounds.size != size:
-			position = bounds.position - ((size - bounds.size) / 2.0).floor()
-		else:
-			position = bounds.position
+		position = bounds.position
 
 	_fix_size()
 
