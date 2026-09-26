@@ -1,5 +1,5 @@
 class_name MenuPopup
-extends PopupExt
+extends ModalPopup
 
 const GAME_NAME = "ROGUE-MAZE"
 const GAME_OVER_MESSAGE = "GAME OVER"

@@ -1,5 +1,5 @@
 class_name EventPopup
-extends PopupExt
+extends ModalPopup
 
 enum EventName {BAD_LEVER, INVISIBLE_CHEST, LOOSE_TILE, BRAZALET, RED_FOUNTAIN, GOOD_LEVER, BLUE_FOUNTAIN, BOOK, PAINTING, SELLER, STATUES}
 
